@@ -1,0 +1,49 @@
+---
+// Hero-Section einer Projekt-Unterseite (Titel, Meta-Chips, Vorschaubild).
+// Styling zentral in global.css (.case-hero__* / .case-meta__*).
+
+interface Props {
+  title: string;
+  meta: string[];
+  image: string;
+  imageAlt: string;
+  imagePosition?: string;
+  eyebrow?: string;
+  frameTop?: string;
+}
+
+const { title, meta, image, imageAlt, imagePosition, eyebrow = 'UI/UX – Design', frameTop } = Astro.props;
+---
+
+<section class="section case-hero">
+  <div class="wrapper case-hero__inner">
+    <div class="case-hero__content">
+      <span class="eyebrow">
+        <span class="eyebrow__dot" aria-hidden="true"></span>
+        {eyebrow}
+      </span>
+      <h1 class="case-hero__title" data-reveal set:html={title}></h1>
+      <ul class="case-meta" data-reveal style="--reveal-delay: 80ms">
+        {meta.map((item) => (
+          <li class="case-meta__chip">
+            <span class="case-meta__chip-label">{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="case-hero__media" data-reveal style="--reveal-delay: 120ms">
+      <div class="case-hero__shape" aria-hidden="true"></div>
+      <div class="case-hero__frame" style={frameTop ? `top: ${frameTop}` : undefined}>
+        <img
+          src={image}
+          alt={imageAlt}
+          width="704"
+          height="407"
+          loading="eager"
+          style={imagePosition ? `object-position: ${imagePosition}` : undefined}
+        />
+      </div>
+    </div>
+  </div>
+</section>

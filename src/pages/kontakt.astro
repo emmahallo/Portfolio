@@ -1,0 +1,211 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import TabCard from '../components/TabCard.astro';
+import LinkTile from '../components/LinkTile.astro';
+import Footer from '../components/Footer.astro';
+
+const noteHtml = `
+  <p><span class="note__salutation">Hey,</span></p>
+  <p><em>schön</em>, dass <em>du</em> <em>hier</em> gelandet <em>bist</em>.</p>
+  <p>Wenn ich deine <em>Neugier</em> wecken konnte oder du <em>mehr erfahren</em> möchtest — schreib mir gerne. Ich freu mich, von dir zu hören.</p>
+`;
+---
+
+<BaseLayout
+  title="Kontakt — Emma Eichin"
+  description="Kontakt zu Emma Eichin — Mediendesign-Studentin mit Fokus auf UI/UX-Design. E-Mail und LinkedIn."
+>
+  <Header />
+  <main>
+    <section class="section kontakt-section">
+      <div class="wrapper kontakt-wrapper">
+        <TabCard tab="Kontakt" data-reveal>
+          <div class="note">
+            <div class="note__text" set:html={noteHtml} />
+
+            <div class="note__signature">
+              <span class="note__signature-dash">—</span>
+              <span class="note__signature-name">Emma</span>
+            </div>
+
+            <div class="note__divider" aria-hidden="true"></div>
+
+            <ul class="note__links">
+              <li data-reveal style="--reveal-delay: 80ms">
+                <LinkTile
+                  href="mailto:emma.eichin@gmx.de"
+                  title="emma.eichin@gmx.de"
+                  subtitle="Direkt schreiben"
+                  icon="external"
+                />
+              </li>
+              <li data-reveal style="--reveal-delay: 140ms">
+                <LinkTile
+                  href="https://www.linkedin.com/in/emma-eichin-35b575427/"
+                  title="LinkedIn — Emma Eichin"
+                  subtitle="Profil in neuem Tab öffnen"
+                  icon="external"
+                  target="_blank"
+                />
+              </li>
+            </ul>
+          </div>
+        </TabCard>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .kontakt-section {
+    padding-block: clamp(2.5rem, 5vw, 4.5rem) var(--section-spacing);
+  }
+
+  .kontakt-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  .kontakt-wrapper :global(.tab-card) {
+    width: 100%;
+    max-width: 720px;
+    transform: rotate(-0.4deg);
+  }
+
+  .kontakt-wrapper :global(.tab-card__frame) {
+    padding: clamp(2rem, 4vw, 3rem) clamp(1.75rem, 3.5vw, 2.75rem);
+  }
+
+  @media (max-width: 640px) {
+    .kontakt-wrapper :global(.tab-card) {
+      margin-left: 0;
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .kontakt-wrapper :global(.tab-card__tab) {
+      left: 0;
+    }
+
+    .kontakt-wrapper :global(.tab-card__frame) {
+      padding: 1.75rem 1.1rem 1.25rem;
+    }
+
+    .note__text {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .note__text,
+    .note__text :global(p) {
+      overflow-wrap: break-word;
+      word-break: normal;
+    }
+
+    .note__links :global(.link-tile) {
+      padding: 0.6rem 0.9rem 0.6rem 0.6rem;
+    }
+
+    .note__links :global(.link-tile__title),
+    .note__links :global(.link-tile__subtitle) {
+      overflow-wrap: anywhere;
+    }
+  }
+
+  .note {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .note__text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    line-height: 1.65;
+  }
+
+  .note__text :global(p) {
+    margin: 0;
+  }
+
+  .note__text :global(em) {
+    font-style: normal;
+    color: var(--color-ink);
+    font-weight: 700;
+  }
+
+  .note__text :global(.note__salutation) {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    letter-spacing: 0.04em;
+    color: var(--color-ink);
+    text-transform: uppercase;
+    line-height: 1;
+    display: inline-block;
+  }
+
+  .note__signature {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    align-self: flex-start;
+    margin-top: 0.25rem;
+    transform: rotate(-2deg);
+    transform-origin: left center;
+  }
+
+  .note__signature-dash {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    color: var(--color-sage-dark);
+    line-height: 1;
+  }
+
+  .note__signature-name {
+    font-family: 'Reenie Beanie', cursive;
+    font-size: clamp(2.5rem, 4vw, 3.25rem);
+    color: var(--color-ink);
+    line-height: 1;
+  }
+
+  .note__divider {
+    height: 2px;
+    background: repeating-linear-gradient(
+      to right,
+      var(--color-border) 0 6px,
+      transparent 6px 12px
+    );
+    margin-top: 0.75rem;
+  }
+
+  .note__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .note__links :global(.link-tile) {
+    width: 100%;
+  }
+
+  @media (max-width: 640px) {
+    .kontakt-wrapper :global(.tab-card) {
+      transform: rotate(0deg);
+    }
+
+    .note__signature {
+      transform: rotate(-1.5deg);
+    }
+  }
+</style>

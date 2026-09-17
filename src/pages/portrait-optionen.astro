@@ -1,0 +1,682 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+
+const portraits = [
+  { src: '/images/Fotografie/F5C676F8-0527-4C47-8561-9FF3457C6170_1_105_c.jpeg', alt: 'Strandkörbe am Strand bei Sonnenuntergang', caption: 'Strandkörbe im Abendlicht · Ostsee' },
+  { src: '/images/Fotografie/FullSizeRender.jpg', alt: 'Dünenlandschaft bei Sonnenuntergang', caption: 'Dünen im Sonnenuntergang · privat' },
+  { src: '/images/Fotografie/IMG_3411.jpg', alt: 'Biene auf einer gelben Blüte', caption: 'Biene auf gelber Blüte · Detailaufnahme' },
+  { src: '/images/Fotografie/IMG_7775.jpeg', alt: 'Rotes Holzhaus zwischen Bäumen', caption: 'Rotes Schwedenhaus im Wald · Reise' },
+  { src: '/images/Fotografie/8A9B335A-D4B9-4CF4-A7A4-A33521707C69_1_102_o.jpeg', alt: 'Portrait im Hochformat', caption: 'Hochformat-Portrait · privat' },
+  { src: '/images/Fotografie/IMG_0617.JPG', alt: 'Hochformatige Momentaufnahme', caption: 'Momentaufnahme · Reise' },
+  { src: '/images/Fotografie/IMG_5467.jpeg', alt: 'Hochformatige Momentaufnahme', caption: 'Momentaufnahme · Reise' },
+  { src: '/images/Fotografie/IMG_8430.jpeg', alt: 'Hochformatige Momentaufnahme', caption: 'Momentaufnahme · Reise' },
+];
+
+const options = [
+  { id: '1', title: 'Editorial-Grid (alternierender Zick-Zack)', desc: 'Zwei Portraits pro Reihe, jede zweite Reihe leicht vertikal versetzt. Sehr klassisch und ruhig, wie ein Magazin-Layout.' },
+  { id: '2', title: 'Sticky-Spalte + Scroll-Text', desc: 'Das Bild bleibt links sticky, rechts scrollt der Text vorbei. Bei jedem neuen Text wechselt das Bild mit Cross-Fade.' },
+  { id: '3', title: 'Marquee / Endlos-Karussell (Auto-Play)', desc: 'Reihe läuft langsam nach links. Hover pausiert und zeigt die Caption. Sehr ambient und modern.' },
+  { id: '4', title: 'Grid mit Lightbox', desc: '3-spaltiges Grid, gleiche Höhe. Klick öffnet Lightbox mit Vor/Zurück. Standard-Portfolio-Muster.' },
+  { id: '5', title: 'Horizontales Scroll-Karussell (User-gesteuert)', desc: 'Reihe horizontal scrollbar per Trackpad/Pfeiltasten mit Scroll-Snap. Ohne Scroll-Hijack.' },
+  { id: '6', title: 'Diagonal / Polaroid-Layout', desc: 'Bilder leicht rotiert und lose gestreut, wie Polaroids auf einer Pinnwand. Passt zu privaten Reise-Fotos.' },
+];
+---
+
+<BaseLayout title="Portrait-Optionen — Emma Eichin" description="Vorschau verschiedener Darstellungsvarianten für Hochformat-Fotos.">
+  <Header />
+  <main class="options-page">
+    <section class="section options-intro">
+      <div class="wrapper">
+        <h1 class="options-title">Vorschau: Hochformat-Darstellungen</h1>
+        <p class="options-lead">Sechs Optionen für die Portrait-Sektion. Scroll durch die Beispiele und sag mir, welche du willst.</p>
+        <nav class="options-nav">
+          {options.map((o) => (
+            <a href={`#opt-${o.id}`}>{o.id}. {o.title}</a>
+          ))}
+        </nav>
+      </div>
+    </section>
+
+    {/* Option 1: Editorial-Grid Zick-Zack */}
+    <section id="opt-1" class="section option-block">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 1</span>
+          <h2>{options[0].title}</h2>
+          <p>{options[0].desc}</p>
+        </div>
+
+        <div class="editorial-grid">
+          {portraits.slice(0, 6).map((p, i) => (
+            <figure class={`editorial-grid__item ${i % 2 === 0 ? 'is-up' : 'is-down'}`}>
+              <img src={p.src} alt={p.alt} loading="lazy" />
+              <figcaption>
+                <span class="editorial-grid__dot" aria-hidden="true"></span>
+                {p.caption}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Option 2: Sticky-Spalte + Scroll-Text */}
+    <section id="opt-2" class="section option-block">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 2</span>
+          <h2>{options[1].title}</h2>
+          <p>{options[1].desc}</p>
+        </div>
+
+        <div class="sticky-story" data-sticky-story>
+          <div class="sticky-story__media">
+            {portraits.slice(0, 5).map((p, i) => (
+              <div class={`sticky-story__photo ${i === 0 ? 'is-active' : ''}`} data-index={i}>
+                <img src={p.src} alt={p.alt} loading="lazy" />
+              </div>
+            ))}
+          </div>
+          <div class="sticky-story__text">
+            {portraits.slice(0, 5).map((p, i) => (
+              <article class="sticky-story__block" data-index={i}>
+                <h3>{p.caption.split(' · ')[0]}</h3>
+                <p>{p.caption}</p>
+                <p class="sticky-story__body">Eine kurze Beschreibung des Bildes: wann, wo, warum ich es aufgenommen habe. Perfekt für Reise-Fotografie oder Serien mit Kontext.</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Option 3: Marquee */}
+    <section id="opt-3" class="section option-block option-block--full">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 3</span>
+          <h2>{options[2].title}</h2>
+          <p>{options[2].desc}</p>
+        </div>
+      </div>
+
+      <div class="marquee">
+        <div class="marquee__track">
+          {[...portraits, ...portraits].map((p) => (
+            <figure class="marquee__item">
+              <img src={p.src} alt={p.alt} loading="lazy" />
+              <figcaption>{p.caption}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Option 4: Grid mit Lightbox */}
+    <section id="opt-4" class="section option-block">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 4</span>
+          <h2>{options[3].title}</h2>
+          <p>{options[3].desc}</p>
+        </div>
+
+        <div class="lightbox-grid" data-lightbox>
+          {portraits.map((p, i) => (
+            <button type="button" class="lightbox-grid__item" data-index={i} aria-label={`Bild ${i + 1} öffnen`}>
+              <img src={p.src} alt={p.alt} loading="lazy" />
+            </button>
+          ))}
+        </div>
+
+        <div class="lightbox" data-lightbox-overlay hidden>
+          <button type="button" class="lightbox__close" data-lightbox-close aria-label="Schließen">×</button>
+          <button type="button" class="lightbox__nav lightbox__nav--prev" data-lightbox-prev aria-label="Zurück">‹</button>
+          <div class="lightbox__stage">
+            <img data-lightbox-img src="" alt="" />
+            <figcaption data-lightbox-caption></figcaption>
+          </div>
+          <button type="button" class="lightbox__nav lightbox__nav--next" data-lightbox-next aria-label="Weiter">›</button>
+        </div>
+      </div>
+    </section>
+
+    {/* Option 5: Horizontal Scroll-Snap */}
+    <section id="opt-5" class="section option-block option-block--full">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 5</span>
+          <h2>{options[4].title}</h2>
+          <p>{options[4].desc}</p>
+          <p class="option-hint">Tipp: mit Trackpad horizontal wischen oder mit Pfeiltasten navigieren.</p>
+        </div>
+      </div>
+
+      <div class="scroll-snap">
+        {portraits.map((p) => (
+          <figure class="scroll-snap__item">
+            <img src={p.src} alt={p.alt} loading="lazy" />
+            <figcaption>{p.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+
+    {/* Option 6: Polaroid / Diagonal */}
+    <section id="opt-6" class="section option-block">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 6</span>
+          <h2>{options[5].title}</h2>
+          <p>{options[5].desc}</p>
+        </div>
+
+        <div class="polaroid-board">
+          {portraits.slice(0, 6).map((p, i) => (
+            <figure class="polaroid-board__item" style={`--r: ${(i % 2 ? 1 : -1) * (2 + (i % 3))}deg;`}>
+              <img src={p.src} alt={p.alt} loading="lazy" />
+              <figcaption>{p.caption.split(' · ')[0]}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <script is:inline>
+      /* Option 2: Sticky story — Bildwechsel anhand des aktiven Textblocks */
+      (() => {
+        const container = document.querySelector('[data-sticky-story]');
+        if (!container) return;
+        const photos = container.querySelectorAll('.sticky-story__photo');
+        const blocks = container.querySelectorAll('.sticky-story__block');
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const idx = Number(entry.target.dataset.index);
+              photos.forEach((p) => p.classList.toggle('is-active', Number(p.dataset.index) === idx));
+            }
+          });
+        }, { threshold: 0.6 });
+        blocks.forEach((b) => observer.observe(b));
+      })();
+
+      /* Option 4: Lightbox */
+      (() => {
+        const grid = document.querySelector('[data-lightbox]');
+        const overlay = document.querySelector('[data-lightbox-overlay]');
+        if (!grid || !overlay) return;
+        const imgEl = overlay.querySelector('[data-lightbox-img]');
+        const capEl = overlay.querySelector('[data-lightbox-caption]');
+        const closeBtn = overlay.querySelector('[data-lightbox-close]');
+        const prevBtn = overlay.querySelector('[data-lightbox-prev]');
+        const nextBtn = overlay.querySelector('[data-lightbox-next]');
+        const items = Array.from(grid.querySelectorAll('.lightbox-grid__item'));
+        let current = 0;
+
+        const show = (i) => {
+          current = (i + items.length) % items.length;
+          const btn = items[current];
+          const img = btn.querySelector('img');
+          imgEl.src = img.src;
+          imgEl.alt = img.alt;
+          capEl.textContent = img.alt;
+        };
+        const open = (i) => { show(i); overlay.hidden = false; document.body.style.overflow = 'hidden'; };
+        const close = () => { overlay.hidden = true; document.body.style.overflow = ''; };
+
+        items.forEach((btn, i) => btn.addEventListener('click', () => open(i)));
+        closeBtn.addEventListener('click', close);
+        prevBtn.addEventListener('click', () => show(current - 1));
+        nextBtn.addEventListener('click', () => show(current + 1));
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+        document.addEventListener('keydown', (e) => {
+          if (overlay.hidden) return;
+          if (e.key === 'Escape') close();
+          if (e.key === 'ArrowRight') show(current + 1);
+          if (e.key === 'ArrowLeft') show(current - 1);
+        });
+      })();
+    </script>
+  </main>
+</BaseLayout>
+
+<style>
+  .options-page {
+    background: #ffffff;
+  }
+
+  .options-intro {
+    padding-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .options-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    color: var(--color-ink);
+    font-size: clamp(2rem, 3.6vw, 3rem);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+  }
+
+  .options-lead {
+    color: var(--color-text);
+    max-width: 60ch;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  .options-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.5rem;
+  }
+
+  .options-nav a {
+    font-size: 0.85rem;
+    color: var(--color-sage-dark);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .option-block {
+    padding-block: clamp(3rem, 5vw, 5rem);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .option-block--full > .wrapper {
+    margin-bottom: 2rem;
+  }
+
+  .option-heading {
+    margin-bottom: 2.5rem;
+    max-width: 60ch;
+  }
+
+  .option-badge {
+    display: inline-block;
+    background: var(--color-sage);
+    color: #ffffff;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .option-heading h2 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    font-size: 1.35rem;
+    margin: 0 0 0.6rem;
+    letter-spacing: 0.02em;
+  }
+
+  .option-heading p {
+    color: var(--color-text);
+    font-weight: 300;
+    margin: 0;
+  }
+
+  .option-hint {
+    margin-top: 0.5rem !important;
+    font-size: 0.85rem;
+    color: var(--color-sage-dark);
+  }
+
+  /* ------- Option 1: Editorial Grid ------- */
+  .editorial-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.5rem, 3vw, 3rem) clamp(1.5rem, 4vw, 4rem);
+    align-items: start;
+  }
+
+  .editorial-grid__item {
+    margin: 0;
+  }
+
+  .editorial-grid__item.is-up {
+    margin-top: 0;
+  }
+
+  .editorial-grid__item.is-down {
+    margin-top: clamp(2rem, 5vw, 4rem);
+  }
+
+  .editorial-grid__item img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    display: block;
+  }
+
+  .editorial-grid__item figcaption {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--color-ink);
+    letter-spacing: 0.02em;
+  }
+
+  .editorial-grid__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-sage);
+    flex-shrink: 0;
+  }
+
+  /* ------- Option 2: Sticky Story ------- */
+  .sticky-story {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+
+  .sticky-story__media {
+    position: sticky;
+    top: 6rem;
+    aspect-ratio: 2 / 3;
+    max-height: calc(100vh - 8rem);
+  }
+
+  .sticky-story__photo {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 500ms ease;
+  }
+
+  .sticky-story__photo.is-active {
+    opacity: 1;
+  }
+
+  .sticky-story__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .sticky-story__block {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .sticky-story__block:first-child {
+    border-top: none;
+  }
+
+  .sticky-story__block h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 2rem;
+    letter-spacing: 0.04em;
+    margin: 0 0 0.75rem;
+    color: var(--color-ink);
+  }
+
+  .sticky-story__block p {
+    color: var(--color-text);
+    font-weight: 300;
+    margin: 0 0 0.5rem;
+  }
+
+  .sticky-story__body {
+    color: var(--color-text);
+    line-height: 1.6;
+    max-width: 44ch;
+  }
+
+  /* ------- Option 3: Marquee ------- */
+  .marquee {
+    overflow: hidden;
+    padding-block: 1rem;
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .marquee__track {
+    display: flex;
+    gap: 1.5rem;
+    width: max-content;
+    animation: marquee-scroll 45s linear infinite;
+  }
+
+  .marquee:hover .marquee__track {
+    animation-play-state: paused;
+  }
+
+  .marquee__item {
+    flex: 0 0 auto;
+    margin: 0;
+    position: relative;
+    height: 60vh;
+    max-height: 520px;
+  }
+
+  .marquee__item img {
+    height: 100%;
+    width: auto;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    display: block;
+  }
+
+  .marquee__item figcaption {
+    position: absolute;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.4rem 0.75rem;
+    background: #ffffff;
+    color: var(--color-ink);
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+
+  .marquee__item:hover figcaption {
+    opacity: 1;
+  }
+
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ------- Option 4: Grid + Lightbox ------- */
+  .lightbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+
+  .lightbox-grid__item {
+    all: unset;
+    cursor: pointer;
+    overflow: hidden;
+    background: #f4f5f2;
+  }
+
+  .lightbox-grid__item img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    display: block;
+    transition: transform 350ms ease;
+  }
+
+  .lightbox-grid__item:hover img,
+  .lightbox-grid__item:focus-visible img {
+    transform: scale(1.04);
+  }
+
+  .lightbox-grid__item:focus-visible {
+    outline: 2px solid var(--color-sage-dark);
+    outline-offset: 3px;
+  }
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 22, 20, 0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem clamp(3rem, 6vw, 5rem);
+    z-index: 100;
+  }
+
+  .lightbox[hidden] {
+    display: none;
+  }
+
+  .lightbox__stage {
+    max-width: min(90vw, 700px);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .lightbox__stage img {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    display: block;
+  }
+
+  .lightbox__stage figcaption {
+    color: #ffffff;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .lightbox__close,
+  .lightbox__nav {
+    all: unset;
+    position: absolute;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 2rem;
+    line-height: 1;
+    padding: 0.5rem 1rem;
+    transition: color 200ms ease;
+  }
+
+  .lightbox__close:hover,
+  .lightbox__nav:hover {
+    color: var(--color-sage);
+  }
+
+  .lightbox__close {
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 2.4rem;
+  }
+
+  .lightbox__nav--prev { left: 1rem; }
+  .lightbox__nav--next { right: 1rem; }
+
+  /* ------- Option 5: Scroll-Snap ------- */
+  .scroll-snap {
+    display: flex;
+    gap: 1.25rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-inline: var(--gutter);
+    padding-block: 1rem 2rem;
+    scrollbar-width: thin;
+  }
+
+  .scroll-snap__item {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    margin: 0;
+    position: relative;
+    width: min(60vw, 380px);
+  }
+
+  .scroll-snap__item img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    display: block;
+  }
+
+  .scroll-snap__item figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--color-ink);
+  }
+
+  /* ------- Option 6: Polaroid Board ------- */
+  .polaroid-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1rem, 3vw, 2.5rem);
+    padding-block: 2rem;
+  }
+
+  .polaroid-board__item {
+    margin: 0;
+    background: #ffffff;
+    padding: 0.6rem 0.6rem 1.75rem;
+    box-shadow: 0 20px 40px -24px rgba(0, 0, 0, 0.3);
+    transform: rotate(var(--r, 0deg));
+    transition: transform 250ms ease;
+  }
+
+  .polaroid-board__item:hover {
+    transform: rotate(0deg) scale(1.03);
+    z-index: 2;
+  }
+
+  .polaroid-board__item img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    display: block;
+  }
+
+  .polaroid-board__item figcaption {
+    margin-top: 0.75rem;
+    text-align: center;
+    font-family: 'Karla', system-ui, sans-serif;
+    font-size: 0.9rem;
+    color: var(--color-ink);
+  }
+
+  @media (max-width: 760px) {
+    .sticky-story {
+      grid-template-columns: 1fr;
+    }
+    .sticky-story__media {
+      position: relative;
+      top: 0;
+      max-height: 60vh;
+    }
+    .editorial-grid {
+      grid-template-columns: 1fr;
+    }
+    .editorial-grid__item.is-down {
+      margin-top: 0;
+    }
+    .polaroid-board {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

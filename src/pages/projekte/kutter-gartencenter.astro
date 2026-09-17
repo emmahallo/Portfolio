@@ -1,0 +1,545 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import CaseHero from '../../components/CaseHero.astro';
+import CaseToc from '../../components/CaseToc.astro';
+import TabCard from '../../components/TabCard.astro';
+import Projects from '../../components/Projects.astro';
+import Footer from '../../components/Footer.astro';
+
+const overview = [
+  { number: '1', label: 'Ausgangspunkt', href: '#ausgangspunkt' },
+  { number: '2', label: 'Ergebnisse', href: '#ergebnisse' },
+  { number: '3', label: 'Learnings', href: '#learnings' },
+];
+
+const meta = ['Werkstudentische Tätigkeit', 'seit 2021'];
+
+const learningsHtml = `Durch die <strong>langjährige Zusammenarbeit</strong> mit dem Kutter Gartencenter konnte ich <strong>wertvolle Praxiserfahrung</strong> im gestalterischen Alltag eines lebendigen Betriebs sammeln. Mit jedem neuen Projekt – vom <strong>fortlaufenden Social-Media-Content</strong> bis hin zu Print-Aufgaben wie der <strong>Neueröffnung in Kempten</strong> – ergaben sich immer wieder <strong>spannende Gestaltungsmöglichkeiten</strong>, durch die ich meine <strong>Fähigkeiten kontinuierlich ausbauen</strong> konnte. Besonders bereichernd ist die <strong>Vielfalt der Formate und Medien</strong>: Sie bietet mir die Möglichkeit, <strong>neue Techniken zu erproben</strong> und mein Auge für Details zu schärfen.`;
+
+const works = [
+  {
+    idx: '01',
+    title: 'Instagram-Posts',
+    kategorie: 'Social Media',
+    jahr: 'fortlaufend seit 2021',
+    image: '/images/Kutter/handy.png',
+    imageAlt: 'Mockup von Instagram-Posts für das Kutter Gartencenter auf dem Smartphone',
+    kontext: 'Erstellung von Insta-Posts für saisonale Aktionen und Events.',
+    gallery: [
+      { src: '/images/Kutter/handy.png', alt: 'Instagram-Posts' },
+    ],
+  },
+  {
+    idx: '02',
+    title: 'Flyer',
+    kategorie: 'Print',
+    format: '6-seitig',
+    jahr: '2026',
+    image: '/images/Kutter/flyer.png',
+    imageAlt: 'Flyer zur Neueröffnung des Kutter Gartencenters',
+    kontext: 'Flyer zur Neueröffnung des Standorts in Kempten.',
+    gallery: [
+      { src: '/images/Kutter/flyer.png', alt: 'Flyer — Gesamtansicht' },
+      { src: '/images/Kutter/flyer%20kutter.png', alt: 'Flyer — Detailansicht' },
+      { src: '/images/Kutter/flyer.innnen.png', alt: 'Flyer — Innenansicht' },
+    ],
+  },
+  {
+    idx: '03',
+    title: 'Postkarten',
+    kategorie: 'Print',
+    format: '6 Postkarten-Designs',
+    ansichten: '6 Ansichten',
+    jahr: '2026',
+    image: '/images/Kutter/postkarte(vorne&hinten).png',
+    imageAlt: 'Postkarten für das Kutter Gartencenter, Vorder- und Rückseite',
+    kontext: 'Zu den Flyern wurden auch Postkarten zur Neueröffnung in Kempten gestaltet.',
+    gallery: [
+      { src: '/images/Kutter/postkarte(vorne&hinten).png', alt: 'Postkarten — Vorder- und Rückseite' },
+      { src: '/images/Kutter/post02.png', alt: 'Postkarte — Design 02' },
+      { src: '/images/Kutter/post03.png', alt: 'Postkarte — Design 03' },
+      { src: '/images/Kutter/01stylepost.png', alt: 'Postkarte — Design 01' },
+    ],
+  },
+  {
+    idx: '04',
+    title: 'Werbebanner',
+    kategorie: 'Print',
+    format: 'Outdoor',
+    jahr: '2026',
+    image: '/images/Kutter/banne.png',
+    imageAlt: 'Werbebanner für das Kutter Gartencenter mit der Aufschrift „Wir suchen dich!"',
+    kontext: 'Banner für die aktive Personalsuche in Kempten im Allgäu.',
+    gallery: [
+      { src: '/images/Kutter/banne.png', alt: 'Werbebanner „Wir suchen dich!"' },
+    ],
+  },
+];
+
+---
+
+<BaseLayout
+  title="Arbeiten für das Kutter Gartencenter — Emma Eichin"
+  description="Werkstudentische Grafikdesign-Arbeiten für das Kutter Gartencenter: Social-Media-Beiträge, Flyer, Postkarten und Werbebanner für digitale und analoge Medien."
+>
+  <Header />
+  <main class="page-kutter">
+    <CaseHero
+      title="Projekte für das<br>Kutter Gartencenter"
+      meta={meta}
+      eyebrow="Kommunikationsdesign"
+      image="/images/voschau%20projektsseiten/kutter.png"
+      imageAlt="Flyer- und Postkarten-Mockups für das Kutter Gartencenter"
+    />
+
+    <CaseToc items={overview} />
+
+    <section id="ausgangspunkt" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Ausgangspunkt</h2>
+        <TabCard tab="Aufgabe" data-reveal>
+          <p class="tab-card__text">
+            Parallel zum Studium begleite ich das <strong>Kutter Gartencenter</strong> bei gestalterischen Aufgaben für <strong>digitale und analoge Medien</strong>. Neben der kontinuierlichen Ausarbeitung von <strong>Social-Media-Beiträgen</strong> gestaltete ich unter anderem Print-Medien – beispielsweise <strong>Flyer und Postkarten</strong> für die <strong>Neueröffnung des Kutter Gartencenters in Kempten</strong> oder Werbebanner.
+          </p>
+        </TabCard>
+      </div>
+    </section>
+
+    <section id="ergebnisse" class="section ergebnisse-section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Ergebnisse</h2>
+      </div>
+
+      {works.map((w, i) => (
+        <div class="wrapper deck-slide" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+          <div class="deck-slide__num">{w.idx}</div>
+          <div class="deck-slide__content">
+            <div class="deck-slide__meta">
+              <span>{w.kategorie}</span>
+              {w.format && <span>{w.format}</span>}
+              {w.jahr && <span class="deck-slide__year">{w.jahr}</span>}
+            </div>
+            <h3 class="deck-slide__title">{w.title}</h3>
+            <button
+              type="button"
+              class="deck-slide__image"
+              data-lightbox-open={i}
+              aria-label={`${w.title} – ${w.gallery.length > 1 ? `${w.gallery.length} Bilder ansehen` : 'Bild vergrößern'}`}
+            >
+              <img src={w.image} alt={w.imageAlt} loading="lazy" />
+              {w.gallery.length > 1 && (
+                <span class="deck-slide__zoom">
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8" />
+                    <path d="M16 16l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    <path d="M11 8v6M8 11h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                  </svg>
+                  Alle {w.gallery.length} Bilder ansehen
+                </span>
+              )}
+            </button>
+            <p class="deck-slide__body">{w.kontext}</p>
+          </div>
+        </div>
+      ))}
+    </section>
+
+    {/* Lightbox */}
+    <div class="lightbox" data-lightbox hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Bildergalerie">
+      <button type="button" class="lightbox__close" data-lightbox-close aria-label="Schließen">×</button>
+      <button type="button" class="lightbox__nav lightbox__nav--prev" data-lightbox-prev aria-label="Vorheriges Bild">‹</button>
+      <button type="button" class="lightbox__nav lightbox__nav--next" data-lightbox-next aria-label="Nächstes Bild">›</button>
+      <figure class="lightbox__figure">
+        <img data-lightbox-image src="" alt="" />
+        <figcaption>
+          <span data-lightbox-title></span>
+          <span data-lightbox-counter></span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <script is:inline define:vars={{ galleries: works.map((w) => ({ title: w.title, images: w.gallery })) }}>
+      (() => {
+        const lb = document.querySelector('[data-lightbox]');
+        if (!lb) return;
+        const imgEl = lb.querySelector('[data-lightbox-image]');
+        const titleEl = lb.querySelector('[data-lightbox-title]');
+        const counterEl = lb.querySelector('[data-lightbox-counter]');
+        const prevBtn = lb.querySelector('[data-lightbox-prev]');
+        const nextBtn = lb.querySelector('[data-lightbox-next]');
+        const closeBtn = lb.querySelector('[data-lightbox-close]');
+
+        let currentGallery = null;
+        let currentIndex = 0;
+
+        function render() {
+          const img = currentGallery.images[currentIndex];
+          imgEl.src = img.src;
+          imgEl.alt = img.alt || '';
+          titleEl.textContent = currentGallery.title;
+          const multi = currentGallery.images.length > 1;
+          counterEl.textContent = multi ? `${currentIndex + 1} / ${currentGallery.images.length}` : '';
+          prevBtn.hidden = !multi;
+          nextBtn.hidden = !multi;
+        }
+
+        function open(galleryIdx) {
+          currentGallery = galleries[galleryIdx];
+          currentIndex = 0;
+          render();
+          lb.hidden = false;
+          requestAnimationFrame(() => lb.classList.add('is-open'));
+          lb.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+        }
+
+        function close() {
+          lb.classList.remove('is-open');
+          lb.setAttribute('aria-hidden', 'true');
+          setTimeout(() => { lb.hidden = true; }, 250);
+          document.body.style.overflow = '';
+        }
+
+        function step(delta) {
+          if (!currentGallery) return;
+          const n = currentGallery.images.length;
+          currentIndex = (currentIndex + delta + n) % n;
+          render();
+        }
+
+        document.querySelectorAll('[data-lightbox-open]').forEach((btn) => {
+          btn.addEventListener('click', () => open(parseInt(btn.dataset.lightboxOpen, 10)));
+        });
+        closeBtn.addEventListener('click', close);
+        prevBtn.addEventListener('click', () => step(-1));
+        nextBtn.addEventListener('click', () => step(1));
+        lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
+        document.addEventListener('keydown', (e) => {
+          if (lb.hidden) return;
+          if (e.key === 'Escape') close();
+          if (e.key === 'ArrowRight') step(1);
+          if (e.key === 'ArrowLeft') step(-1);
+        });
+      })();
+    </script>
+
+    <section id="learnings" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Learnings</h2>
+        <TabCard tab="Erkenntnisse" data-reveal>
+          <div class="tab-card__text" set:html={`<p>${learningsHtml}</p>`} />
+        </TabCard>
+      </div>
+    </section>
+
+    <Projects excludeHref="/projekte/kutter-gartencenter" heading="Weitere Projekte" id="weitere-projekte" />
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style is:global>
+  /* Nur Kutter: Hero-Bild im Handy-Format etwas kleiner */
+  @media (max-width: 900px) {
+    .page-kutter .case-hero__frame img {
+      transform: translateY(0) scale(1.25);
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 900px) {
+    .page-kutter .case-hero__frame {
+      height: 75% !important;
+      left: 45% !important;
+      top: 48% !important;
+    }
+
+    .page-kutter .case-hero__shape {
+      border-radius: 20% 0 0 0 / 42% 0 0 0 !important;
+    }
+  }
+
+  @media (min-width: 901px) and (max-width: 1024px) {
+    .page-kutter .case-hero__frame {
+      height: 90% !important;
+      top: 48% !important;
+    }
+  }
+</style>
+
+<style>
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    main :global(.case-hero__frame) {
+      top: 58%;
+      left: 32%;
+      height: 110%;
+    }
+
+    main :global(.case-hero__shape) {
+      left: -30%;
+    }
+  }
+
+  @media (min-width: 1201px) {
+    main :global(.case-hero__frame) {
+      top: 58%;
+    }
+
+    main :global(.case-hero__shape) {
+      left: 0%;
+    }
+  }
+
+  /* ============ Ergebnisse: Slide-Deck ============ */
+  .deck-slide {
+    display: grid;
+    grid-template-columns: minmax(120px, 0.4fr) minmax(0, 1fr);
+    gap: 2rem;
+    padding-block: clamp(2rem, 5vw, 4rem);
+  }
+
+  .deck-slide + .deck-slide {
+    position: relative;
+  }
+
+  .deck-slide + .deck-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: var(--gutter);
+    right: var(--gutter);
+    border-top: 1px dashed #d9dcd5;
+    pointer-events: none;
+  }
+
+  @media (max-width: 900px) {
+    .deck-slide + .deck-slide::before { display: none; }
+  }
+
+  .deck-slide__num {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 10vw, 9rem);
+    line-height: 0.9;
+    color: var(--color-sage);
+    letter-spacing: 0.02em;
+    position: sticky;
+    top: 6rem;
+    align-self: start;
+  }
+
+  .deck-slide__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-sage-dark);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .deck-slide__meta > span + span::before {
+    content: '·';
+    display: inline-block;
+    margin-right: 0.75rem;
+    opacity: 0.6;
+  }
+
+  .deck-slide__meta > span + span.deck-slide__year::before {
+    content: '';
+    width: 1.5rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.5;
+    margin-right: 1rem;
+    vertical-align: middle;
+  }
+
+  .deck-slide__count {
+    color: var(--color-sage-dark);
+    font-weight: 700;
+  }
+
+  .deck-slide__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    letter-spacing: 0.04em;
+    margin: 0 0 1.5rem;
+    color: var(--color-ink);
+    font-weight: 400;
+    line-height: 1.1;
+  }
+
+  .deck-slide__image {
+    position: relative;
+    display: block;
+    background: #f4f5f2;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    margin: 0 0 1.25rem;
+    padding: 0;
+    border: 1px solid var(--color-sage);
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: transform 0.4s ease;
+  }
+
+  .deck-slide__image:hover { transform: translateY(-2px); }
+
+  .deck-slide__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease, filter 0.3s ease;
+  }
+
+  .deck-slide__image:hover img { transform: scale(1.03); filter: brightness(0.85); }
+
+  .deck-slide__zoom {
+    position: absolute;
+    bottom: 1rem; left: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: var(--color-sage);
+    color: #fff;
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: var(--font-body);
+    font-weight: 700;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .deck-slide__zoom svg {
+    width: 16px; height: 16px;
+  }
+
+  .deck-slide__body {
+    max-width: 62ch;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    color: var(--color-ink);
+  }
+
+  @media (max-width: 900px) {
+    .deck-slide { grid-template-columns: 1fr; gap: 1rem; }
+    .deck-slide__num { position: static; font-size: 3rem; }
+  }
+
+  @media (max-width: 640px) {
+    .deck-slide__zoom {
+      bottom: 0.5rem;
+      left: 0.5rem;
+      gap: 0;
+      padding: 0.3rem;
+      font-size: 0;
+      letter-spacing: 0;
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .deck-slide__zoom svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  /* ============ Lightbox ============ */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(15, 20, 15, 0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1rem, 4vw, 3rem);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .lightbox[hidden] { display: none; }
+  .lightbox.is-open { opacity: 1; }
+
+  .lightbox__figure {
+    margin: 0;
+    max-width: min(1200px, 92vw);
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .lightbox__figure img {
+    display: block;
+    max-width: 100%;
+    max-height: 78vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto;
+    background: #f4f5f2;
+  }
+
+  .lightbox__figure figcaption {
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: var(--font-body);
+  }
+
+  .lightbox__figure figcaption [data-lightbox-counter] {
+    color: #c9d3ca;
+  }
+
+  .lightbox__close,
+  .lightbox__nav {
+    position: absolute;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.25);
+    width: 48px; height: 48px;
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .lightbox__close:hover,
+  .lightbox__nav:hover {
+    background: rgba(255,255,255,0.22);
+  }
+
+  .lightbox__close {
+    top: 1.25rem;
+    right: 1.25rem;
+    font-size: 2rem;
+  }
+
+  .lightbox__nav--prev { left: 1.25rem; top: 50%; transform: translateY(-50%); }
+  .lightbox__nav--next { right: 1.25rem; top: 50%; transform: translateY(-50%); }
+  .lightbox__nav--prev:hover { transform: translateY(-50%) translateX(-2px); }
+  .lightbox__nav--next:hover { transform: translateY(-50%) translateX(2px); }
+
+  .lightbox__nav[hidden] { display: none; }
+
+  @media (max-width: 640px) {
+    .lightbox__nav { width: 40px; height: 40px; font-size: 1.5rem; }
+  }
+
+</style>

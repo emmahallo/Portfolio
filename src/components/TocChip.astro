@@ -1,0 +1,17 @@
+---
+// Eintrag in der Übersicht-Timeline (Variante B): Dot links, Nummer + Titel rechts.
+// Styling zentral in global.css.
+
+interface Props {
+  number: string;
+  label: string;
+  href: string;
+}
+
+const { number, label, href } = Astro.props;
+---
+
+<a class="toc-chip" href={href}>
+  <span class="toc-chip__number" data-text={number}>{number}</span>
+  <span class="toc-chip__label" data-text={label}>{label}</span>
+</a>

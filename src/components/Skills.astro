@@ -1,0 +1,101 @@
+---
+const skills = ['Figma', 'Illustrator', 'InDesign', 'Photoshop', 'Canva', '10-Finger-System'];
+---
+
+<section class="section skills">
+  <div class="wrapper">
+    <h2 class="section-heading" data-reveal>Meine Kompetenzen</h2>
+    <ul class="skills__list" data-reveal style="--reveal-delay: 80ms">
+      {skills.map((skill) => (
+        <li class="skills__chip">
+          <span class="skills__chip-label">{skill}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .skills__list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(1.5rem, 3vw, 2.25rem);
+    padding-bottom: 1rem;
+  }
+
+  .skills__chip {
+    position: relative;
+    display: inline-block;
+    isolation: isolate;
+  }
+
+  .skills__chip-label {
+    position: relative;
+    display: block;
+    border: 1px solid var(--color-sage);
+    background: #ffffff;
+    color: var(--color-ink);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-align: center;
+    padding: 0.9rem 2rem;
+    min-width: 9rem;
+    z-index: 1;
+  }
+
+  .skills__chip::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: -6px;
+    right: 14px;
+    bottom: -6px;
+    background: var(--color-sage-tint);
+    z-index: 0;
+  }
+
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .skills__list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-left: 6px;
+      margin-right: 6px;
+    }
+
+    .skills__chip {
+      display: block;
+    }
+
+    .skills__chip-label {
+      min-width: 0;
+      width: 100%;
+      padding: 0.85rem 1rem;
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .skills__list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem 1.25rem;
+      margin-left: 6px;
+      margin-right: 6px;
+    }
+
+    .skills__chip {
+      display: block;
+    }
+
+    .skills__chip-label {
+      min-width: 0;
+      width: 100%;
+      padding: 0.85rem 1rem;
+      font-size: 0.9rem;
+    }
+  }
+</style>

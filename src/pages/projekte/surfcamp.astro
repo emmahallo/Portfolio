@@ -1,0 +1,674 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import CaseHero from '../../components/CaseHero.astro';
+import CaseToc from '../../components/CaseToc.astro';
+import TabCard from '../../components/TabCard.astro';
+import Projects from '../../components/Projects.astro';
+import Footer from '../../components/Footer.astro';
+
+const overview = [
+  { number: '1', label: 'Ausgangspunkt', href: '#ausgangspunkt' },
+  { number: '2', label: 'Ergebnis', href: '#ergebnis' },
+  { number: '3', label: 'Learnings', href: '#learnings' },
+];
+
+const learningsHtml = `Da es sich um unsere <strong>erste vollständig selbst gecodete Website</strong> handelte, waren die Lernkurven auf mehreren Ebenen spürbar. Wir haben nicht nur zentrale Techniken der Webentwicklung praktisch angewendet, sondern auch viel über das <strong>Aufsetzen und Strukturieren eines Projekts</strong> gelernt. Da wir im Team gearbeitet und die Seiten untereinander aufgeteilt haben, entstanden zunächst pro Seite eigene CSS-Stile. Im Nachhinein wurde uns bewusst, wie wertvoll ein <strong>gemeinsam definiertes Grundgerüst</strong> und geteilte Styles von Beginn an sind.`;
+
+const meta = ['3. Semester', 'Gruppenarbeit', '2026'];
+
+const screens = [
+  {
+    src: '/images/surfcamp/Bildschirmfoto%202026-09-15%20um%2011.59.47.png',
+    title: 'Startseite',
+    kontext: 'Auf der Startseite haben wir bewusst mit mehreren visuellen Ebenen gearbeitet, um diese gestalterische Möglichkeit einmal praktisch auszuprobieren.',
+  },
+  {
+    src: '/images/surfcamp/Bildschirmfoto%202026-09-15%20um%2011.55.53.png',
+    title: 'Camp',
+    kontext: 'Auf der Camp-Unterseite lag unser Fokus auf dem Arbeiten mit CSS-Grid: Damit haben wir eine Bildcollage aufgebaut, um das Layout gezielt aufzulockern.',
+  },
+  {
+    src: '/images/surfcamp/Bildschirmfoto%202026-09-15%20um%2011.56.04.png',
+    title: 'Camp',
+    kontext: 'Auf der Camp-Unterseite haben wir uns zusätzlich an einer anspruchsvolleren Code-Konstruktion versucht: Ein Klick auf die obere Leiste wechselt den darunterliegenden Inhalt, sodass jeweils die passende Ansicht sichtbar wird.',
+    video: '/video/surfcamp/camp-tabs.mp4',
+    videoAlt: 'Screencast der Tab-Interaktion auf der Camp-Unterseite',
+  },
+  {
+    src: '/images/surfcamp/Bildschirmfoto%202026-09-15%20um%2011.56.22.png',
+    title: 'Buchen',
+    kontext: 'Auf der Buchen-Unterseite haben wir ein eigenes Kontaktformular umgesetzt, über das NutzerInnen ihren Buchungswunsch formulieren können – dieser wird anschließend automatisch per E-Mail an uns übermittelt.',
+  },
+];
+
+const works = screens.map((s, i) => {
+  const num = String(i + 1).padStart(2, '0');
+  return {
+    idx: num,
+    title: s.title,
+    kategorie: '',
+    format: '',
+    jahr: '',
+    image: s.src,
+    imageAlt: `Screenshot der Surfcamp-Website — ${s.title}`,
+    kontext: s.kontext,
+    gallery: [{ src: s.src, alt: `Surfcamp-Website — ${s.title}` }],
+    video: s.video,
+    videoAlt: s.videoAlt,
+  };
+});
+---
+
+<BaseLayout
+  title="Website für ein imaginäres Surfcamp — Emma Eichin"
+  description="Case Study: Eine vollständige Website für ein Surfcamp, im Modul Webentwicklung 1 eigenständig von Grund auf umgesetzt."
+>
+  <Header />
+  <main>
+    <CaseHero
+      title={`Website für ein<br class="br-tablet" /> imaginäres Surfcamp`}
+      eyebrow="Webentwicklung 1"
+      meta={meta}
+      image="/images/voschau%20projektsseiten/surf.png"
+      imageAlt="Vorschau der Website für das Surfcamp"
+    />
+
+    <CaseToc items={overview} />
+
+    <section id="ausgangspunkt" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Ausgangspunkt</h2>
+        <TabCard tab="Aufgabe" data-reveal>
+          <p class="tab-card__text">
+            Ziel des Moduls Webentwicklung 1 war das Verinnerlichen <strong>elementarer Web-Grundlagen</strong> durch den Bau einer <strong>vollständigen Website</strong>. Um die Kernmechanismen im Detail zu durchdringen, wurde der <strong>gesamte Code eigenständig geschrieben</strong>.
+            <br /><br />
+            Im <strong>Fokus</strong> stand somit deutlich stärker das <strong>Aneignen der Web-Grundlagen</strong> als der gestalterische Aspekt – der für uns aber selbstverständlich ebenfalls eine Rolle spielte, da er sich bei einer Website nie ganz ausblenden lässt.
+          </p>
+        </TabCard>
+      </div>
+    </section>
+
+    <section id="ergebnis" class="section ergebnisse-section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Ergebnis</h2>
+      </div>
+
+      {works.map((w, i) => (
+        <div class="wrapper deck-slide" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+          <div class="deck-slide__num">{w.idx}</div>
+          <div class="deck-slide__content">
+            {(w.kategorie || w.format || w.jahr) && (
+              <div class="deck-slide__meta">
+                {w.kategorie && <span>{w.kategorie}</span>}
+                {w.format && <span>{w.format}</span>}
+                {w.jahr && <span class="deck-slide__year">{w.jahr}</span>}
+              </div>
+            )}
+            <h3 class="deck-slide__title">{w.title}</h3>
+            {w.video ? (
+              <div class="deck-slide__image deck-slide__image--video">
+                <video
+                  src={w.video}
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  aria-label={w.videoAlt}
+                  data-restart-on-view
+                  data-start-at="0.5"
+                ></video>
+              </div>
+            ) : (
+              <button
+                type="button"
+                class="deck-slide__image"
+                data-lightbox-open={i}
+                aria-label={`${w.title} – ${w.gallery.length > 1 ? `${w.gallery.length} Bilder ansehen` : 'Bild vergrößern'}`}
+              >
+                <img src={w.image} alt={w.imageAlt} loading="lazy" />
+                {w.gallery.length > 1 && (
+                  <span class="deck-slide__zoom">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8" />
+                      <path d="M16 16l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                      <path d="M11 8v6M8 11h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                    </svg>
+                    Alle {w.gallery.length} Bilder ansehen
+                  </span>
+                )}
+              </button>
+            )}
+            {w.kontext && <p class="deck-slide__body">{w.kontext}</p>}
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <script is:inline>
+      (() => {
+        const videos = document.querySelectorAll('video[data-restart-on-view]');
+        if (!videos.length) return;
+
+        const seekToStart = (v) => {
+          const startAt = parseFloat(v.getAttribute('data-start-at') || '0');
+          try {
+            if (v.duration && !isNaN(v.duration)) {
+              v.currentTime = startAt > 0 && startAt < 1 ? v.duration * startAt : startAt;
+            } else {
+              const onMeta = () => {
+                v.currentTime = startAt > 0 && startAt < 1 ? v.duration * startAt : startAt;
+                v.removeEventListener('loadedmetadata', onMeta);
+              };
+              v.addEventListener('loadedmetadata', onMeta);
+            }
+          } catch (e) {}
+        };
+
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            const v = entry.target;
+            if (entry.isIntersecting) {
+              seekToStart(v);
+              const p = v.play();
+              if (p && typeof p.catch === 'function') p.catch(() => {});
+            } else {
+              v.pause();
+            }
+          });
+        }, { threshold: 0.5 });
+
+        videos.forEach((v) => io.observe(v));
+
+        const iconPlay = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+        const iconPause = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+
+        videos.forEach((video) => {
+          const parent = video.parentElement;
+          if (!parent || parent.classList.contains('video-player')) return;
+          parent.classList.add('video-player');
+
+          const controls = document.createElement('div');
+          controls.className = 'video-player__controls';
+          controls.innerHTML =
+            '<button type="button" class="video-player__btn" data-action="play" aria-label="Abspielen oder Pausieren">' + iconPlay + '</button>' +
+            '<div class="video-player__progress" role="slider" aria-label="Video-Fortschritt" tabindex="0">' +
+              '<div class="video-player__progress-fill"></div>' +
+              '<div class="video-player__progress-handle"></div>' +
+            '</div>';
+          parent.appendChild(controls);
+
+          const playBtn = controls.querySelector('[data-action="play"]');
+          const fill = controls.querySelector('.video-player__progress-fill');
+          const handle = controls.querySelector('.video-player__progress-handle');
+          const progress = controls.querySelector('.video-player__progress');
+
+          const syncPlayIcon = () => {
+            playBtn.innerHTML = video.paused ? iconPlay : iconPause;
+            playBtn.setAttribute('aria-label', video.paused ? 'Abspielen' : 'Pausieren');
+          };
+          syncPlayIcon();
+
+          let hideTimer;
+          const showControls = () => {
+            parent.classList.add('is-controls-visible');
+            if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+          };
+          const scheduleHide = () => {
+            if (hideTimer) clearTimeout(hideTimer);
+            hideTimer = setTimeout(() => {
+              parent.classList.remove('is-controls-visible');
+              const active = document.activeElement;
+              if (active && parent.contains(active) && typeof active.blur === 'function') {
+                active.blur();
+              }
+              hideTimer = null;
+            }, 1000);
+          };
+          parent.addEventListener('pointerenter', (e) => {
+            if (e.pointerType !== 'touch') showControls();
+          });
+          parent.addEventListener('pointermove', (e) => {
+            if (e.pointerType !== 'touch') showControls();
+          });
+          parent.addEventListener('pointerleave', (e) => {
+            if (e.pointerType !== 'touch') scheduleHide();
+          });
+          parent.addEventListener('pointerdown', (e) => {
+            if (e.pointerType === 'touch') {
+              showControls();
+              scheduleHide();
+            }
+          });
+
+          playBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (video.paused) {
+              const p = video.play();
+              if (p && typeof p.catch === 'function') p.catch(() => {});
+            } else {
+              video.pause();
+            }
+          });
+          video.addEventListener('play', syncPlayIcon);
+          video.addEventListener('pause', syncPlayIcon);
+          video.addEventListener('timeupdate', () => {
+            if (!video.duration) return;
+            const pct = (video.currentTime / video.duration) * 100;
+            fill.style.width = pct + '%';
+            handle.style.left = pct + '%';
+          });
+
+          const seek = (clientX) => {
+            if (!video.duration) return;
+            const rect = progress.getBoundingClientRect();
+            const pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+            video.currentTime = pct * video.duration;
+          };
+          let dragging = false;
+          progress.addEventListener('pointerdown', (e) => {
+            dragging = true;
+            seek(e.clientX);
+            try { progress.setPointerCapture(e.pointerId); } catch (err) {}
+          });
+          progress.addEventListener('pointermove', (e) => {
+            if (dragging) seek(e.clientX);
+          });
+          const endDrag = (e) => {
+            dragging = false;
+            try { progress.releasePointerCapture(e.pointerId); } catch (err) {}
+          };
+          progress.addEventListener('pointerup', endDrag);
+          progress.addEventListener('pointercancel', endDrag);
+        });
+      })();
+    </script>
+
+    <section id="learnings" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Learnings</h2>
+        <TabCard tab="Erkenntnisse" data-reveal>
+          <div class="tab-card__text" set:html={`<p>${learningsHtml}</p>`} />
+        </TabCard>
+      </div>
+    </section>
+
+    {/* Lightbox */}
+    <div class="lightbox" data-lightbox hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Bildergalerie">
+      <button type="button" class="lightbox__close" data-lightbox-close aria-label="Schließen">×</button>
+      <button type="button" class="lightbox__nav lightbox__nav--prev" data-lightbox-prev aria-label="Vorheriges Bild">‹</button>
+      <button type="button" class="lightbox__nav lightbox__nav--next" data-lightbox-next aria-label="Nächstes Bild">›</button>
+      <figure class="lightbox__figure">
+        <img data-lightbox-image src="" alt="" />
+        <figcaption>
+          <span data-lightbox-title></span>
+          <span data-lightbox-counter></span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <script is:inline define:vars={{ galleries: works.map((w) => ({ title: w.title, images: w.gallery })) }}>
+      (() => {
+        const lb = document.querySelector('[data-lightbox]');
+        if (!lb) return;
+        const imgEl = lb.querySelector('[data-lightbox-image]');
+        const titleEl = lb.querySelector('[data-lightbox-title]');
+        const counterEl = lb.querySelector('[data-lightbox-counter]');
+        const prevBtn = lb.querySelector('[data-lightbox-prev]');
+        const nextBtn = lb.querySelector('[data-lightbox-next]');
+        const closeBtn = lb.querySelector('[data-lightbox-close]');
+
+        let currentGallery = null;
+        let currentIndex = 0;
+
+        function render() {
+          const img = currentGallery.images[currentIndex];
+          imgEl.src = img.src;
+          imgEl.alt = img.alt || '';
+          titleEl.textContent = currentGallery.title;
+          const multi = currentGallery.images.length > 1;
+          counterEl.textContent = multi ? `${currentIndex + 1} / ${currentGallery.images.length}` : '';
+          prevBtn.hidden = !multi;
+          nextBtn.hidden = !multi;
+        }
+
+        function open(galleryIdx) {
+          currentGallery = galleries[galleryIdx];
+          currentIndex = 0;
+          render();
+          lb.hidden = false;
+          requestAnimationFrame(() => lb.classList.add('is-open'));
+          lb.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+        }
+
+        function close() {
+          lb.classList.remove('is-open');
+          lb.setAttribute('aria-hidden', 'true');
+          setTimeout(() => { lb.hidden = true; }, 250);
+          document.body.style.overflow = '';
+        }
+
+        function step(delta) {
+          if (!currentGallery) return;
+          const n = currentGallery.images.length;
+          currentIndex = (currentIndex + delta + n) % n;
+          render();
+        }
+
+        document.querySelectorAll('[data-lightbox-open]').forEach((btn) => {
+          btn.addEventListener('click', () => open(parseInt(btn.dataset.lightboxOpen, 10)));
+        });
+        closeBtn.addEventListener('click', close);
+        prevBtn.addEventListener('click', () => step(-1));
+        nextBtn.addEventListener('click', () => step(1));
+        lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
+        document.addEventListener('keydown', (e) => {
+          if (lb.hidden) return;
+          if (e.key === 'Escape') close();
+          if (e.key === 'ArrowRight') step(1);
+          if (e.key === 'ArrowLeft') step(-1);
+        });
+      })();
+    </script>
+
+    <Projects excludeHref="/projekte/surfcamp" heading="Weitere Projekte" id="weitere-projekte" />
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    main :global(.case-hero__frame) {
+      height: 130%;
+      top: 66%;
+      left: 45%;
+    }
+
+    main :global(.case-hero__shape) {
+      left: -24%;
+    }
+  }
+
+  @media (min-width: 1201px) {
+    main :global(.case-hero__frame) {
+      height: 158%;
+    }
+
+    main :global(.case-hero__shape) {
+      left: -16%;
+    }
+  }
+
+  /* ============ Ergebnis: Slide-Deck (wie Kutter) ============ */
+  .deck-slide {
+    display: grid;
+    grid-template-columns: minmax(120px, 0.4fr) minmax(0, 1fr);
+    gap: 2rem;
+    padding-block: clamp(2rem, 5vw, 4rem);
+  }
+
+  .deck-slide + .deck-slide {
+    position: relative;
+  }
+
+  .deck-slide + .deck-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: var(--gutter);
+    right: var(--gutter);
+    border-top: 1px dashed #d9dcd5;
+    pointer-events: none;
+  }
+
+  @media (max-width: 900px) {
+    .deck-slide + .deck-slide::before { display: none; }
+  }
+
+  .deck-slide__num {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 10vw, 9rem);
+    line-height: 0.9;
+    color: var(--color-sage);
+    letter-spacing: 0.02em;
+    position: sticky;
+    top: 6rem;
+    align-self: start;
+  }
+
+  .deck-slide__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-sage-dark);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .deck-slide__meta > span + span::before {
+    content: '·';
+    display: inline-block;
+    margin-right: 0.75rem;
+    opacity: 0.6;
+  }
+
+  .deck-slide__meta > span + span.deck-slide__year::before {
+    content: '';
+    width: 1.5rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.5;
+    margin-right: 1rem;
+    vertical-align: middle;
+  }
+
+  .deck-slide__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    letter-spacing: 0.04em;
+    margin: 0 0 1.5rem;
+    color: var(--color-ink);
+    font-weight: 400;
+    line-height: 1.1;
+  }
+
+  .deck-slide__image {
+    position: relative;
+    display: block;
+    background: #f4f5f2;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    margin: 0 0 1.25rem;
+    padding: 0;
+    border: 1px solid var(--color-sage);
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: transform 0.4s ease;
+  }
+
+  .deck-slide__image:hover { transform: translateY(-2px); }
+
+  .deck-slide__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center bottom;
+    transition: transform 0.5s ease, filter 0.3s ease;
+  }
+
+  .deck-slide__image video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+  }
+
+  /* Video-Kachel: Container an Video-Aspect anpassen, damit weder Crop noch schwarze Balken entstehen */
+  .deck-slide__image--video {
+    cursor: default;
+    border: 1px solid var(--color-sage);
+    transition: none;
+    aspect-ratio: 3408 / 2144;
+    background: transparent;
+  }
+  .deck-slide__image--video:hover {
+    transform: none;
+  }
+  .deck-slide__image--video video {
+    object-fit: cover;
+    background: transparent;
+  }
+
+  .deck-slide__image:hover img { transform: scale(1.03); filter: brightness(0.85); }
+
+  .deck-slide__zoom {
+    position: absolute;
+    bottom: 1rem; left: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: var(--color-sage);
+    color: #fff;
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: var(--font-body);
+    font-weight: 700;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .deck-slide__zoom svg {
+    width: 16px; height: 16px;
+  }
+
+  .deck-slide__body {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    color: var(--color-ink);
+  }
+
+  @media (max-width: 900px) {
+    .deck-slide { grid-template-columns: 1fr; gap: 1rem; }
+    .deck-slide__num { position: static; font-size: 3rem; }
+  }
+
+  @media (max-width: 640px) {
+    .deck-slide__zoom {
+      bottom: 0.5rem;
+      left: 0.5rem;
+      gap: 0;
+      padding: 0.3rem;
+      font-size: 0;
+      letter-spacing: 0;
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .deck-slide__zoom svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  /* ============ Lightbox ============ */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(15, 20, 15, 0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1rem, 4vw, 3rem);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .lightbox[hidden] { display: none; }
+  .lightbox.is-open { opacity: 1; }
+
+  .lightbox__figure {
+    margin: 0;
+    max-width: min(1200px, 92vw);
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .lightbox__figure img {
+    display: block;
+    max-width: 100%;
+    max-height: 78vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto;
+    background: #f4f5f2;
+  }
+
+  .lightbox__figure figcaption {
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: var(--font-body);
+  }
+
+  .lightbox__figure figcaption [data-lightbox-counter] {
+    color: #c9d3ca;
+  }
+
+  .lightbox__close,
+  .lightbox__nav {
+    position: absolute;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.25);
+    width: 48px; height: 48px;
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .lightbox__close:hover,
+  .lightbox__nav:hover {
+    background: rgba(255,255,255,0.22);
+  }
+
+  .lightbox__close {
+    top: 1.25rem;
+    right: 1.25rem;
+    font-size: 2rem;
+  }
+
+  .lightbox__nav--prev { left: 1.25rem; top: 50%; transform: translateY(-50%); }
+  .lightbox__nav--next { right: 1.25rem; top: 50%; transform: translateY(-50%); }
+  .lightbox__nav--prev:hover { transform: translateY(-50%) translateX(-2px); }
+  .lightbox__nav--next:hover { transform: translateY(-50%) translateX(2px); }
+
+  .lightbox__nav[hidden] { display: none; }
+
+  @media (max-width: 640px) {
+    .lightbox__nav { width: 40px; height: 40px; font-size: 1.5rem; }
+  }
+</style>

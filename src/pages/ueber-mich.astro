@@ -1,0 +1,267 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Process from '../components/Process.astro';
+import Skills from '../components/Skills.astro';
+import Footer from '../components/Footer.astro';
+
+const bioHtml = `
+  <p>Ich bin Emma, 22, und studiere aktuell Mediendesign im 5. Semester an der RWU in Weingarten mit großer Leidenschaft für UI/UX. Mich <strong>reizt</strong> die <strong>Herausforderung</strong>, <strong>digitale Produkte</strong> nicht nur <strong>visuell ansprechend</strong>, sondern auch <strong>logisch</strong> und <strong>intuitiv bedienbar zu machen.</strong></p>
+  <p>Meine Begeisterung für Gestaltung begann schon lange vor dem Studium: Bereits während der Schulzeit <strong>nutzte</strong> ich <strong>jede Gelegenheit</strong>, um <strong>kreativ zu werden</strong> – von Schulpräsentationen bis zu individuellen Einladungs- und Menükarten im privaten Umfeld.</p>
+  <p>Mein damaliger <strong>Schulschwerpunkt</strong> in <strong>Psychologie</strong> schlägt dabei die perfekte Brücke zur User Experience: Ich finde es total <strong>spannend</strong>, tief in die Lebenswelt der Zielgruppen einzutauchen, um deren <strong>Bedürfnisse zu erfassen</strong>. So entstehen passgenaue Designlösungen, die im Alltag intuitiv funktionieren und echten Mehrwert bieten.</p>
+  <p>Neben dem Design <strong>reise, backe</strong> ich <strong>gern</strong>, <strong>fange Momente fotografisch ein</strong> und habe eine <strong>Schwäche für Sonnenuntergänge.</strong></p>
+`;
+
+const werdegang = [
+  { date: '2023', title: 'Abitur', subtitle: 'an der FOS/BOS Memmingen' },
+  { date: '11/2023 – 08/2024', title: 'Aushilfstätigkeiten', subtitle: 'im Kutter Gartencenter & Rituals' },
+  { date: 'seit 10/2024', title: 'Studium Mediendesign', subtitle: 'an der RWU in Weingarten' },
+  { date: 'ab 10/2026', title: 'Tutorin', subtitle: 'an der RWU für UX-Design', variant: 'dark' },
+];
+---
+
+<BaseLayout
+  title="Über mich — Emma Eichin"
+  description="Emma Eichin: Mediendesign-Studentin an der RWU Weingarten mit Leidenschaft für UI/UX-Design, Fotografie und Reisen."
+>
+  <Header />
+  <main>
+    <section class="section case-hero">
+      <div class="wrapper case-hero__inner">
+        <div class="case-hero__content">
+          <div class="case-hero__media about-media" data-reveal style="--reveal-delay: 120ms">
+            <figure class="polaroid">
+              <img
+                src="/images/emma.JPG"
+                alt="Porträtfoto von Emma"
+                width="538"
+                height="921"
+                loading="eager"
+              />
+            </figure>
+          </div>
+          <h1 class="case-hero__title" data-reveal>Schön, dass<br />du hier bist!</h1>
+          <div class="about-bio" data-reveal style="--reveal-delay: 80ms" set:html={bioHtml} />
+        </div>
+      </div>
+    </section>
+
+    <section id="werdegang" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Werdegang</h2>
+
+        <div class="timeline" data-reveal style="--reveal-delay: 80ms">
+          {werdegang.map((station, i) => (
+            <div class="timeline__station">
+              <div class="timeline__top" style={`grid-column: ${i + 1}`}>
+                {i % 2 === 0 ? (
+                  <span class="timeline__date">{station.date}</span>
+                ) : (
+                  <span class:list={["timeline__chip", station.variant === 'dark' && "timeline__chip--dark"]}>
+                    <span class="timeline__chip-inner">
+                      <span class="timeline__chip-title">{station.title}</span>
+                      <span class="timeline__chip-subtitle">{station.subtitle}</span>
+                    </span>
+                  </span>
+                )}
+              </div>
+              <span class:list={["timeline__dot", station.variant === 'dark' && "timeline__dot--dark"]} style={`grid-column: ${i + 1}`}></span>
+              <div class="timeline__bottom" style={`grid-column: ${i + 1}`}>
+                {i % 2 === 0 ? (
+                  <span class:list={["timeline__chip", station.variant === 'dark' && "timeline__chip--dark"]}>
+                    <span class="timeline__chip-inner">
+                      <span class="timeline__chip-title">{station.title}</span>
+                      <span class="timeline__chip-subtitle">{station.subtitle}</span>
+                    </span>
+                  </span>
+                ) : (
+                  <span class="timeline__date">{station.date}</span>
+                )}
+              </div>
+            </div>
+          ))}
+          <div class="timeline__line"></div>
+        </div>
+      </div>
+    </section>
+
+    <Process />
+    <Skills />
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  main :global(.case-hero__inner) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+    align-items: start;
+    padding-block: clamp(1rem, 3vw, 2rem) var(--section-spacing);
+  }
+
+  main :global(.case-hero__content) {
+    padding-top: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  main :global(.about-bio) {
+    max-width: 60ch;
+  }
+
+  main :global(.about-media) {
+    position: relative;
+    aspect-ratio: auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding-top: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  main :global(.polaroid) {
+    margin: 0;
+    padding: 0.75rem 0.75rem 2.5rem;
+    background: #ffffff;
+    box-shadow: 0 12px 28px rgba(28, 28, 28, 0.14);
+    transform: rotate(1.5deg);
+    max-width: 500px;
+    width: 100%;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  main :global(.polaroid:hover) {
+    transform: rotate(-1deg) translateY(-6px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(28, 28, 28, 0.22);
+  }
+
+  main :global(.polaroid img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  @media (max-width: 640px) {
+    main :global(.case-hero__inner) {
+      grid-template-columns: 1fr;
+    }
+
+    main :global(.about-media) {
+      justify-content: center;
+      padding-top: 0;
+      margin-bottom: 1.75rem;
+    }
+
+    main :global(.polaroid) {
+      max-width: 320px;
+      transform: rotate(-1.5deg);
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 1200px) {
+    main :global(.case-hero__inner) {
+      display: block;
+    }
+
+    main :global(.case-hero__content) {
+      display: block;
+      padding-top: clamp(2rem, 5vw, 3rem);
+    }
+
+    main :global(.case-hero__title) {
+      font-size: clamp(2.75rem, 5vw, 3.75rem);
+    }
+
+    main :global(.about-media) {
+      float: right;
+      display: block;
+      width: clamp(300px, 32vw, 400px);
+      max-width: 45%;
+      padding-top: 0;
+      margin: 0.5rem 1rem 1rem 2rem;
+      shape-outside: margin-box;
+    }
+
+    main :global(.polaroid) {
+      max-width: 100%;
+      transform: rotate(1.5deg);
+    }
+
+    main :global(.polaroid img) {
+      aspect-ratio: 2 / 3;
+    }
+
+    main :global(.about-bio p) {
+      margin: 0 0 0.75rem;
+    }
+  }
+
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    main :global(.about-media) {
+      margin-top: 2rem;
+    }
+
+    main :global(.case-hero__title) {
+      font-size: clamp(2.4rem, 4vw, 3rem);
+    }
+  }
+
+  @media (min-width: 901px) and (max-width: 1920px) {
+    main :global(.case-hero__inner) {
+      display: block;
+    }
+
+    main :global(.case-hero__content) {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) minmax(0, auto);
+      column-gap: clamp(2rem, 4vw, 3rem);
+      row-gap: 1.5rem;
+      align-items: start;
+      padding-top: clamp(2rem, 5vw, 3rem);
+    }
+
+    main :global(.case-hero__title) {
+      grid-column: 1;
+      grid-row: 1;
+      margin-bottom: 0;
+    }
+
+    main :global(.about-bio) {
+      grid-column: 1;
+      grid-row: 2;
+      max-width: 60ch;
+    }
+
+    main :global(.about-media) {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      float: none !important;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-start;
+      width: clamp(320px, 32vw, 440px);
+      max-width: none;
+      margin: 0;
+      padding-top: 0.5rem;
+      shape-outside: none !important;
+    }
+
+    main :global(.polaroid) {
+      max-width: 100%;
+      transform: rotate(1.5deg);
+    }
+
+    main :global(.polaroid img) {
+      aspect-ratio: 2 / 3;
+      height: auto;
+    }
+  }
+
+  @media (max-width: 480px) {
+    main :global(.polaroid) {
+      max-width: 260px;
+      padding: 0.6rem 0.6rem 2rem;
+    }
+  }
+
+</style>

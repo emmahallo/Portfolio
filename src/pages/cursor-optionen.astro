@@ -1,0 +1,730 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+
+const options = [
+  {
+    id: '1',
+    title: 'Dot (kleiner Kreis)',
+    desc: 'Ein kleiner Kreis folgt dem Mauszeiger smooth mit leichter Verzögerung. Über Hintergründen invertiert er via mix-blend-mode. Sehr clean und minimal — Awwwards-Klassiker.',
+  },
+  {
+    id: '2',
+    title: 'Dot + Outline-Ring (Dual Cursor)',
+    desc: 'Kleiner Dot folgt 1:1, größerer Ring folgt verzögert. Über Links/Buttons skaliert der Ring hoch. Gibt haptisches Feedback ohne aufdringlich zu sein.',
+  },
+  {
+    id: '3',
+    title: 'Magnetic Buttons',
+    desc: 'Der Standard-Cursor bleibt, aber Buttons in der Nähe des Cursors ziehen ihn magnetisch an. Fühlt sich edel und interaktiv an — sparsam einsetzen.',
+  },
+  {
+    id: '4',
+    title: 'Kontext-Cursor mit Text',
+    desc: 'Über Projektbildern erscheint ein großer Kreis mit Text wie „Ansehen“, „Öffnen“ oder „Zoom“. Erklärt die Interaktion und wirkt sehr modern.',
+  },
+  {
+    id: '5',
+    title: 'Trail / Ghost-Spur',
+    desc: 'Der Cursor hinterlässt eine weiche Spur aus verzögerten Ghost-Dots. Organischer, verspielter Look — passt zu warmen Marken.',
+  },
+  {
+    id: '6',
+    title: 'Hover-Halo (nur bei Interaktion)',
+    desc: 'Standard-Cursor bleibt. Über interaktiven Elementen erscheint ein weicher großer Kreis. Sehr zurückhaltend und funktional.',
+  },
+  {
+    id: '7',
+    title: 'Klick-Kreis (Cursor-Swap)',
+    desc: 'System-Cursor bleibt normal — sobald man über ein klickbares Element fährt, verschwindet der Pfeil und ein satter Kreis übernimmt. Vertraut und trotzdem mit Charakter.',
+  },
+  {
+    id: '8',
+    title: 'Dezenter Kreis + Hover-Boost',
+    desc: 'Immer ein kleiner, dezenter Kreis (weiche sage-Transparenz) folgt der Maus. Über klickbaren Elementen wird er größer und kräftig sage-grün. Ruhig im Alltag, klarer Akzent bei Interaktion.',
+  },
+];
+---
+
+<BaseLayout title="Cursor-Optionen — Emma Eichin" description="Sechs Varianten für professionelle Custom-Cursor.">
+  <Header />
+  <main class="options-page cursor-page">
+    <section class="section options-intro">
+      <div class="wrapper">
+        <h1 class="options-title">Vorschau: Custom-Cursor-Varianten</h1>
+        <p class="options-lead">Sechs Optionen für einen professionellen Mauszeiger. Bewege die Maus in die jeweilige Preview-Box, um den Cursor auszuprobieren. Außerhalb der Box gilt der normale Cursor.</p>
+        <nav class="options-nav">
+          {options.map((o) => (
+            <a href={`#opt-${o.id}`}>{o.id}. {o.title}</a>
+          ))}
+        </nav>
+      </div>
+    </section>
+
+    {options.map((o) => (
+      <section id={`opt-${o.id}`} class="section option-block">
+        <div class="wrapper">
+          <div class="option-heading">
+            <span class="option-badge">Option {o.id}</span>
+            <h2>{o.title}</h2>
+            <p>{o.desc}</p>
+          </div>
+
+          <div class={`cursor-stage cursor-stage--v${o.id}`} data-cursor-stage={o.id}>
+            <div class="cursor-stage__hint">Maus hier hinein bewegen ↓</div>
+
+            <div class="cursor-demo">
+              <h3>Beispiel-Inhalt</h3>
+              <p>Diese Fläche zeigt Variante {o.id} in Aktion. Bewege die Maus, hover über die Elemente unten.</p>
+
+              <div class="cursor-demo__row">
+                <a href="#" class="cursor-demo__link" data-cursor-hover data-cursor-label="Ansehen">Projekt öffnen</a>
+                <a href="#" class="cursor-demo__link" data-cursor-hover data-cursor-label="Mehr">Über mich</a>
+                <button type="button" class="cursor-demo__btn" data-cursor-hover data-cursor-magnetic data-cursor-label="Klick">Kontakt</button>
+              </div>
+
+              <div class="cursor-demo__cards">
+                <div class="cursor-demo__card" data-cursor-hover data-cursor-label="Ansehen →">
+                  <span>Projekt 1</span>
+                </div>
+                <div class="cursor-demo__card" data-cursor-hover data-cursor-label="Öffnen →">
+                  <span>Projekt 2</span>
+                </div>
+                <div class="cursor-demo__card" data-cursor-hover data-cursor-label="Zoom +">
+                  <span>Projekt 3</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Cursor-Elemente pro Variante */}
+            {o.id === '1' && <div class="cursor-v1" data-cursor></div>}
+            {o.id === '2' && (
+              <>
+                <div class="cursor-v2-dot" data-cursor-dot></div>
+                <div class="cursor-v2-ring" data-cursor-ring></div>
+              </>
+            )}
+            {o.id === '4' && <div class="cursor-v4" data-cursor><span data-cursor-text>Ansehen</span></div>}
+            {o.id === '5' && (
+              <>
+                <div class="cursor-v5-main" data-cursor-main></div>
+                <div class="cursor-v5-trail" data-cursor-trail></div>
+                <div class="cursor-v5-trail" data-cursor-trail></div>
+                <div class="cursor-v5-trail" data-cursor-trail></div>
+                <div class="cursor-v5-trail" data-cursor-trail></div>
+                <div class="cursor-v5-trail" data-cursor-trail></div>
+              </>
+            )}
+            {o.id === '6' && <div class="cursor-v6" data-cursor-halo></div>}
+            {o.id === '7' && <div class="cursor-v7" data-cursor-swap></div>}
+            {o.id === '8' && <div class="cursor-v8" data-cursor-boost></div>}
+          </div>
+        </div>
+      </section>
+    ))}
+
+    <script is:inline>
+      /* Utility: smooth follow via requestAnimationFrame + lerp */
+      const lerp = (a, b, n) => a + (b - a) * n;
+
+      /* ============ VARIANTE 1: Dot ============ */
+      (() => {
+        const stage = document.querySelector('[data-cursor-stage="1"]');
+        if (!stage) return;
+        const dot = stage.querySelector('[data-cursor]');
+        let mx = 0, my = 0, x = 0, y = 0;
+        let active = false;
+
+        stage.addEventListener('mouseenter', (e) => {
+          active = true; dot.style.opacity = '1';
+          const r = stage.getBoundingClientRect();
+          mx = x = e.clientX - r.left; my = y = e.clientY - r.top;
+        });
+        stage.addEventListener('mouseleave', () => { active = false; dot.style.opacity = '0'; });
+        stage.addEventListener('mousemove', (e) => {
+          const r = stage.getBoundingClientRect();
+          mx = e.clientX - r.left; my = e.clientY - r.top;
+        });
+
+        const tick = () => {
+          if (active) {
+            x = lerp(x, mx, 0.2); y = lerp(y, my, 0.2);
+            dot.style.transform = `translate(${x}px, ${y}px)`;
+          }
+          requestAnimationFrame(tick);
+        };
+        tick();
+      })();
+
+      /* ============ VARIANTE 2: Dot + Ring ============ */
+      (() => {
+        const stage = document.querySelector('[data-cursor-stage="2"]');
+        if (!stage) return;
+        const dot = stage.querySelector('[data-cursor-dot]');
+        const ring = stage.querySelector('[data-cursor-ring]');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+        let active = false, hovering = false;
+
+        stage.addEventListener('mouseenter', (e) => {
+          active = true; dot.style.opacity = '1'; ring.style.opacity = '1';
+          const r = stage.getBoundingClientRect();
+          mx = rx = e.clientX - r.left; my = ry = e.clientY - r.top;
+        });
+        stage.addEventListener('mouseleave', () => { active = false; dot.style.opacity = '0'; ring.style.opacity = '0'; });
+        stage.addEventListener('mousemove', (e) => {
+          const r = stage.getBoundingClientRect();
+          mx = e.clientX - r.left; my = e.clientY - r.top;
+          dot.style.transform = `translate(${mx}px, ${my}px)`;
+        });
+
+        stage.querySelectorAll('[data-cursor-hover]').forEach((el) => {
+          el.addEventListener('mouseenter', () => { hovering = true; ring.classList.add('is-hover'); });
+          el.addEventListener('mouseleave', () => { hovering = false; ring.classList.remove('is-hover'); });
+        });
+
+        const tick = () => {
+          if (active) {
+            rx = lerp(rx, mx, 0.15); ry = lerp(ry, my, 0.15);
+            ring.style.transform = `translate(${rx}px, ${ry}px)`;
+          }
+          requestAnimationFrame(tick);
+        };
+        tick();
+      })();
+
+      /* ============ VARIANTE 3: Magnetic ============ */
+      (() => {
+        const stage = document.querySelector('[data-cursor-stage="3"]');
+        if (!stage) return;
+        const magnets = stage.querySelectorAll('[data-cursor-hover]');
+        const strength = 0.35;
+        const radius = 90;
+
+        magnets.forEach((el) => {
+          el.addEventListener('mousemove', (e) => {
+            const rect = el.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            const dx = e.clientX - cx;
+            const dy = e.clientY - cy;
+            const dist = Math.hypot(dx, dy);
+            if (dist < radius) {
+              el.style.transform = `translate(${dx * strength}px, ${dy * strength}px)`;
+            }
+          });
+          el.addEventListener('mouseleave', () => {
+            el.style.transform = '';
+          });
+        });
+      })();
+
+      /* ============ VARIANTE 4: Kontext-Cursor ============ */
+      (() => {
+        const stage = document.querySelector('[data-cursor-stage="4"]');
+        if (!stage) return;
+        const cursor = stage.querySelector('[data-cursor]');
+        const textEl = stage.querySelector('[data-cursor-text]');
+        let mx = 0, my = 0, x = 0, y = 0;
+        let active = false;
+
+        stage.addEventListener('mouseenter', (e) => {
+          active = true; cursor.style.opacity = '1';
+          const r = stage.getBoundingClientRect();
+          mx = x = e.clientX - r.left; my = y = e.clientY - r.top;
+        });
+        stage.addEventListener('mouseleave', () => { active = false; cursor.style.opacity = '0'; });
+        stage.addEventListener('mousemove', (e) => {
+          const r = stage.getBoundingClientRect();
+          mx = e.clientX - r.left; my = e.clientY - r.top;
+        });
+
+        stage.querySelectorAll('[data-cursor-hover]').forEach((el) => {
+          el.addEventListener('mouseenter', () => {
+            cursor.classList.add('is-active');
+            textEl.textContent = el.dataset.cursorLabel || 'Ansehen';
+          });
+          el.addEventListener('mouseleave', () => {
+            cursor.classList.remove('is-active');
+          });
+        });
+
+        const tick = () => {
+          if (active) {
+            x = lerp(x, mx, 0.18); y = lerp(y, my, 0.18);
+            cursor.style.transform = `translate(${x}px, ${y}px)`;
+          }
+          requestAnimationFrame(tick);
+        };
+        tick();
+      })();
+
+      /* ============ VARIANTE 5: Trail ============ */
+      (() => {
+        const stage = document.querySelector('[data-cursor-stage="5"]');
+        if (!stage) return;
+        const main = stage.querySelector('[data-cursor-main]');
+        const trails = Array.from(stage.querySelectorAll('[data-cursor-trail]'));
+        let mx = 0, my = 0;
+        let positions = trails.map(() => ({ x: 0, y: 0 }));
+        let active = false;
+
+        stage.addEventListener('mouseenter', (e) => {
+          active = true;
+          main.style.opacity = '1';
+          trails.forEach((t) => t.style.opacity = '1');
+          const r = stage.getBoundingClientRect();
+          mx = e.clientX - r.left; my = e.clientY - r.top;
+          positions = trails.map(() => ({ x: mx, y: my }));
+        });
+        stage.addEventListener('mouseleave', () => {
+          active = false;
+          main.style.opacity = '0';
+          trails.forEach((t) => t.style.opacity = '0');
+        });
+        stage.addEventListener('mousemove', (e) => {
+          const r = stage.getBoundingClientRect();
+          mx = e.clientX - r.left; my = e.clientY - r.top;
+          main.style.transform = `translate(${mx}px, ${my}px)`;
+        });
+
+        const tick = () => {
+          if (active) {
+            let px = mx, py = my;
+            positions.forEach((pos, i) => {
+              pos.x = lerp(pos.x, px, 0.35);
+              pos.y = lerp(pos.y, py, 0.35);
+              trails[i].style.transform = `translate(${pos.x}px, ${pos.y}px)`;
+              px = pos.x; py = pos.y;
+            });
+          }
+          requestAnimationFrame(tick);
+        };
+        tick();
+      })();
+
+      /* ============ VARIANTE 6: Hover-Halo ============ */
+      (() => {
+        const stage = document.querySelector('[data-cursor-stage="6"]');
+        if (!stage) return;
+        const halo = stage.querySelector('[data-cursor-halo]');
+        let mx = 0, my = 0, x = 0, y = 0;
+        let hovering = false;
+
+        stage.addEventListener('mousemove', (e) => {
+          const r = stage.getBoundingClientRect();
+          mx = e.clientX - r.left; my = e.clientY - r.top;
+        });
+
+        stage.querySelectorAll('[data-cursor-hover]').forEach((el) => {
+          el.addEventListener('mouseenter', () => { hovering = true; halo.style.opacity = '1'; });
+          el.addEventListener('mouseleave', () => { hovering = false; halo.style.opacity = '0'; });
+        });
+
+        const tick = () => {
+          if (hovering) {
+            x = lerp(x, mx, 0.2); y = lerp(y, my, 0.2);
+            halo.style.transform = `translate(${x}px, ${y}px)`;
+          }
+          requestAnimationFrame(tick);
+        };
+        tick();
+      })();
+
+      /* ============ VARIANTE 7: Klick-Kreis (Swap) ============ */
+      (() => {
+        const stage = document.querySelector('[data-cursor-stage="7"]');
+        if (!stage) return;
+        const circle = stage.querySelector('[data-cursor-swap]');
+        let mx = 0, my = 0, x = 0, y = 0;
+        let hovering = false;
+
+        stage.addEventListener('mousemove', (e) => {
+          const r = stage.getBoundingClientRect();
+          mx = e.clientX - r.left; my = e.clientY - r.top;
+        });
+
+        stage.querySelectorAll('[data-cursor-hover]').forEach((el) => {
+          el.addEventListener('mouseenter', (e) => {
+            hovering = true;
+            const r = stage.getBoundingClientRect();
+            x = e.clientX - r.left; y = e.clientY - r.top;
+            circle.style.transform = `translate(${x}px, ${y}px)`;
+            circle.style.opacity = '1';
+          });
+          el.addEventListener('mouseleave', () => {
+            hovering = false;
+            circle.style.opacity = '0';
+          });
+        });
+
+        const tick = () => {
+          if (hovering) {
+            x = lerp(x, mx, 0.28); y = lerp(y, my, 0.28);
+            circle.style.transform = `translate(${x}px, ${y}px)`;
+          }
+          requestAnimationFrame(tick);
+        };
+        tick();
+      })();
+
+      /* ============ VARIANTE 8: Dezenter Kreis + Hover-Boost ============ */
+      (() => {
+        const stage = document.querySelector('[data-cursor-stage="8"]');
+        if (!stage) return;
+        const circle = stage.querySelector('[data-cursor-boost]');
+        let mx = 0, my = 0, x = 0, y = 0;
+        let active = false;
+
+        stage.addEventListener('mouseenter', (e) => {
+          active = true; circle.style.opacity = '1';
+          const r = stage.getBoundingClientRect();
+          mx = x = e.clientX - r.left; my = y = e.clientY - r.top;
+        });
+        stage.addEventListener('mouseleave', () => {
+          active = false; circle.style.opacity = '0';
+        });
+        stage.addEventListener('mousemove', (e) => {
+          const r = stage.getBoundingClientRect();
+          mx = e.clientX - r.left; my = e.clientY - r.top;
+        });
+
+        stage.querySelectorAll('[data-cursor-hover]').forEach((el) => {
+          el.addEventListener('mouseenter', () => circle.classList.add('is-hover'));
+          el.addEventListener('mouseleave', () => circle.classList.remove('is-hover'));
+        });
+
+        const tick = () => {
+          if (active) {
+            x = lerp(x, mx, 0.22); y = lerp(y, my, 0.22);
+            circle.style.transform = `translate(${x}px, ${y}px)`;
+          }
+          requestAnimationFrame(tick);
+        };
+        tick();
+      })();
+    </script>
+  </main>
+</BaseLayout>
+
+<style>
+  .cursor-page .options-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    color: var(--color-ink);
+  }
+  .cursor-page .options-lead {
+    color: var(--color-text);
+    max-width: 62ch;
+    margin-bottom: 2rem;
+  }
+  .cursor-page .options-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin-bottom: 1rem;
+  }
+  .cursor-page .options-nav a {
+    font-size: 0.85rem;
+    color: var(--color-sage-dark);
+    text-decoration: underline;
+  }
+  .cursor-page .option-badge {
+    display: inline-block;
+    background: var(--color-sage);
+    color: #ffffff;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .cursor-page .option-heading h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    margin: 0 0 0.5rem;
+  }
+  .cursor-page .option-heading p {
+    color: var(--color-text);
+    max-width: 60ch;
+    margin: 0 0 1.5rem;
+  }
+
+  /* ============ STAGE (Preview-Box) ============ */
+  .cursor-stage {
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #f4f1ea;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    min-height: 460px;
+    padding: 2.5rem 2rem;
+  }
+  .cursor-stage__hint {
+    position: absolute;
+    top: 0.9rem;
+    right: 1.2rem;
+    font-size: 0.75rem;
+    color: rgba(0, 0, 0, 0.4);
+    letter-spacing: 0.04em;
+    pointer-events: none;
+  }
+  .cursor-demo h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    margin: 0 0 0.4rem;
+    font-size: 1.4rem;
+  }
+  .cursor-demo p {
+    color: rgba(0, 0, 0, 0.6);
+    margin: 0 0 1.5rem;
+    max-width: 50ch;
+  }
+  .cursor-demo__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+  .cursor-demo__link,
+  .cursor-demo__btn {
+    display: inline-block;
+    padding: 0.7rem 1.4rem;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    color: var(--color-ink);
+    font-size: 0.9rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.25s ease;
+  }
+  .cursor-demo__link:hover,
+  .cursor-demo__btn:hover {
+    background: var(--color-sage-light, #e7e2d5);
+  }
+  .cursor-demo__cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .cursor-demo__card {
+    aspect-ratio: 4 / 3;
+    background: linear-gradient(135deg, #d8d0bd 0%, #b8b09c 100%);
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  .cursor-demo__card:hover {
+    transform: translateY(-4px);
+  }
+  @media (max-width: 640px) {
+    .cursor-demo__cards { grid-template-columns: 1fr; }
+  }
+
+  /* Cursor inside stages: hide system cursor */
+  .cursor-stage--v1,
+  .cursor-stage--v2,
+  .cursor-stage--v4,
+  .cursor-stage--v5,
+  .cursor-stage--v6,
+  .cursor-stage--v8 {
+    cursor: none;
+  }
+  .cursor-stage--v1 *,
+  .cursor-stage--v2 *,
+  .cursor-stage--v4 *,
+  .cursor-stage--v5 *,
+  .cursor-stage--v6 *,
+  .cursor-stage--v8 * {
+    cursor: none !important;
+  }
+
+  /* ============ VARIANTE 1: Dot ============ */
+  .cursor-v1 {
+    position: absolute;
+    top: 0; left: 0;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    pointer-events: none;
+    opacity: 0;
+    margin: -7px 0 0 -7px;
+    mix-blend-mode: difference;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+  }
+
+  /* ============ VARIANTE 2: Dot + Ring ============ */
+  .cursor-v2-dot {
+    position: absolute;
+    top: 0; left: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-ink);
+    pointer-events: none;
+    opacity: 0;
+    margin: -4px 0 0 -4px;
+    transition: opacity 0.2s ease;
+    z-index: 11;
+  }
+  .cursor-v2-ring {
+    position: absolute;
+    top: 0; left: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-ink);
+    pointer-events: none;
+    opacity: 0;
+    margin: -18px 0 0 -18px;
+    transition: opacity 0.2s ease, width 0.25s ease, height 0.25s ease, margin 0.25s ease, background 0.25s ease;
+    z-index: 10;
+  }
+  .cursor-v2-ring.is-hover {
+    width: 64px;
+    height: 64px;
+    margin: -32px 0 0 -32px;
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  /* ============ VARIANTE 3: Magnetic ============ */
+  .cursor-stage--v3 [data-cursor-hover] {
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* ============ VARIANTE 4: Kontext-Cursor ============ */
+  .cursor-v4 {
+    position: absolute;
+    top: 0; left: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-ink);
+    pointer-events: none;
+    opacity: 0;
+    margin: -6px 0 0 -6px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    transition: opacity 0.2s ease, width 0.3s ease, height 0.3s ease, margin 0.3s ease;
+    z-index: 10;
+  }
+  .cursor-v4.is-active {
+    width: 90px;
+    height: 90px;
+    margin: -45px 0 0 -45px;
+  }
+  .cursor-v4 span {
+    opacity: 0;
+    transition: opacity 0.2s ease 0.05s;
+    white-space: nowrap;
+  }
+  .cursor-v4.is-active span {
+    opacity: 1;
+  }
+
+  /* ============ VARIANTE 5: Trail ============ */
+  .cursor-v5-main {
+    position: absolute;
+    top: 0; left: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-sage-dark, #6a7355);
+    pointer-events: none;
+    opacity: 0;
+    margin: -6px 0 0 -6px;
+    z-index: 12;
+    transition: opacity 0.2s ease;
+  }
+  .cursor-v5-trail {
+    position: absolute;
+    top: 0; left: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-sage-dark, #6a7355);
+    pointer-events: none;
+    opacity: 0;
+    margin: -5px 0 0 -5px;
+    filter: blur(2px);
+    z-index: 11;
+    transition: opacity 0.2s ease;
+  }
+  .cursor-v5-trail:nth-child(2) { opacity: 0; }
+  .cursor-stage--v5 [data-cursor-trail]:nth-of-type(1) { --a: 0.55; }
+  .cursor-stage--v5 [data-cursor-trail]:nth-of-type(2) { --a: 0.4; }
+  .cursor-stage--v5 [data-cursor-trail]:nth-of-type(3) { --a: 0.3; }
+  .cursor-stage--v5 [data-cursor-trail]:nth-of-type(4) { --a: 0.2; }
+  .cursor-stage--v5 [data-cursor-trail]:nth-of-type(5) { --a: 0.12; }
+
+  /* ============ VARIANTE 6: Halo ============ */
+  .cursor-v6 {
+    position: absolute;
+    top: 0; left: 0;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(106, 115, 85, 0.35) 0%, rgba(106, 115, 85, 0) 70%);
+    pointer-events: none;
+    opacity: 0;
+    margin: -40px 0 0 -40px;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+  }
+  .cursor-stage--v6 { cursor: default; }
+  .cursor-stage--v6 * { cursor: default !important; }
+  .cursor-stage--v6 [data-cursor-hover] { cursor: pointer !important; }
+
+  /* ============ VARIANTE 7: Klick-Kreis (Swap) ============ */
+  .cursor-stage--v7 { cursor: default; }
+  .cursor-stage--v7 * { cursor: default !important; }
+  .cursor-stage--v7 [data-cursor-hover] { cursor: none !important; }
+  .cursor-v7 {
+    position: absolute;
+    top: 0; left: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--color-sage);
+    pointer-events: none;
+    opacity: 0;
+    margin: -13px 0 0 -13px;
+    transition: opacity 0.18s ease, width 0.25s ease, height 0.25s ease, margin 0.25s ease;
+    z-index: 10;
+  }
+
+  /* ============ VARIANTE 8: Dezenter Kreis + Hover-Boost ============ */
+  .cursor-v8 {
+    position: absolute;
+    top: 0; left: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(128, 149, 130, 0.35);
+    pointer-events: none;
+    opacity: 0;
+    margin: -10px 0 0 -10px;
+    transition: opacity 0.2s ease, width 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+                height 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+                margin 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+                background 0.28s ease;
+    z-index: 10;
+  }
+  .cursor-v8.is-hover {
+    width: 32px;
+    height: 32px;
+    margin: -16px 0 0 -16px;
+    background: var(--color-sage);
+  }
+</style>

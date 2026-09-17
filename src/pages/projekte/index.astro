@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import Footer from '../../components/Footer.astro';
+
+const projects = [
+  {
+    title: 'Website für eine Ernährungsberaterin',
+    meta: 'UI/UX Design | 2026',
+    image: '/images/Vorschau%20Bilder/Website-Vorschau01.png',
+    imagePosition: 'center 70%',
+    href: '/projekte/website-ernährungsberatung',
+  },
+  {
+    title: 'Website für ein imaginäres Hotel',
+    meta: 'Webentwicklung 2 | 2026',
+    image: '/images/Vorschau%20Bilder/Website-Vorschau02.png',
+    imagePosition: 'center 70%',
+    href: '/projekte/hotel-website',
+  },
+  {
+    title: 'Website für ein imaginäres Surfcamp',
+    meta: 'Webentwicklung 1 | 2026',
+    image: '/images/Vorschau%20Bilder/Website-Vorschau03.png',
+    imagePosition: 'center 70%',
+    href: '/projekte/surfcamp',
+  },
+  {
+    title: 'Activity Tracker',
+    meta: 'UI/UX Design | 2024',
+    image: '/images/Vorschau%20Bilder/Activity-Tracker.png',
+    imagePosition: 'center 55%',
+    href: '/projekte/activity-tracker',
+  },
+  {
+    title: 'Projekte für das Kutter Gartencenter',
+    meta: 'Kommunikationsdesign | seit 2021',
+    image: '/images/Vorschau%20Bilder/Work_Voschau.png',
+    href: '/projekte/kutter-gartencenter',
+  },
+  {
+    title: 'Foto-Projekte',
+    meta: 'Fotografie | seit 2024',
+    image: '/images/Vorschau%20Bilder/DSC02545-Verbessert-RR%20Kopie.jpg',
+    imagePosition: '20% center',
+    href: '/projekte/foto-projekte',
+  },
+];
+---
+
+<BaseLayout
+  title="Meine Projekte — Emma Eichin"
+  description="Übersicht aller Projekte von Emma Eichin: UI/UX-Design, Grafik-Design und Fotografie."
+>
+  <Header />
+  <main>
+    <section class="section">
+      <div class="wrapper">
+        <h1 class="section-heading" data-reveal>Meine Projekte</h1>
+        <div class="project-grid" data-reveal style="--reveal-delay: 80ms">
+          {projects.map((project) => (
+            <ProjectCard
+              title={project.title}
+              meta={project.meta}
+              image={project.image}
+              href={project.href}
+              imagePosition={project.imagePosition}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,480 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import CaseHero from '../../components/CaseHero.astro';
+import CaseToc from '../../components/CaseToc.astro';
+import TabCard from '../../components/TabCard.astro';
+import Projects from '../../components/Projects.astro';
+import Footer from '../../components/Footer.astro';
+
+const overview = [
+  { number: '1', label: 'Ausgangspunkt', href: '#ausgangspunkt' },
+  { number: '2', label: 'Ergebnisse', href: '#ergebnisse' },
+];
+
+const meta = ['1. Semester & Private Aufnahmen', '2024'];
+
+const landscapePhotos = [
+  { src: '/images/Fotografie/DSC02545-Verbessert-RR%20Kopie.jpg', alt: 'Portrait mit Seifenblasen', caption: 'Portrait-Shooting mit Seifenblasen · 1. Semester' },
+  { src: '/images/Fotografie/seifenblasen.png', alt: 'Portrait mit Seifenblasen', caption: 'Portrait-Shooting mit Seifenblasen · 1. Semester' },
+  { src: '/images/Fotografie/ungeschnittenendversion.jpg', alt: 'Portrait mit Lichterkette im Hintergrund', caption: 'Portrait-Shooting mit Lichterketten · 1. Semester' },
+  { src: '/images/Fotografie/hero.png', alt: 'Portrait für die Homepage von Sonja Eichin', caption: 'Portrait-Shooting für die Homepage von Sonja Eichin', captionMobile: 'Portrait für die Homepage von Sonja Eichin' },
+];
+
+const portraitPhotos = [
+  { src: '/images/Fotografie/IMG_3411.jpg', alt: 'Biene auf einer gelben Blüte', title: 'Biene auf gelber Blüte', meta: 'Detailaufnahme', body: 'Blumen zu fotografieren gehört zu meinen liebsten Motiven — und wenn sich dann noch eine Biene mit ins Bild setzt, ist das für mich der perfekte Moment. Solche Aufnahmen nutze ich auch gerne für die Instagram-Posts des Kutter Gartencenters, für das ich arbeite.' },
+  { src: '/images/Fotografie/FullSizeRender.jpg', alt: 'Dünenlandschaft bei Sonnenuntergang', title: 'Dünen im Sonnenuntergang', meta: 'Niederlande · 2024', body: 'Dünenlandschaft im warmen Abendlicht. Die Farbstimmung war in diesem Moment so schön, dass ich sie unbedingt festhalten wollte.' },
+  { src: '/images/Fotografie/neuherz.png', alt: 'Herzförmiges Motiv in den Bergen', title: 'Momentaufnahme', meta: 'Reise · 2024', body: 'Ein spontan entdecktes Herzmotiv in den Bergen — genau die Art von unerwarteten Details, die ich beim Fotografieren am liebsten festhalte.', objectPosition: '50% 10%' },
+  { src: '/images/Fotografie/IMG_5467.jpeg', alt: 'Bergsee mit Felsstrukturen', title: 'Bergsee', meta: 'Wanderung · 2024', body: 'Zwischen Fels und Wasser entstehen hier schöne Strukturen — genau diese Details der Natur wollte ich festhalten.' },
+];
+
+---
+
+<BaseLayout
+  title="Foto-Projekte der letzten Jahre — Emma Eichin"
+  description="Fotografie-Arbeiten aus dem Modul Fotografie und privaten Aufnahmen: Portraits, Natur und kleine Details im Alltag."
+>
+  <Header />
+  <main class="page-foto">
+    <CaseHero
+      title={`Foto-Projekte<br class="br-desktop"> der letzten Jahre`}
+      meta={meta}
+      eyebrow="Fotografie"
+      image="/images/Vorschau%20Bilder/DSC02545-Verbessert-RR%20Kopie.jpg"
+      imageAlt="Portrait mit Seifenblasen"
+    />
+
+    <CaseToc items={overview} />
+
+    <section id="ausgangspunkt" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Ausgangspunkt</h2>
+        <TabCard tab="Details" data-reveal>
+          <p class="tab-card__text">
+            Neben Studienprojekten im <strong>Modul Fotografie</strong>, in denen unter anderem <strong>Portraits</strong> entstanden, fotografiere ich <strong>auch in meiner Freizeit sehr gerne</strong>. Dabei liebe ich es, <strong>Momente festzuhalten</strong> – ob Menschen, Natur oder kleine Details im Alltag.
+          </p>
+        </TabCard>
+      </div>
+    </section>
+
+    <section id="ergebnisse" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Ergebnisse</h2>
+        <div class="photo-stack">
+          {landscapePhotos.map((photo, i) => (
+            <figure class="photo-stack__item" style={`z-index: ${i + 1}; --i: ${i}`}>
+              <div class="photo-stack__image">
+                <img src={photo.src} alt={photo.alt} loading="lazy" />
+                <figcaption class="photo-stack__caption">
+                  <span class="cap-desktop">{photo.caption}</span>
+                  {photo.captionMobile && <span class="cap-mobile">{photo.captionMobile}</span>}
+                </figcaption>
+              </div>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="ergebnisse-hochformat" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Hochformat</h2>
+
+        <div class="sticky-story" data-sticky-story>
+          <div class="sticky-story__media">
+            {portraitPhotos.map((photo, i) => (
+              <div class={`sticky-story__photo${i === 0 ? ' is-active' : ''}`} data-index={i}>
+                <img src={photo.src} alt={photo.alt} loading={i === 0 ? 'eager' : 'lazy'} style={photo.objectPosition ? `object-position: ${photo.objectPosition}` : undefined} />
+              </div>
+            ))}
+          </div>
+          <div class="sticky-story__text">
+            {portraitPhotos.map((photo, i) => (
+              <article class={`sticky-story__block${i === 0 ? ' is-active' : ''}`} data-index={i}>
+                <h3 class="sticky-story__title">{photo.title}</h3>
+                <p class="sticky-story__meta">{photo.meta}</p>
+                <p class="sticky-story__body">{photo.body}</p>
+              </article>
+            ))}
+          </div>
+          <div class="sticky-story__nav" aria-hidden="false">
+            <button type="button" class="sticky-story__arrow" data-dir="-1" aria-label="Vorheriges Bild">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="sticky-story__dots">
+              {portraitPhotos.map((_, i) => (
+                <button type="button" class={`sticky-story__dot${i === 0 ? ' is-active' : ''}`} data-index={i} aria-label={`Bild ${i + 1}`}></button>
+              ))}
+            </div>
+            <button type="button" class="sticky-story__arrow" data-dir="1" aria-label="Nächstes Bild">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9 18l6-6-6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script is:inline>
+      (() => {
+        const container = document.querySelector('[data-sticky-story]');
+        if (!container) return;
+        const photos = container.querySelectorAll('.sticky-story__photo');
+        const blocks = container.querySelectorAll('.sticky-story__block');
+        const dots = container.querySelectorAll('.sticky-story__dot');
+        const arrows = container.querySelectorAll('.sticky-story__arrow');
+        if (!photos.length || !blocks.length) return;
+
+        const mq = window.matchMedia('(max-width: 640px)');
+        const mediaEl = container.querySelector('.sticky-story__media');
+        let active = 0;
+        let ticking = false;
+
+        const setActive = (idx) => {
+          const n = photos.length;
+          idx = ((idx % n) + n) % n;
+          if (idx === active) return;
+          active = idx;
+          photos.forEach((p) => p.classList.toggle('is-active', Number(p.dataset.index) === active));
+          blocks.forEach((b) => b.classList.toggle('is-active', Number(b.dataset.index) === active));
+          dots.forEach((d) => d.classList.toggle('is-active', Number(d.dataset.index) === active));
+        };
+
+        arrows.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const dir = Number(btn.dataset.dir || '1');
+            setActive(active + dir);
+          });
+        });
+        dots.forEach((d) => {
+          d.addEventListener('click', () => setActive(Number(d.dataset.index)));
+        });
+
+        function updateActive() {
+          ticking = false;
+          if (!mediaEl) return;
+          const imgRect = mediaEl.getBoundingClientRect();
+          const imgMid = imgRect.top + imgRect.height / 2;
+
+          const earlyOffset = 60;
+          const isLarge = window.matchMedia('(min-width: 1025px)').matches;
+          const lastEarlyOffset = isLarge ? 100 : 240;
+          let idx = 0;
+          for (let i = 0; i < blocks.length; i++) {
+            const rect = blocks[i].getBoundingClientRect();
+            const blockMid = rect.top + rect.height / 2;
+            const offset = i === blocks.length - 1 ? lastEarlyOffset : earlyOffset;
+            if (blockMid <= imgMid + offset) idx = i;
+            else break;
+          }
+          setActive(idx);
+        }
+
+        function onScroll() {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(updateActive);
+          }
+        }
+
+        const enableDesktop = () => {
+          window.addEventListener('scroll', onScroll, { passive: true });
+          window.addEventListener('resize', onScroll);
+          updateActive();
+        };
+        const disableDesktop = () => {
+          window.removeEventListener('scroll', onScroll);
+          window.removeEventListener('resize', onScroll);
+        };
+
+        const sync = () => {
+          if (mq.matches) {
+            disableDesktop();
+            active = -1;
+            setActive(0);
+          } else {
+            enableDesktop();
+          }
+        };
+        sync();
+        mq.addEventListener('change', sync);
+      })();
+    </script>
+
+    <script is:inline>
+      (() => {
+        const items = Array.from(document.querySelectorAll('.photo-stack__item'));
+        if (items.length < 2) return;
+
+        const MAX_DEPTH = 6;
+        let stickyPositions = items.map((el) => parseFloat(getComputedStyle(el).top) || 0);
+        let ticking = false;
+
+        function update() {
+          ticking = false;
+
+          let activeIndex = 0;
+          for (let i = 0; i < items.length; i++) {
+            const rect = items[i].getBoundingClientRect();
+            if (rect.top <= stickyPositions[i] + 1) activeIndex = i;
+          }
+
+          const isMobile = window.matchMedia('(max-width: 760px)').matches;
+          let entering = 0;
+          if (activeIndex < items.length - 1) {
+            const nextRect = items[activeIndex + 1].getBoundingClientRect();
+            const endY = stickyPositions[activeIndex + 1];
+            const startY = isMobile
+              ? Math.min(window.innerHeight, endY + window.innerHeight * 0.45)
+              : window.innerHeight;
+            const raw = 1 - (nextRect.top - endY) / (startY - endY);
+            entering = Math.max(0, Math.min(1, raw));
+          }
+
+          for (let i = 0; i < items.length; i++) {
+            let depth;
+            if (i > activeIndex) depth = 0;
+            else if (i === activeIndex) depth = entering;
+            else depth = (activeIndex - i) + entering;
+            depth = Math.min(depth, MAX_DEPTH);
+            items[i].style.setProperty('--depth', depth.toFixed(3));
+          }
+        }
+
+        function onResize() {
+          stickyPositions = items.map((el) => parseFloat(getComputedStyle(el).top) || 0);
+          onScroll();
+        }
+
+        function onScroll() {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+          }
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onResize);
+        update();
+      })();
+    </script>
+
+    <Projects excludeHref="/projekte/foto-projekte" heading="Weitere Projekte" id="weitere-projekte" />
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style is:global>
+  /* Nur Foto-Projekte: Hero-Bild im Handy-Format etwas kleiner */
+  @media (max-width: 900px) {
+    .page-foto .case-hero__frame img {
+      transform: translateY(0) scale(0.75);
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 900px) {
+    .page-foto .case-hero__frame {
+      height: 72% !important;
+      top: 49% !important;
+    }
+  }
+
+  @media (min-width: 901px) and (max-width: 1024px) {
+    .page-foto .case-hero__frame {
+      height: 58% !important;
+      top: 49% !important;
+    }
+
+    .page-foto .case-hero__shape {
+      left: -18% !important;
+    }
+  }
+
+  .page-foto .photo-stack__caption .cap-mobile { display: none; }
+  @media (max-width: 900px) {
+    .page-foto .photo-stack__caption:has(.cap-mobile) .cap-desktop { display: none; }
+    .page-foto .photo-stack__caption .cap-mobile { display: inline; }
+
+    .page-foto .photo-stack__item:last-child .photo-stack__image img {
+      object-position: center 15% !important;
+      transform: translateY(-15px) scale(1.15);
+      transform-origin: center;
+    }
+  }
+
+  /* Nav-Leiste zum Durchklicken (Portrait-Slider) — nur Handy */
+  .sticky-story__nav { display: none; }
+
+  @media (min-width: 641px) and (max-width: 1200px) {
+    .page-foto .sticky-story {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+      align-items: start;
+    }
+
+    .page-foto .sticky-story__media {
+      position: sticky;
+      top: 6rem;
+      aspect-ratio: 2 / 3;
+      max-height: calc(100vh - 8rem);
+      width: 100%;
+      max-width: 340px;
+      margin-inline: 0;
+    }
+
+    .page-foto .sticky-story__text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-foto .sticky-story__block {
+      min-height: 35vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-block: 0.75rem;
+      border-top: 1px solid var(--color-border);
+      opacity: 0;
+      transition: opacity 350ms ease;
+    }
+
+    .page-foto .sticky-story__block.is-active {
+      opacity: 1;
+    }
+
+    .page-foto .sticky-story__block.is-active + .sticky-story__block {
+      opacity: 0.15;
+    }
+
+    .page-foto .sticky-story__block:first-child {
+      border-top: none;
+    }
+
+    .page-foto .sticky-story__block:last-child {
+      margin-bottom: 40vh;
+    }
+
+    .page-foto .sticky-story__nav {
+      display: none;
+    }
+  }
+
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    .page-foto .sticky-story__media {
+      max-width: 460px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .page-foto .sticky-story__media {
+      max-height: none;
+      aspect-ratio: 3 / 4;
+      margin-inline: 0;
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .page-foto .sticky-story__text {
+      display: block;
+    }
+
+    .page-foto .sticky-story__block {
+      display: none;
+      min-height: 0;
+      padding-block: 1rem 0;
+      border-top: none;
+    }
+
+    .page-foto .sticky-story__block.is-active {
+      display: block;
+    }
+
+    .page-foto .sticky-story {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-foto .sticky-story__media { order: 1; }
+    .page-foto .sticky-story__nav { order: 2; }
+    .page-foto .sticky-story__text { order: 3; }
+
+    .page-foto .sticky-story__nav {
+      display: flex;
+      width: 100%;
+      align-self: stretch;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-foto .sticky-story__arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: var(--color-sage);
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      flex: 0 0 auto;
+    }
+
+    .page-foto .sticky-story__dots {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .page-foto .sticky-story__dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--color-sage-tint);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .page-foto .sticky-story__dot.is-active {
+      background: var(--color-sage);
+    }
+  }
+</style>
+
+<style>
+  /* Hero-Bild ist Hochformat und wirkt im Standard-Landscape-Rahmen zu groß */
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    main :global(.case-hero__frame) {
+      height: 68%;
+      top: 58%;
+      left: 40%;
+    }
+
+    main :global(.case-hero__shape) {
+      left: -30%;
+    }
+  }
+
+  @media (min-width: 1201px) {
+    main :global(.case-hero__frame) {
+      height: 70%;
+      top: 58%;
+    }
+  }
+
+  /* Übergang von Querformat-Stack zu Hochformat-Section straffen */
+  main :global(#ergebnisse .photo-stack) {
+    padding-bottom: 0;
+  }
+  main :global(#ergebnisse) {
+    padding-bottom: 0;
+  }
+  main :global(#ergebnisse-hochformat) {
+    padding-top: clamp(2rem, 5vw, 3.5rem);
+  }
+</style>

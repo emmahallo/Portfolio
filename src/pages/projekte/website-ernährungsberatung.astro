@@ -1,0 +1,926 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import CaseHero from '../../components/CaseHero.astro';
+import CaseToc from '../../components/CaseToc.astro';
+import TabCard from '../../components/TabCard.astro';
+import LinkTile from '../../components/LinkTile.astro';
+import Projects from '../../components/Projects.astro';
+import Footer from '../../components/Footer.astro';
+
+const overview = [
+  { number: '1', label: 'Problemstellung', href: '#problemstellung' },
+  { number: '2', label: 'Ergebnis', href: '#ergebnis' },
+  { number: '3', label: 'Projekt-Details', href: '#projekt-details' },
+  { number: '4', label: 'Ausschnitt des Prozesses', href: '#prozess' },
+  { number: '5', label: 'Learnings', href: '#learnings' },
+  { number: '6', label: 'Dokumentation & Link', href: '#download-link' },
+];
+
+const meta = ['4. Semester', 'Einzelarbeit', '2026'];
+
+const processSteps = [
+  {
+    number: '1',
+    title: 'Empathize',
+    images: [
+      { src: '/images/ernaehrungsberaterin/nutzungskontext/P1_Eichin_Emma_Webauftritt-Ernaehrungsberaterin_Seite_008.png', alt: 'Auszug aus der Dokumentation: Nutzungskontext, Seite 1' },
+      { src: '/images/ernaehrungsberaterin/nutzungskontext/P1_Eichin_Emma_Webauftritt-Ernaehrungsberaterin_Seite_009.png', alt: 'Auszug aus der Dokumentation: Nutzungskontext, Seite 2' },
+      { src: '/images/ernaehrungsberaterin/nutzungskontext/P1_Eichin_Emma_Webauftritt-Ernaehrungsberaterin_Seite_010.png', alt: 'Auszug aus der Dokumentation: Nutzungskontext, Seite 3' },
+    ],
+    bodyHtml: `<p><strong>Zu Beginn</strong> des Projekts habe ich die zentralen <strong>W-Fragen</strong> beantwortet sowie den <strong>Nutzungskontext</strong>, die <strong>Zielgruppe</strong> und den <strong>Wettbewerb</strong> analysiert. Da diese ersten Erkenntnisse weitgehend auf Annahmen und Hypothesen basierten, dienten die anschließenden <strong>Interviews</strong> und <strong>Umfragen</strong> dazu, diese zu überprüfen. Dadurch entstand ein fundiertes Bild der echten Nutzerbedürfnisse, was die weitere Entwicklung maßgeblich vorangebracht hat.</p>
+      <p>Um diesen Schritt greifbarer zu machen, findest du auf der rechten Seite einen Auszug aus meiner Dokumentation zum Nutzungskontext. Ein Klick auf das Bild öffnet die vollständige Ansicht.</p>`,
+  },
+  {
+    number: '2',
+    title: 'Define',
+    images: [
+      { src: '/images/ernaehrungsberaterin/persona/P1_Eichin_Emma_Webauftritt-Ernaehrungsberaterin_Seite_035.png', alt: 'Persona-Übersicht' },
+      { src: '/images/ernaehrungsberaterin/persona/P1_Eichin_Emma_Webauftritt-Ernaehrungsberaterin_Seite_036.png', alt: 'Primärpersona Sophie' },
+      { src: '/images/ernaehrungsberaterin/persona/P1_Eichin_Emma_Webauftritt-Ernaehrungsberaterin_Seite_037.png', alt: 'Persona Details' },
+      { src: '/images/ernaehrungsberaterin/persona/P1_Eichin_Emma_Webauftritt-Ernaehrungsberaterin_Seite_038.png', alt: 'Weitere Persona-Analyse' },
+    ],
+    bodyHtml: `<p>Auf Basis der Research-Ergebnisse folgte die Define-Phase, um noch tiefer in die tatsächlichen Nutzerbedürfnisse einzutauchen. Mithilfe von <strong>Personas</strong>, <strong>Use Cases</strong> und <strong>Jobs-to-be-Done</strong> habe ich die Anforderungen der NutzerInnen konkretisiert. Ergänzt durch eine <strong>User Journey Map</strong> und ein klares <strong>Mission Statement</strong> entstand so das Fundament für die Konzeption der Website.</p>
+      <p>Exemplarisch findest du auf der rechten Seite die Primärpersona Sophie, die ich für diese Phase entwickelt habe. Ein Klick auf das Bild öffnet die vollständige Ansicht.</p>`,
+  },
+  {
+    number: '3',
+    title: 'Ideate',
+    images: [
+      { src: '/images/ernaehrungsberaterin/zielgruppengerechtes%20Design/P1_Eichin_Emma_Webauftritt-Ernaehrungsberaterin_Seite_055.png', alt: 'Ausgearbeitete Designanforderungen' },
+      { src: '/images/ernaehrungsberaterin/zielgruppengerechtes%20Design/P1_Eichin_Emma_Webauftritt-Ernaehrungsberaterin_Seite_056.png', alt: 'Weitere Designanforderungen' },
+    ],
+    bodyHtml: `<p>Anschließend ging es darum, die konkreten <strong>Designanforderungen</strong> für die Zielgruppe abzuleiten. Neben der <strong>Informationsarchitektur</strong> habe ich dafür klare <strong>Richtlinien</strong> und <strong>Gestaltungsprinzipien</strong> aufgestellt, welche als Leitfaden für die Konzeption der Website dienten.</p>
+      <p>Als konkretes Beispiel findest du auf der rechten Seite die ausgearbeiteten Designanforderungen. Ein Klick auf das Bild öffnet die vollständige Ansicht.</p>`,
+  },
+  {
+    number: '4',
+    title: 'Prototype',
+    images: [
+      { src: '/images/ernaehrungsberaterin/style/P1_Eichin_Emma_Webauftritt-Ernaehrungsberaterin_Seite_071.png', alt: 'Einblick in den Styleguide, Seite 1' },
+      { src: '/images/ernaehrungsberaterin/style/P1_Eichin_Emma_Webauftritt-Ernaehrungsberaterin_Seite_072.png', alt: 'Einblick in den Styleguide, Seite 2' },
+      { src: '/images/ernaehrungsberaterin/style/P1_Eichin_Emma_Webauftritt-Ernaehrungsberaterin_Seite_073.png', alt: 'Einblick in den Styleguide, Seite 3' },
+      { src: '/images/ernaehrungsberaterin/style/P1_Eichin_Emma_Webauftritt-Ernaehrungsberaterin_Seite_074.png', alt: 'Einblick in den Styleguide, Seite 4' },
+      { src: '/images/ernaehrungsberaterin/style/P1_Eichin_Emma_Webauftritt-Ernaehrungsberaterin_Seite_075.png', alt: 'Einblick in den Styleguide, Seite 5' },
+    ],
+    bodyHtml: `<p>Für ein konsistentes Erscheinungsbild habe ich einen <strong>Styleguide</strong> definiert. Da die Website für den echten Live-Betrieb gedacht ist, habe ich zudem erste Maßnahmen zur SEO-Optimierung berücksichtigt.</p>
+      <p>Auf der rechten Seite findest du einen Ausschnitt aus dem Styleguide, der diese Phase veranschaulicht. Ein Klick auf das Bild öffnet die vollständige Ansicht.</p>`,
+  },
+  {
+    number: '5',
+    title: 'Testing',
+    images: [
+      { src: '/images/ernaehrungsberaterin/test/P1_Eichin_Emma_Webauftritt-Ernaehrungsberaterin_Seite_092.png', alt: 'Auszug aus der Dokumentation: UEQ-Test, Seite 1' },
+      { src: '/images/ernaehrungsberaterin/test/P1_Eichin_Emma_Webauftritt-Ernaehrungsberaterin_Seite_093.png', alt: 'Auszug aus der Dokumentation: UEQ-Test, Seite 2' },
+    ],
+    bodyHtml: `<p>Während des gesamten Prozesses wurden regelmäßig <strong>Thinking-Aloud-Tests</strong> durchgeführt, um Schwachstellen frühzeitig zu erkennen und die Website fortlaufend zu verbessern. Zum Abschluss lieferte ein <strong>UEQ-Test</strong> noch einmal wertvolle Erkenntnisse über die tatsächliche Nutzererfahrung.</p>
+      <p>Als konkretes Beispiel für diesen Schritt findest du auf der rechten Seite einen Einblick in den durchgeführten UEQ-Test. Ein Klick auf das Bild öffnet die vollständige Ansicht.</p>`,
+  },
+];
+
+const learningsHtml = `Das Projekt bot eine ideale Gelegenheit, den Einsatz von KI realistisch zu evaluieren. Während <strong>Claude</strong> beim <strong>zügigen Aufsetzen von Grundstrukturen</strong> und Entwürfen eine <strong>echte Beschleunigung</strong> war, zeigte sich bei <strong>kleineren Detailanpassungen</strong> die <strong>Kehrseite</strong>: Häufig waren <strong>zeitraubende Prompt-Iterationen erforderlich</strong>, um das gewünschte Ergebnis präzise zu treffen. Daher kann ich mir für zukünftige Projekte eine <strong>Kombination aus Figma und KI-Werkzeugen</strong> gut vorstellen.`;
+
+const VIDEO_DIR = '/video/ernaehrungsberatung';
+
+const ergebnisse = [
+  {
+    idx: '01',
+    title: 'Startseite',
+    kategorie: 'Website',
+    jahr: '2026',
+    video: `${VIDEO_DIR}/home.mp4`,
+    videoAlt: 'Vorschau-Video der Startseite',
+    kontext: 'Die Startseite vermittelt einen ersten Eindruck von Sonjas Beratungsangebot. Durch den gezielten Einsatz von Information Hiding werden Inhalte schrittweise offengelegt, sodass BesucherInnen ruhig in das Angebot geführt werden, ohne von der Informationsdichte überfordert zu werden.',
+  },
+  {
+    idx: '02',
+    title: 'Leistungen',
+    kategorie: 'Website',
+    jahr: '2026',
+    video: `${VIDEO_DIR}/leistungen.mp4`,
+    videoAlt: 'Vorschau-Video der Leistungsübersicht',
+    kontext: 'Mit einem Klick auf „Leistungen" bekommen InteressentInnen zunächst einen groben Überblick über das gesamte Leistungsangebot und können sich anschließend gezielt zum passenden Angebot näher informieren.',
+  },
+  {
+    idx: '03',
+    title: 'Privatperson',
+    kategorie: 'Website',
+    jahr: '2026',
+    video: `${VIDEO_DIR}/privatperson.mp4`,
+    videoAlt: 'Vorschau-Video: Angebot für Privatpersonen',
+    kontext: 'Das Angebot für Privatpersonen wird nach Schwerpunkten sortiert vorgestellt — per Klick auf einen Schwerpunkt können sich Interessierte näher informieren.',
+  },
+  {
+    idx: '04',
+    title: 'Unternehmen',
+    kategorie: 'Website',
+    jahr: '2026',
+    video: `${VIDEO_DIR}/unternehmen.mp4`,
+    videoAlt: 'Vorschau-Video: Angebot für Unternehmen',
+    kontext: 'Für Unternehmen bündelt die Seite alle Informationen übersichtlich an einem Ort.',
+  },
+  {
+    idx: '05',
+    title: 'Über mich',
+    kategorie: 'Website',
+    jahr: '2026',
+    video: `${VIDEO_DIR}/uebermich.mp4`,
+    videoAlt: 'Vorschau-Video der Über-mich-Seite',
+    kontext: 'Auf der Über-mich-Seite lernen NutzerInnen Sonja persönlich kennen — von Werdegang und Qualifikationen über Referenzen und Beratungsansatz bis hin zu ihren Mitgliedschaften.',
+  },
+  {
+    idx: '06',
+    title: 'Kontakt',
+    kategorie: 'Website',
+    jahr: '2026',
+    video: `${VIDEO_DIR}/kontakt.mp4`,
+    videoAlt: 'Vorschau-Video der Kontaktseite',
+    kontext: 'Die Kontaktseite bündelt alle Wege der Terminvereinbarung und senkt so die Hürde für eine erste Anfrage.',
+  },
+];
+
+---
+
+<BaseLayout
+  title="Website für eine Ernährungsberaterin — Emma Eichin"
+  description="Case Study: Konzeption und Umsetzung der ersten Webpräsenz für die Ernährungsberaterin Sonja Eichin — UI/UX Design, 4. Semester."
+>
+  <Header />
+  <main>
+    <CaseHero
+      title="Website für eine Ernährungsberaterin"
+      meta={meta}
+      image="/images/voschau%20projektsseiten/ernaehrungsbild.png"
+      imageAlt="Vorschau der Website für Sonja Eichin"
+    />
+
+    <CaseToc items={overview} />
+
+    <section id="problemstellung" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Problemstellung</h2>
+        <TabCard tab="Ausgangspunkt" data-reveal>
+          <p class="tab-card__text">
+            <strong>Für</strong> die Ernährungsberaterin <strong>Sonja Eichin</strong> existierte bislang <strong>kein digitaler Auftritt</strong>, <strong>wodurch</strong> es an <strong>Sichtbarkeit im Netz</strong> und einer repräsentativen Plattform <strong>fehlte</strong>. Um <strong>diese Lücke zu schließen</strong>, wurde ihre <strong>erste Webpräsenz von Grund auf neu konzipiert und realisiert</strong>.
+          </p>
+        </TabCard>
+      </div>
+    </section>
+
+    <section id="ergebnis" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Ergebnis</h2>
+      </div>
+
+      {ergebnisse.map((w, i) => (
+        <div class="wrapper deck-slide" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+          <div class="deck-slide__num">{w.idx}</div>
+          <div class="deck-slide__content">
+            <h3 class="deck-slide__title">{w.title}</h3>
+            <div class="deck-slide__video" aria-label={w.videoAlt}>
+              <video
+                src={w.video}
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label={w.videoAlt}
+                data-restart-on-view
+              ></video>
+            </div>
+            <p class="deck-slide__body">{w.kontext}</p>
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <section id="projekt-details" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Projekt-Details</h2>
+
+        <TabCard tab="Fokus" data-reveal>
+          <p class="tab-card__text">
+            Der <strong>Schwerpunkt</strong> dieser Arbeit lag auf der <strong>Konzeption der Website</strong>. Um das <strong>Potenzial sowie die Limitationen künstlicher Intelligenz</strong> im Entwicklungsprozess zu <strong>untersuchen</strong>, wurde ein <strong>rein KI-basierter Workflow</strong> gewählt. Die technische Umsetzung erfolgte im Sinne des sogenannten &bdquo;<strong>Vibe-Codings</strong>&ldquo;, wodurch der Fokus gezielt auf die <strong>methodische Ausarbeitung und Konzeption</strong> gelenkt werden konnte.
+          </p>
+        </TabCard>
+
+        <TabCard tab="Methodische Grundlage" data-reveal style="--reveal-delay: 100ms">
+          <img
+            class="tab-card__top-image"
+            src="/images/ernaehrungsberaterin/METHODE-v2.png"
+            alt="Design-Thinking-Prozess: Empathize, Define, Ideate, Prototype, Test"
+            width="1920"
+            height="550"
+            loading="lazy"
+            style="border: none; width: 100%; max-width: 560px; margin: 0 auto 2.25rem; height: auto;"
+          />
+          <p class="tab-card__text">
+            Die Arbeit stützte sich methodisch auf den <strong>Design-Thinking-Prozess der Stanford d.school</strong>. Dessen <strong>phasenbasierter Ansatz</strong> erlaubte es, <strong>tiefgehende Einblicke in die Lebensrealität</strong> und Anforderungen der Zielgruppe zu gewinnen.
+          </p>
+        </TabCard>
+      </div>
+    </section>
+
+    <section id="prozess" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Ausschnitt des Prozesses</h2>
+
+        {processSteps.map((step, i) => (
+          <div class="prozess-step" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+            <TabCard tab={`${step.number} ${step.title}`}>
+              <div class="tab-card__text" set:html={step.bodyHtml} />
+            </TabCard>
+            {step.images && step.images.length > 0 && (
+              <button
+                type="button"
+                class="prozess-step__thumb"
+                data-images={JSON.stringify(step.images)}
+                aria-label={`Bilder zu ${step.title} öffnen`}
+              >
+                <img
+                  class="prozess-step__image"
+                  src={step.images[0].src}
+                  alt={step.images[0].alt}
+                  loading="lazy"
+                />
+                {step.images.length > 1 && (
+                  <span class="prozess-step__badge">+{step.images.length - 1}</span>
+                )}
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section id="learnings" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Learnings</h2>
+        <TabCard tab="Erkenntnisse" data-reveal>
+          <div class="tab-card__text" set:html={`<p>${learningsHtml}</p>`} />
+        </TabCard>
+      </div>
+    </section>
+
+    <section id="download-link" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Dokumentation &amp; Link</h2>
+
+        <div class="download-grid">
+          <TabCard tab="Dokumentation" data-reveal>
+            <p class="tab-card__text">Die vollständige Dokumentation zum Projekt kannst du hier ansehen.</p>
+            <LinkTile
+              href="/dokumente/Projekt-Dokumentation.pdf"
+              title="Projekt-Dokumentation ansehen"
+              subtitle="PDF | 104 Seiten"
+              icon="external"
+              target="_blank"
+            />
+          </TabCard>
+
+          <TabCard tab="Link" data-reveal>
+            <p class="tab-card__text">Die Website steht kurz vor der Veröffentlichung. Sobald sie live ist, gelangst du an dieser Stelle direkt zum Ergebnis.</p>
+          </TabCard>
+        </div>
+      </div>
+    </section>
+
+    <Projects excludeHref="/projekte/website-ernährungsberatung" heading="Weitere Projekte" id="weitere-projekte" />
+  </main>
+
+  <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Bildergalerie">
+    <button type="button" class="lightbox__close" aria-label="Schließen">×</button>
+    <button type="button" class="lightbox__nav lightbox__nav--prev" aria-label="Vorheriges Bild">‹</button>
+    <figure class="lightbox__figure">
+      <img class="lightbox__image" alt="" />
+      <figcaption class="lightbox__counter"></figcaption>
+    </figure>
+    <button type="button" class="lightbox__nav lightbox__nav--next" aria-label="Nächstes Bild">›</button>
+  </div>
+
+  <script>
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox) {
+      const imgEl = lightbox.querySelector('.lightbox__image') as HTMLImageElement;
+      const counterEl = lightbox.querySelector('.lightbox__counter') as HTMLElement;
+      const prevBtn = lightbox.querySelector('.lightbox__nav--prev') as HTMLButtonElement;
+      const nextBtn = lightbox.querySelector('.lightbox__nav--next') as HTMLButtonElement;
+      const closeBtn = lightbox.querySelector('.lightbox__close') as HTMLButtonElement;
+
+      let images: { src: string; alt: string }[] = [];
+      let index = 0;
+
+      const render = () => {
+        if (!images[index]) return;
+        imgEl.src = images[index].src;
+        imgEl.alt = images[index].alt;
+        counterEl.textContent = `${index + 1} / ${images.length}`;
+        const multi = images.length > 1;
+        prevBtn.hidden = !multi;
+        nextBtn.hidden = !multi;
+      };
+
+      const open = (imgs: typeof images, startIdx: number) => {
+        images = imgs;
+        index = startIdx;
+        render();
+        lightbox.hidden = false;
+        document.body.style.overflow = 'hidden';
+      };
+
+      const close = () => {
+        lightbox.hidden = true;
+        document.body.style.overflow = '';
+      };
+
+      const prev = () => {
+        index = (index - 1 + images.length) % images.length;
+        render();
+      };
+
+      const next = () => {
+        index = (index + 1) % images.length;
+        render();
+      };
+
+      document.querySelectorAll<HTMLButtonElement>('.prozess-step__thumb').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          try {
+            const list = JSON.parse(btn.dataset.images || '[]');
+            if (Array.isArray(list) && list.length) open(list, 0);
+          } catch {}
+        });
+      });
+
+      closeBtn.addEventListener('click', close);
+      prevBtn.addEventListener('click', prev);
+      nextBtn.addEventListener('click', next);
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) close();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (lightbox.hidden) return;
+        if (e.key === 'Escape') close();
+        else if (e.key === 'ArrowLeft') prev();
+        else if (e.key === 'ArrowRight') next();
+      });
+
+      let touchStartX = 0;
+      imgEl.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+      }, { passive: true });
+      imgEl.addEventListener('touchend', (e) => {
+        const diff = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(diff) > 50) diff > 0 ? prev() : next();
+      });
+    }
+
+    const restartVideos = document.querySelectorAll<HTMLVideoElement>('video[data-restart-on-view]');
+    if (restartVideos.length && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const v = entry.target as HTMLVideoElement;
+          if (entry.isIntersecting) {
+            try { v.currentTime = 0; } catch {}
+            v.play().catch(() => {});
+          } else {
+            v.pause();
+          }
+        });
+      }, { threshold: 0.5 });
+      restartVideos.forEach((v) => io.observe(v));
+    }
+
+    restartVideos.forEach((video) => {
+      const parent = video.parentElement;
+      if (!parent || parent.classList.contains('video-player')) return;
+      parent.classList.add('video-player');
+
+      const iconPlay = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+      const iconPause = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+
+      const controls = document.createElement('div');
+      controls.className = 'video-player__controls';
+      controls.innerHTML = `
+        <button type="button" class="video-player__btn" data-action="play" aria-label="Abspielen oder Pausieren">${iconPlay}</button>
+        <div class="video-player__progress" role="slider" aria-label="Video-Fortschritt" tabindex="0">
+          <div class="video-player__progress-fill"></div>
+          <div class="video-player__progress-handle"></div>
+        </div>
+      `;
+      parent.appendChild(controls);
+
+      const playBtn = controls.querySelector('[data-action="play"]') as HTMLButtonElement;
+      const fill = controls.querySelector('.video-player__progress-fill') as HTMLElement;
+      const handle = controls.querySelector('.video-player__progress-handle') as HTMLElement;
+      const progress = controls.querySelector('.video-player__progress') as HTMLElement;
+
+      const syncPlayIcon = () => {
+        playBtn.innerHTML = video.paused ? iconPlay : iconPause;
+        playBtn.setAttribute('aria-label', video.paused ? 'Abspielen' : 'Pausieren');
+      };
+      syncPlayIcon();
+
+      let hideTimer: number | undefined;
+      const showControls = () => {
+        parent.classList.add('is-controls-visible');
+        if (hideTimer !== undefined) {
+          window.clearTimeout(hideTimer);
+          hideTimer = undefined;
+        }
+      };
+      const scheduleHide = () => {
+        if (hideTimer !== undefined) window.clearTimeout(hideTimer);
+        hideTimer = window.setTimeout(() => {
+          parent.classList.remove('is-controls-visible');
+          hideTimer = undefined;
+        }, 1000);
+      };
+      parent.addEventListener('pointerenter', (e) => {
+        if (e.pointerType !== 'touch') showControls();
+      });
+      parent.addEventListener('pointermove', (e) => {
+        if (e.pointerType !== 'touch') showControls();
+      });
+      parent.addEventListener('pointerleave', (e) => {
+        if (e.pointerType !== 'touch') scheduleHide();
+      });
+      parent.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'touch') {
+          showControls();
+          scheduleHide();
+        }
+      });
+
+      playBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (video.paused) video.play().catch(() => {});
+        else video.pause();
+      });
+      video.addEventListener('play', syncPlayIcon);
+      video.addEventListener('pause', syncPlayIcon);
+      video.addEventListener('timeupdate', () => {
+        if (!video.duration) return;
+        const pct = (video.currentTime / video.duration) * 100;
+        fill.style.width = pct + '%';
+        handle.style.left = pct + '%';
+      });
+
+      const seek = (clientX: number) => {
+        if (!video.duration) return;
+        const rect = progress.getBoundingClientRect();
+        const pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        video.currentTime = pct * video.duration;
+      };
+      let dragging = false;
+      progress.addEventListener('pointerdown', (e) => {
+        dragging = true;
+        seek(e.clientX);
+        try { progress.setPointerCapture(e.pointerId); } catch {}
+      });
+      progress.addEventListener('pointermove', (e) => {
+        if (dragging) seek(e.clientX);
+      });
+      const endDrag = (e: PointerEvent) => {
+        dragging = false;
+        try { progress.releasePointerCapture(e.pointerId); } catch {}
+      };
+      progress.addEventListener('pointerup', endDrag);
+      progress.addEventListener('pointercancel', endDrag);
+    });
+  </script>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    main :global(.case-hero__frame) {
+      height: 130%;
+      top: 66%;
+      left: 45%;
+    }
+
+    main :global(.case-hero__shape) {
+      left: -24%;
+    }
+  }
+
+  @media (min-width: 1201px) {
+    main :global(.case-hero__frame) {
+      height: 158%;
+    }
+
+    main :global(.case-hero__shape) {
+      left: -16%;
+    }
+  }
+
+  /* ---------- Ergebnis: Slide-Deck im Kutter-Style ---------- */
+  .deck-slide {
+    display: grid;
+    grid-template-columns: minmax(120px, 0.4fr) minmax(0, 1fr);
+    gap: 2rem;
+    padding-block: clamp(2rem, 5vw, 4rem);
+  }
+
+  .deck-slide + .deck-slide {
+    position: relative;
+  }
+
+  .deck-slide + .deck-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: var(--gutter);
+    right: var(--gutter);
+    border-top: 1px dashed #d9dcd5;
+    pointer-events: none;
+  }
+
+  @media (max-width: 900px) {
+    .deck-slide + .deck-slide::before { display: none; }
+  }
+
+  .deck-slide__num {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 10vw, 9rem);
+    line-height: 0.9;
+    color: var(--color-sage);
+    letter-spacing: 0.02em;
+    position: sticky;
+    top: 6rem;
+    align-self: start;
+  }
+
+  .deck-slide__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-sage-dark);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .deck-slide__meta > span + span::before {
+    content: '·';
+    display: inline-block;
+    margin-right: 0.75rem;
+    opacity: 0.6;
+  }
+
+  .deck-slide__meta > span + span.deck-slide__year::before {
+    content: '';
+    width: 1.5rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.5;
+    margin-right: 1rem;
+    vertical-align: middle;
+  }
+
+  .deck-slide__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    letter-spacing: 0.04em;
+    margin: 0 0 1.5rem;
+    color: var(--color-ink);
+    font-weight: 400;
+    line-height: 1.1;
+  }
+
+  .deck-slide__video {
+    position: relative;
+    display: block;
+    background: #f4f5f2;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    margin: 0 0 1.25rem;
+    width: 100%;
+    border: 1px solid var(--color-sage);
+  }
+
+  .deck-slide__video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .deck-slide__body {
+    max-width: none;
+    width: 100%;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    color: var(--color-ink);
+  }
+
+  @media (max-width: 900px) {
+    .deck-slide { grid-template-columns: 1fr; gap: 1rem; }
+    .deck-slide__num { position: static; font-size: 3rem; }
+  }
+
+  /* ---------- Ausschnitt des Prozesses: Kachel + eine Vorschau (Klick öffnet Lightbox) ---------- */
+  .prozess-step {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    align-items: center;
+  }
+
+  .prozess-step + .prozess-step {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .prozess-step > :global(.tab-card) {
+    grid-column: 1;
+  }
+
+  .prozess-step__thumb {
+    position: relative;
+    grid-column: 2;
+    justify-self: start;
+    align-self: center;
+    margin-top: 0.625rem;
+    display: block;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: zoom-in;
+    max-width: 420px;
+    width: 100%;
+    transition: transform 0.35s ease;
+  }
+
+  .prozess-step__thumb::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--color-badge-bg);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .prozess-step__thumb:hover {
+    transform: translateY(-1px);
+  }
+
+  .prozess-step__thumb:hover::before {
+    opacity: 1;
+  }
+
+  .prozess-step__thumb:hover .prozess-step__image {
+    border-color: var(--color-sage-dark);
+  }
+
+  .prozess-step__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-border);
+    object-fit: cover;
+    transition: border-color 0.25s ease;
+  }
+
+  .prozess-step__badge {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    background: var(--color-sage-dark);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    padding: 0.25rem 0.6rem;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  @media (max-width: 1200px) {
+    .prozess-step {
+      grid-template-columns: 1fr;
+    }
+
+    .prozess-step > :global(.tab-card),
+    .prozess-step__thumb {
+      grid-column: 1;
+    }
+
+    .prozess-step__thumb {
+      justify-self: start;
+      margin-left: calc(1rem + 6px);
+      width: calc(100% - (1rem + 6px));
+      max-width: calc(100% - (1rem + 6px));
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 900px) {
+    .prozess-step__thumb {
+      max-width: calc(70vw + 3rem);
+    }
+  }
+
+  @media (min-width: 901px) and (max-width: 1024px) {
+    .prozess-step__thumb {
+      max-width: calc(62vw + 3rem);
+    }
+  }
+
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    .prozess-step__thumb {
+      max-width: calc(55vw + 3rem);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .prozess-step__thumb {
+      margin-left: calc(1rem + 6px);
+      width: calc(100% - (1rem + 6px));
+      max-width: calc(100% - (1rem + 6px));
+    }
+  }
+
+  @media (max-width: 380px) {
+    .prozess-step__thumb {
+      margin-left: 0.5rem;
+      width: calc(100% - 0.5rem);
+      max-width: calc(100% - 0.5rem);
+    }
+  }
+
+  /* ---------- Lightbox ---------- */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1rem, 4vw, 3rem);
+    background: rgba(28, 28, 28, 0.88);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .lightbox[hidden] {
+    display: none;
+  }
+
+  .lightbox__figure {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .lightbox__image {
+    display: block;
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    background: #ffffff;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .lightbox__counter {
+    color: #ffffff;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+  }
+
+  .lightbox__close,
+  .lightbox__nav {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    font-size: 1.75rem;
+    line-height: 1;
+    width: 44px;
+    height: 44px;
+    transition: background-color 0.2s ease;
+  }
+
+  .lightbox__close:hover,
+  .lightbox__nav:hover {
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  .lightbox__close {
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+  }
+
+  .lightbox__nav--prev {
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .lightbox__nav--next {
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  @media (max-width: 640px) {
+    .lightbox__close,
+    .lightbox__nav {
+      width: 38px;
+      height: 38px;
+      font-size: 1.35rem;
+    }
+
+    .lightbox__close { top: 0.6rem; right: 0.6rem; }
+    .lightbox__nav--prev { left: 0.4rem; }
+    .lightbox__nav--next { right: 0.4rem; }
+
+    .lightbox__image {
+      max-height: 72vh;
+    }
+  }
+
+  /* ---------- Download & Link: zwei Spalten mit Kachel-Style ---------- */
+  .download-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.78fr);
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    align-items: stretch;
+  }
+
+  .download-grid :global(.tab-card) {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .download-grid :global(.tab-card__frame) {
+    flex: 1;
+  }
+
+  .download-grid :global(.tab-card + .tab-card) {
+    margin-top: 0;
+  }
+
+  .download-grid :global(.tab-card__frame) {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .download-grid :global(.tab-card__text) {
+    max-width: 45ch;
+  }
+
+  .download-grid :global(.tab-card:nth-child(2) .tab-card__text) {
+    max-width: 28ch;
+  }
+
+  .download-grid :global(.tab-card:nth-child(2) .tab-card__frame) {
+    width: fit-content;
+    padding-right: 2rem;
+  }
+
+.download-grid :global(.link-tile__subtitle) {
+    max-width: none;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 760px) {
+    .download-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .download-grid :global(.tab-card:nth-child(2) .tab-card__frame) {
+      width: auto;
+      padding-right: 1.5rem;
+    }
+
+    .download-grid :global(.link-tile__subtitle) {
+      white-space: normal;
+    }
+
+    .download-grid :global(.link-tile__title) {
+      white-space: normal;
+    }
+  }
+
+</style>

@@ -1,0 +1,398 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import CaseHero from '../../components/CaseHero.astro';
+import CaseToc from '../../components/CaseToc.astro';
+import TabCard from '../../components/TabCard.astro';
+import LinkTile from '../../components/LinkTile.astro';
+import Projects from '../../components/Projects.astro';
+import Footer from '../../components/Footer.astro';
+
+const overview = [
+  { number: '1', label: 'Ausgangspunkt', href: '#ausgangspunkt' },
+  { number: '2', label: 'Ergebnis', href: '#ergebnis' },
+  { number: '3', label: 'Projekt-Details', href: '#projekt-details' },
+  { number: '4', label: 'Learnings', href: '#learnings' },
+  { number: '5', label: 'Links', href: '#links' },
+];
+
+const meta = ['4. Semester', 'Partnerarbeit', '2026'];
+
+const learningsHtml = `Im Rahmen des Moduls konnten wir vor allem lernen, wie sich <strong>eigenständiges Coden</strong> und der <strong>gezielte Einsatz von KI</strong> sinnvoll miteinander verbinden lassen. Bei <strong>feineren Detailanpassungen</strong> zeigten sich allerdings weiterhin die <strong>Grenzen der KI</strong> — insbesondere dann, wenn unser Anliegen nicht präzise erfasst wurde und mehrere <strong>Prompt-Iterationen</strong> nötig waren, um zum gewünschten Ergebnis zu gelangen. Mit der Zeit entwickelt sich jedoch ein <strong>besseres Gespür</strong> dafür, was die KI wie interpretiert und wie <strong>Anweisungen formuliert</strong> sein müssen, damit sie besser verstanden werden.`;
+
+const results = [
+  {
+    idx: '01',
+    title: 'Startseite',
+    format: 'SSG',
+    video: '/video/hotel/celestial-startseite.mp4',
+    videoAlt: 'Screencast der Startseite der Hotel-Website Celestial Haven',
+    kontext: 'Ein Video des Hotels bildet den Einstieg der Startseite, gefolgt von einer Übersicht der Suiten, ausgewählten Angeboten und der Philosophie des Hauses. Das gesamte Design ist dabei bewusst ruhig und schlicht gehalten.',
+  },
+  {
+    idx: '02',
+    title: 'Buchungsprozess',
+    format: 'SSR',
+    video: '/video/hotel/celestial-buchung.mp4',
+    videoAlt: 'Screencast des Buchungsprozesses der Hotel-Website Celestial Haven',
+    kontext: 'Herzstück ist ein fünfstufiger Buchungs-Flow — von der Suite-Auswahl bis hin zur finalen Buchungsübersicht. Besonders ist dabei die seitlich mitlaufende Zusammenfassung, die nach jedem Schritt alle bisher getroffenen Angaben übersichtlich bündelt. Zwischen den einzelnen Schritten lässt sich jederzeit vor- und zurückspringen, ohne dass bereits eingegebene Daten verloren gehen.',
+  },
+  {
+    idx: '03',
+    title: 'Admin-Bereich',
+    format: 'SPA',
+    video: '/video/hotel/celestial-admin.mp4',
+    videoAlt: 'Screencast des Admin-Bereichs der Hotel-Website Celestial Haven',
+    kontext: 'Geschützter Bereich fürs Hotel-Team mit einem Dashboard aus vier Ansichten: Wochenübersicht, Buchungsliste mit Filtern und Gantt-Kalender, Suiten-Stammdaten sowie Sperrzeiten.',
+  },
+];
+
+---
+
+<BaseLayout
+  title="Website für ein imaginäres Hotel — Emma Eichin"
+  description="Case Study: Konzeption und technische Umsetzung einer Hotel-Website (Celestial Haven) im Modul Webentwicklung 2 — Astro, SolidJS, SQLite."
+>
+  <Header />
+  <main>
+    <CaseHero
+      title="Website für ein<br />imaginäres Hotel"
+      eyebrow="Webentwicklung 2"
+      meta={meta}
+      image="/images/voschau%20projektsseiten/hotel.png"
+      imageAlt="Vorschau der Hotel-Website Celestial Haven"
+    />
+
+    <CaseToc items={overview} />
+
+    <section id="ausgangspunkt" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Ausgangspunkt</h2>
+        <TabCard tab="Aufgabe" data-reveal>
+          <p class="tab-card__text" style="max-width: 44vw;">
+            Ziel des Moduls Webentwicklung 2 war die <strong>technische Umsetzung einer Webapplikation</strong> mit Fokus auf moderne Webarchitektur: Vorgegeben waren der Stack aus <strong>Astro, SolidJS und SQLite</strong> sowie der Einsatz verschiedener Rendermethoden (SSG, SSR, SPA).
+          </p>
+          <p class="tab-card__text" style="margin-top: 0.6rem; max-width: 44vw;">
+            Als Projekt wählten wir eine <strong>Hotel-Website</strong>, um veraltete Buchungsprozesse durch einen <strong>spürbar intuitiveren Flow</strong> zu ersetzen. Während das technische Fundament bereits steht, bietet das Interface optimalen Spielraum, um im nächsten Schritt <strong>visuell, inhaltlich und nutzerzentriert</strong> weiter ausgebaut zu werden.
+          </p>
+        </TabCard>
+      </div>
+    </section>
+
+    <section id="ergebnis" class="section ergebnisse-section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Ergebnis</h2>
+      </div>
+
+      {results.map((w, i) => (
+        <div class="wrapper deck-slide" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+          <div class="deck-slide__num">{w.idx}</div>
+          <div class="deck-slide__content">
+            <div class="deck-slide__meta">
+              {w.kategorie && <span>{w.kategorie}</span>}
+              {w.format && <span>{w.format}</span>}
+              {w.jahr && <span class="deck-slide__year">{w.jahr}</span>}
+            </div>
+            <h3 class="deck-slide__title">{w.title}</h3>
+            <div class="deck-slide__image">
+              <video
+                src={w.video}
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label={w.videoAlt}
+                data-restart-on-view
+              ></video>
+            </div>
+            <p class="deck-slide__body">{w.kontext}</p>
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <script is:inline>
+      (() => {
+        const videos = document.querySelectorAll('video[data-restart-on-view]');
+        if (!videos.length) return;
+
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            const v = entry.target;
+            if (entry.isIntersecting) {
+              try { v.currentTime = 0; } catch (e) {}
+              const p = v.play();
+              if (p && typeof p.catch === 'function') p.catch(() => {});
+            } else {
+              v.pause();
+            }
+          });
+        }, { threshold: 0.5 });
+
+        videos.forEach((v) => io.observe(v));
+
+        const iconPlay = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+        const iconPause = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+
+        videos.forEach((video) => {
+          const parent = video.parentElement;
+          if (!parent || parent.classList.contains('video-player')) return;
+          parent.classList.add('video-player');
+
+          const controls = document.createElement('div');
+          controls.className = 'video-player__controls';
+          controls.innerHTML =
+            '<button type="button" class="video-player__btn" data-action="play" aria-label="Abspielen oder Pausieren">' + iconPlay + '</button>' +
+            '<div class="video-player__progress" role="slider" aria-label="Video-Fortschritt" tabindex="0">' +
+              '<div class="video-player__progress-fill"></div>' +
+              '<div class="video-player__progress-handle"></div>' +
+            '</div>';
+          parent.appendChild(controls);
+
+          const playBtn = controls.querySelector('[data-action="play"]');
+          const fill = controls.querySelector('.video-player__progress-fill');
+          const handle = controls.querySelector('.video-player__progress-handle');
+          const progress = controls.querySelector('.video-player__progress');
+
+          const syncPlayIcon = () => {
+            playBtn.innerHTML = video.paused ? iconPlay : iconPause;
+            playBtn.setAttribute('aria-label', video.paused ? 'Abspielen' : 'Pausieren');
+          };
+          syncPlayIcon();
+
+          let hideTimer;
+          const showControls = () => {
+            parent.classList.add('is-controls-visible');
+            if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+          };
+          const scheduleHide = () => {
+            if (hideTimer) clearTimeout(hideTimer);
+            hideTimer = setTimeout(() => {
+              parent.classList.remove('is-controls-visible');
+              hideTimer = null;
+            }, 1000);
+          };
+          parent.addEventListener('pointerenter', (e) => {
+            if (e.pointerType !== 'touch') showControls();
+          });
+          parent.addEventListener('pointermove', (e) => {
+            if (e.pointerType !== 'touch') showControls();
+          });
+          parent.addEventListener('pointerleave', (e) => {
+            if (e.pointerType !== 'touch') scheduleHide();
+          });
+          parent.addEventListener('pointerdown', (e) => {
+            if (e.pointerType === 'touch') {
+              showControls();
+              scheduleHide();
+            }
+          });
+
+          playBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (video.paused) {
+              const p = video.play();
+              if (p && typeof p.catch === 'function') p.catch(() => {});
+            } else {
+              video.pause();
+            }
+          });
+          video.addEventListener('play', syncPlayIcon);
+          video.addEventListener('pause', syncPlayIcon);
+          video.addEventListener('timeupdate', () => {
+            if (!video.duration) return;
+            const pct = (video.currentTime / video.duration) * 100;
+            fill.style.width = pct + '%';
+            handle.style.left = pct + '%';
+          });
+
+          const seek = (clientX) => {
+            if (!video.duration) return;
+            const rect = progress.getBoundingClientRect();
+            const pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+            video.currentTime = pct * video.duration;
+          };
+          let dragging = false;
+          progress.addEventListener('pointerdown', (e) => {
+            dragging = true;
+            seek(e.clientX);
+            try { progress.setPointerCapture(e.pointerId); } catch (err) {}
+          });
+          progress.addEventListener('pointermove', (e) => {
+            if (dragging) seek(e.clientX);
+          });
+          const endDrag = (e) => {
+            dragging = false;
+            try { progress.releasePointerCapture(e.pointerId); } catch (err) {}
+          };
+          progress.addEventListener('pointerup', endDrag);
+          progress.addEventListener('pointercancel', endDrag);
+        });
+      })();
+    </script>
+
+    <section id="projekt-details" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Projekt-Details</h2>
+
+        <TabCard tab="Workflow" data-reveal>
+          <p class="tab-card__text">Bei der Umsetzung nutzten wir <strong>Claude gezielt als beschleunigendes Werkzeug</strong>. <strong>Architektur, Datenmodell und Login</strong> haben wir selbst aufgebaut.</p>
+          <p class="tab-card__text">Die restliche Website entstand mit <strong>Unterstützung von Claude</strong>. Wichtig war uns dabei, den erzeugten Code <strong>nie blind zu übernehmen</strong>, sondern auch zu <strong>verstehen, zu prüfen</strong> und gegebenenfalls nochmal anzupassen.</p>
+        </TabCard>
+
+        <TabCard tab="Technische Informationen" data-reveal style="--reveal-delay: 100ms">
+          <p class="tab-card__text"><strong>Framework:</strong> Astro als Meta-Framework mit integriertem SolidJS für interaktive Inseln — so bleiben statische Bereiche schlank und nur die wirklich dynamischen Teile werden hydratisiert.</p>
+          <p class="tab-card__text"><strong>Rendering-Strategien:</strong> Bewusster Mix aus SSG (Startseite, statische Inhalte), SSR (Zimmer-Übersicht, Admin-Ansichten) und SPA (Buchungsprozess), um jede Route mit dem passenden Verfahren auszuliefern.</p>
+          <p class="tab-card__text"><strong>Datenbank:</strong> SQLite.</p>
+          <p class="tab-card__text"><strong>Authentifizierung:</strong> Selbst gebautes Login-System mit gehashten Passwörtern, Session-Cookies und rollenbasiertem Zugriff auf den Admin-Bereich.</p>
+          <p class="tab-card__text"><strong>Buchungsflow:</strong> Als SolidJS-SPA umgesetzt.</p>
+        </TabCard>
+      </div>
+    </section>
+
+    <section id="learnings" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Learnings</h2>
+        <TabCard tab="Erkenntnisse" data-reveal>
+          <div class="tab-card__text" set:html={`<p>${learningsHtml}</p>`} />
+        </TabCard>
+      </div>
+    </section>
+
+    <section id="links" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Links</h2>
+        <p class="case-plain-text" data-reveal>Hier gelangst du direkt auf die Website,<br />um sie live anzusehen.</p>
+        <LinkTile
+          href="https://calestial-haven.vercel.app/hotel"
+          title="Fiktive Hotel-Website"
+          subtitle="Mit einem Klick öffnet sich die Seite in einem neuen Fenster"
+          icon="external"
+          target="_blank"
+        />
+      </div>
+    </section>
+
+    <Projects excludeHref="/projekte/hotel-website" heading="Weitere Projekte" id="weitere-projekte" />
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    main :global(.case-hero__frame) {
+      height: 130%;
+      top: 66%;
+      left: 45%;
+    }
+
+    main :global(.case-hero__shape) {
+      left: -24%;
+    }
+  }
+
+  @media (min-width: 1201px) {
+    main :global(.case-hero__frame) {
+      height: 158%;
+    }
+
+    main :global(.case-hero__shape) {
+      left: -16%;
+    }
+  }
+
+  /* ============ Ergebnis: Slide-Deck ============ */
+  .deck-slide {
+    display: grid;
+    grid-template-columns: minmax(120px, 0.4fr) minmax(0, 1fr);
+    gap: 2rem;
+    padding-block: clamp(2rem, 5vw, 4rem);
+  }
+
+  .deck-slide + .deck-slide {
+    position: relative;
+  }
+
+  .deck-slide + .deck-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: var(--gutter);
+    right: var(--gutter);
+    border-top: 1px dashed #d9dcd5;
+    pointer-events: none;
+  }
+
+  @media (max-width: 900px) {
+    .deck-slide + .deck-slide::before { display: none; }
+  }
+
+  .deck-slide__num {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 10vw, 9rem);
+    line-height: 0.9;
+    color: var(--color-sage);
+    letter-spacing: 0.02em;
+    position: sticky;
+    top: 6rem;
+    align-self: start;
+  }
+
+  .deck-slide__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-sage-dark);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+
+  .deck-slide__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    letter-spacing: 0.04em;
+    margin: 0 0 1.5rem;
+    color: var(--color-ink);
+    font-weight: 400;
+    line-height: 1.1;
+  }
+
+  .deck-slide__image {
+    position: relative;
+    display: block;
+    background: #f4f5f2;
+    overflow: hidden;
+    margin: 0 0 1.25rem;
+    padding: 0;
+    border: 1px solid var(--color-sage);
+    width: 100%;
+    text-align: left;
+  }
+
+  .deck-slide__image video {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  .deck-slide__body {
+    max-width: none;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    color: var(--color-ink);
+  }
+
+  @media (max-width: 900px) {
+    .deck-slide { grid-template-columns: 1fr; gap: 1rem; }
+    .deck-slide__num { position: static; font-size: 3rem; }
+  }
+
+</style>

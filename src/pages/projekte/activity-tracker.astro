@@ -1,0 +1,247 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import CaseHero from '../../components/CaseHero.astro';
+import CaseToc from '../../components/CaseToc.astro';
+import TabCard from '../../components/TabCard.astro';
+import Projects from '../../components/Projects.astro';
+import Footer from '../../components/Footer.astro';
+
+const overview = [
+  { number: '1', label: 'Ausgangspunkt', href: '#ausgangspunkt' },
+  { number: '2', label: 'Ergebnis', href: '#ergebnis' },
+  { number: '3', label: 'Learnings', href: '#learnings' },
+];
+
+const meta = ['1. Semester', 'Einzelarbeit', '2024'];
+
+const learningsHtml = `Da das Projekt im <strong>ersten Semester</strong> entstanden ist, würde ich aus heutiger Sicht in vielen Bereichen <strong>andere Entscheidungen</strong> treffen. Dennoch bleibt die Arbeit ein wertvoller Ausgangspunkt: Hier habe ich zum ersten Mal mit <strong>grundlegenden Gestaltungsprinzipien</strong> gearbeitet – von <strong>visuellen Hierarchien</strong> über <strong>Typografie</strong> und <strong>Farbsysteme</strong> bis hin zur klaren Aufbereitung komplexer Informationen. Das Kennenlernen erster Regeln sowie das <strong>Aufnehmen und Umsetzen von Feedback</strong> haben ein solides Fundament geschaffen, auf dem alle weiteren Projekte aufbauen konnten.`;
+
+const works = [
+  {
+    idx: '01',
+    title: 'Activity-Tracker-Dashboard',
+    kategorie: 'Interfacegestaltung',
+    jahr: '2024',
+    image: '/images/Activity-Tracker/tablet%20und%20iphone.png',
+    imageAlt: 'Fertiges Dashboard-Design des Activity Trackers auf Tablet und iPhone',
+    kontext: 'Ein Dashboard, das große und komplexe Datenmengen visuell klar strukturiert und für NutzerInnen intuitiv erfassbar macht. Umgesetzt in zwei aufeinander abgestimmten Varianten – einer Smartphone- und einer Tablet-Version – die konsistent im Look sind und zugleich für das jeweilige Format optimiert wurden.',
+  },
+];
+---
+
+<BaseLayout
+  title="Gestaltung eines Activity Tracker — Emma Eichin"
+  description="Case Study: Dashboard-Gestaltung für einen Activity Tracker im Modul Grundlagen der Gestaltung — Fokus auf klare Struktur komplexer Datenmengen."
+>
+  <Header />
+  <main class="page-activity-tracker">
+    <CaseHero
+      title={`Gestaltung eines<br class="br-tablet" /> Activity Tracker`}
+      meta={meta}
+      image="/images/voschau%20projektsseiten/phonetransparent.png"
+      imageAlt="Activity-Tracker-Dashboard auf Tablet und iPhone"
+      imagePosition="center"
+      frameTop="52%"
+    />
+
+    <CaseToc items={overview} />
+
+    <section id="ausgangspunkt" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Ausgangspunkt</h2>
+        <TabCard tab="Aufgabe" data-reveal>
+          <p class="tab-card__text">
+            Im Modul <strong>Grundlagen der Gestaltung</strong> im ersten Semester bestand eine Aufgabe darin, ein <strong>Dashboard für einen Activity Tracker</strong> zu entwerfen. Der Schwerpunkt lag darauf, <strong>große und komplexe Datenmengen visuell klar zu strukturieren</strong> und für die <strong>NutzerInnen intuitiv erfassbar</strong> zu machen.
+          </p>
+        </TabCard>
+      </div>
+    </section>
+
+    <section id="ergebnis" class="section ergebnisse-section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Ergebnis</h2>
+      </div>
+
+      {works.map((w, i) => (
+        <div class="wrapper deck-slide" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+          <div class="deck-slide__num">{w.idx}</div>
+          <div class="deck-slide__content">
+            <div class="deck-slide__meta">
+              <span>{w.kategorie}</span>
+              {w.format && <span>{w.format}</span>}
+              {w.jahr && <span class="deck-slide__year">{w.jahr}</span>}
+            </div>
+            <h3 class="deck-slide__title">{w.title}</h3>
+            <div class="deck-slide__image">
+              <img src={w.image} alt={w.imageAlt} loading="lazy" />
+            </div>
+            <p class="deck-slide__body">{w.kontext}</p>
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <section id="learnings" class="section">
+      <div class="wrapper">
+        <h2 class="section-heading" data-reveal>Learnings</h2>
+        <TabCard tab="Erkenntnisse" data-reveal>
+          <div class="tab-card__text" set:html={`<p>${learningsHtml}</p>`} />
+        </TabCard>
+      </div>
+    </section>
+
+    <Projects excludeHref="/projekte/activity-tracker" heading="Weitere Projekte" id="weitere-projekte" />
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style is:global>
+  /* Nur Activity-Tracker: Hero-Bild im Handy-Format kleiner (Phone-Mockup) */
+  @media (max-width: 900px) {
+    .page-activity-tracker .case-hero__frame img {
+      transform: translateY(-20px) scale(1.2);
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 900px) {
+    .page-activity-tracker .case-hero__frame {
+      height: 90% !important;
+      left: 44% !important;
+      top: 48% !important;
+    }
+  }
+
+  @media (min-width: 901px) and (max-width: 1024px) {
+    .page-activity-tracker .case-hero__shape {
+      left: -18% !important;
+    }
+
+    .page-activity-tracker .case-hero__frame {
+      top: 45% !important;
+      left: 38% !important;
+      height: 95% !important;
+    }
+  }
+
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    .page-activity-tracker .case-hero__shape {
+      left: -32% !important;
+    }
+
+    .page-activity-tracker .case-hero__frame {
+      top: 55% !important;
+      left: 32% !important;
+      height: 120% !important;
+    }
+  }
+</style>
+
+<style>
+  /* ============ Ergebnis: Slide-Deck (wie Surfcamp/Kutter) ============ */
+  .deck-slide {
+    display: grid;
+    grid-template-columns: minmax(120px, 0.4fr) minmax(0, 1fr);
+    gap: 2rem;
+    padding-block: clamp(2rem, 5vw, 4rem);
+  }
+
+  .deck-slide + .deck-slide {
+    position: relative;
+  }
+
+  .deck-slide + .deck-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: var(--gutter);
+    right: var(--gutter);
+    border-top: 1px dashed #d9dcd5;
+    pointer-events: none;
+  }
+
+  @media (max-width: 900px) {
+    .deck-slide + .deck-slide::before { display: none; }
+  }
+
+  .deck-slide__num {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 10vw, 9rem);
+    line-height: 0.9;
+    color: var(--color-sage);
+    letter-spacing: 0.02em;
+    position: sticky;
+    top: 6rem;
+    align-self: start;
+  }
+
+  .deck-slide__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-sage-dark);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .deck-slide__meta > span + span::before {
+    content: '·';
+    display: inline-block;
+    margin-right: 0.75rem;
+    opacity: 0.6;
+  }
+
+  .deck-slide__meta > span + span.deck-slide__year::before {
+    content: '';
+    width: 1.5rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.5;
+    margin-right: 1rem;
+    vertical-align: middle;
+  }
+
+  .deck-slide__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    letter-spacing: 0.04em;
+    margin: 0 0 1.5rem;
+    color: var(--color-ink);
+    font-weight: 400;
+    line-height: 1.1;
+  }
+
+  .deck-slide__image {
+    position: relative;
+    display: block;
+    background: #f4f5f2;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    margin: 0 0 1.25rem;
+    border: 1px solid var(--color-sage);
+  }
+
+  .deck-slide__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .deck-slide__body {
+    max-width: none;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    color: var(--color-ink);
+  }
+
+  @media (max-width: 900px) {
+    .deck-slide { grid-template-columns: 1fr; gap: 1rem; }
+    .deck-slide__num { position: static; font-size: 3rem; }
+  }
+</style>

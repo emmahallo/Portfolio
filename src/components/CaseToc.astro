@@ -1,0 +1,30 @@
+---
+// "Übersicht"-Section einer Projekt-Unterseite: Überschrift + vertikale Timeline (Variante B).
+
+import TocChip from './TocChip.astro';
+
+interface Props {
+  items: { number: string; label: string; href: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<section id="uebersicht" class="section case-toc">
+  <div class="wrapper">
+    <h2 class="section-heading" data-reveal>Übersicht</h2>
+    <div class="case-toc__body">
+      <ul class="case-toc__list" data-reveal style="--reveal-delay: 80ms">
+        {items.map((item) => (
+          <li>
+            <TocChip number={item.number} label={item.label} href={item.href} />
+          </li>
+        ))}
+      </ul>
+      <div class="case-toc__hint" data-reveal style="--reveal-delay: 160ms" aria-hidden="true">
+        <span class="case-toc__hint-text">klickbar!</span>
+        <span class="case-toc__hint-arrow" role="presentation"></span>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,1035 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+
+const works = [
+  {
+    idx: '01',
+    title: 'Instagram-Posts',
+    kategorie: 'Social Media',
+    format: '1080 × 1350 px · fortlaufend seit 2022',
+    image: '/images/Kutter/handy.png',
+    imageAlt: 'Mockup von Instagram-Posts für das Kutter Gartencenter auf dem Smartphone',
+    kontext: 'Wöchentliche Content-Serie für saisonale Aktionen, Aktionstage und Team-Vorstellungen.',
+    kurz: 'Content-Serie',
+    gallery: [
+      { src: '/images/Kutter/handy.png', alt: 'Instagram-Posts' },
+    ],
+  },
+  {
+    idx: '02',
+    title: 'Flyer',
+    kategorie: 'Print',
+    format: 'DIN lang · 6-seitig · Wickelfalz',
+    image: '/images/Kutter/flyer.png',
+    imageAlt: 'Flyer zur Neueröffnung des Kutter Gartencenters',
+    kontext: 'Flyer zur Neueröffnung des Standorts in Kempten — Bild- und Farbwelt der Gärtnerei als Ausgangspunkt.',
+    kurz: 'Neueröffnung',
+    gallery: [
+      { src: '/images/Kutter/flyer.png', alt: 'Flyer — Gesamtansicht' },
+      { src: '/images/Kutter/flyer%20kutter.png', alt: 'Flyer — Detailansicht' },
+      { src: '/images/Kutter/fylerr.png', alt: 'Flyer — weitere Ansicht' },
+      { src: '/images/Kutter/kuttterfyler.png', alt: 'Flyer — Innenseite' },
+    ],
+  },
+  {
+    idx: '03',
+    title: 'Postkarten',
+    kategorie: 'Print',
+    format: 'A6 · Vorder- & Rückseite · 4-farbig',
+    image: '/images/Kutter/postkarte(vorne&hinten).png',
+    imageAlt: 'Postkarten für das Kutter Gartencenter, Vorder- und Rückseite',
+    kontext: 'Einladungskarten für Stammkund·innen zur Neueröffnung — im visuellen Einklang mit dem Flyer.',
+    kurz: 'Einladung',
+    gallery: [
+      { src: '/images/Kutter/postkarte(vorne&hinten).png', alt: 'Postkarten — Vorder- und Rückseite' },
+      { src: '/images/Kutter/postkarte.png', alt: 'Postkarte — Einzelansicht' },
+      { src: '/images/Kutter/postkartenn.png', alt: 'Postkarten — weitere Ansicht' },
+    ],
+  },
+  {
+    idx: '04',
+    title: 'Werbebanner',
+    kategorie: 'Print',
+    format: 'Groß-Banner · Outdoor',
+    image: '/images/Kutter/banne.png',
+    imageAlt: 'Werbebanner für das Kutter Gartencenter mit der Aufschrift „Wir suchen dich!"',
+    kontext: 'Print-Banner für die aktive Personalsuche am Standort — konsequent in der bestehenden Bildsprache.',
+    kurz: 'Recruiting',
+    gallery: [
+      { src: '/images/Kutter/banne.png', alt: 'Werbebanner „Wir suchen dich!"' },
+    ],
+  },
+];
+
+const options = [
+  { id: '1', title: 'Editorial Spread (Magazin-Layout)' },
+  { id: '2', title: 'Sticky Case-Story (Scrollytelling)' },
+  { id: '3', title: 'Gallery Wall (Museum-Hängung)' },
+  { id: '4', title: 'Numerische Slide-Deck-Ansicht' },
+  { id: '5', title: 'Kinetic Marquee + Bento-Grid' },
+];
+
+const marqueeItems = [...works, ...works];
+---
+
+<BaseLayout title="Kutter Ergebnisse – Neue Präsentations-Ideen" description="Fünf editorial-orientierte Layout-Ideen für die Ergebnisse-Section auf der Kutter-Gartencenter-Projektseite.">
+  <Header />
+  <main class="opt-page">
+
+    <section class="section opt-intro">
+      <div class="wrapper">
+        <span class="opt-eyebrow">Kutter Gartencenter — Ergebnisse</span>
+        <h1 class="opt-h1">Fünf neue Layout-Ideen<br/>editorial · seriös · nicht standard</h1>
+        <p class="opt-lead">
+          Kein simples Grid, keine wiederholten Kacheln. Jede Option ist ein eigener Ansatz — mit Typografie, Hierarchie und Details, die man aus Design-Magazinen kennt. Alle nutzen die bestehenden Farb-Tokens (Sage, Ink, Sage-Tint) und die vorhandenen Kutter-Bilder.
+        </p>
+        <nav class="opt-nav">
+          {options.map((o) => (
+            <a href={`#opt-${o.id}`}><span>{o.id}</span> {o.title}</a>
+          ))}
+        </nav>
+      </div>
+    </section>
+
+    {/* 1 — Editorial Spread */}
+    <section id="opt-1" class="opt-block">
+      <div class="wrapper opt-block__intro">
+        <span class="opt-badge">Option 01</span>
+        <h2>Editorial Spread</h2>
+        <p>Asymmetrisch wie eine Doppelseite in einem Design-Magazin (Slanted / 032c). Riesige Ziffern, Titel bricht aus dem Grid, Bilder überlappen, Meta-Angaben als schmale Rand-Spalte. Wirkt selbstbewusst und kuratiert.</p>
+      </div>
+
+      <div class="wrapper">
+        <div class="ed-grid">
+          {works.map((w, i) => (
+            <article class={`ed-item ed-item--${(i % 4) + 1}`}>
+              <div class="ed-item__num">{w.idx}</div>
+              <div class="ed-item__title">{w.title}</div>
+              <div class="ed-item__meta">
+                <span>{w.kategorie}</span>
+                <span>{w.format}</span>
+              </div>
+              <div class="ed-item__image">
+                <img src={w.image} alt={w.imageAlt} loading="lazy" />
+              </div>
+              <p class="ed-item__body">{w.kontext}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* 2 — Sticky Case-Story */}
+    <section id="opt-2" class="opt-block opt-block--dark">
+      <div class="wrapper opt-block__intro">
+        <span class="opt-badge">Option 02</span>
+        <h2>Sticky Case-Story</h2>
+        <p>Zwei Spalten. Links bleibt eine Info-Karte stehen (Nummer, Titel, Format, Kontext), rechts scrollen die Mockups nacheinander vorbei. Nur eine Arbeit ist gleichzeitig aktiv — beruhigt das Auge und macht aus einer Bildersammlung eine Geschichte. Vertrautes Storytelling-Muster (NYT-Feature-Look).</p>
+      </div>
+
+      <div class="wrapper">
+        <div class="sticky-story">
+          <aside class="sticky-story__aside">
+            <div class="sticky-story__card">
+              <span class="sticky-story__num">04 · Serie</span>
+              <h3>Kutter — vier Arbeiten<br/>über vier Kanäle</h3>
+              <p>Von wöchentlichen Social-Posts bis zum großformatigen Recruiting-Banner: alle Arbeiten teilen dieselbe Bild- und Farbsprache und wirken als zusammenhängende Kommunikation.</p>
+              <ul class="sticky-story__list">
+                {works.map((w) => (
+                  <li><span>{w.idx}</span> {w.title} · <em>{w.kurz}</em></li>
+                ))}
+              </ul>
+            </div>
+          </aside>
+          <div class="sticky-story__scroll">
+            {works.map((w) => (
+              <figure class="sticky-story__frame">
+                <img src={w.image} alt={w.imageAlt} loading="lazy" />
+                <figcaption>
+                  <strong>{w.idx} — {w.title}</strong>
+                  <span>{w.format}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* 3 — Gallery Wall */}
+    <section id="opt-3" class="opt-block">
+      <div class="wrapper opt-block__intro">
+        <span class="opt-badge">Option 03</span>
+        <h2>Gallery Wall</h2>
+        <p>Salon-Hängung wie in einer Ausstellung — Bilder in bewusst unterschiedlichen Größen, kuratiert asymmetrisch, jedes mit einem kleinen Museums-Label (Titel · Format · Jahr) darunter. Wirkt hochwertig und ruhig, macht klar dass das hier ausgewählte Arbeiten sind, keine Content-Schleuder.</p>
+      </div>
+
+      <div class="wrapper">
+        <div class="gallery-wall">
+          <figure class="gw gw--big">
+            <div class="gw__mount"><img src={works[1].image} alt={works[1].imageAlt} loading="lazy" /></div>
+            <figcaption><strong>{works[1].title}</strong><span>{works[1].format}</span></figcaption>
+          </figure>
+          <figure class="gw gw--tall">
+            <div class="gw__mount"><img src={works[0].image} alt={works[0].imageAlt} loading="lazy" /></div>
+            <figcaption><strong>{works[0].title}</strong><span>{works[0].format}</span></figcaption>
+          </figure>
+          <figure class="gw gw--wide">
+            <div class="gw__mount"><img src={works[3].image} alt={works[3].imageAlt} loading="lazy" /></div>
+            <figcaption><strong>{works[3].title}</strong><span>{works[3].format}</span></figcaption>
+          </figure>
+          <figure class="gw gw--sm">
+            <div class="gw__mount"><img src={works[2].image} alt={works[2].imageAlt} loading="lazy" /></div>
+            <figcaption><strong>{works[2].title}</strong><span>{works[2].format}</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    {/* 4 — Slide-Deck */}
+    <section id="opt-4" class="opt-block">
+      <div class="wrapper opt-block__intro">
+        <span class="opt-badge">Option 04</span>
+        <h2>Numerische Slide-Deck-Ansicht</h2>
+        <p>Wie eine Case-Study-Präsentation zum Abscrollen: jede Arbeit belegt einen großen Bereich, links riesige Nummer 01–04, rechts Mockup, unten dünne Info-Zeile (Kategorie · Format · Jahr). Sehr klar, sehr Studio-Portfolio-Vibe (Pentagram, Bureau Cool Studio).</p>
+      </div>
+
+      {works.map((w, i) => (
+        <div class="wrapper deck-slide">
+          <div class="deck-slide__num">{w.idx}</div>
+          <div class="deck-slide__content">
+            <div class="deck-slide__meta">
+              <span>{w.kategorie}</span>
+              <span>{w.format}</span>
+              {w.gallery.length > 1 && <span class="deck-slide__count">{w.gallery.length} Ansichten</span>}
+            </div>
+            <h3 class="deck-slide__title">{w.title}</h3>
+            <button
+              type="button"
+              class="deck-slide__image"
+              data-lightbox-open={i}
+              aria-label={`${w.title} – ${w.gallery.length > 1 ? `${w.gallery.length} Bilder ansehen` : 'Bild vergrößern'}`}
+            >
+              <img src={w.image} alt={w.imageAlt} loading="lazy" />
+              {w.gallery.length > 1 && (
+                <span class="deck-slide__zoom">
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8" />
+                    <path d="M16 16l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    <path d="M11 8v6M8 11h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                  </svg>
+                  Alle {w.gallery.length} Bilder ansehen
+                </span>
+              )}
+            </button>
+            <p class="deck-slide__body">{w.kontext}</p>
+          </div>
+        </div>
+      ))}
+    </section>
+
+    {/* Lightbox */}
+    <div class="lightbox" data-lightbox hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Bildergalerie">
+      <button type="button" class="lightbox__close" data-lightbox-close aria-label="Schließen">×</button>
+      <button type="button" class="lightbox__nav lightbox__nav--prev" data-lightbox-prev aria-label="Vorheriges Bild">‹</button>
+      <button type="button" class="lightbox__nav lightbox__nav--next" data-lightbox-next aria-label="Nächstes Bild">›</button>
+      <figure class="lightbox__figure">
+        <img data-lightbox-image src="" alt="" />
+        <figcaption>
+          <span data-lightbox-title></span>
+          <span data-lightbox-counter></span>
+        </figcaption>
+      </figure>
+    </div>
+
+    {/* 5 — Kinetic Marquee + Bento */}
+    <section id="opt-5" class="opt-block">
+      <div class="wrapper opt-block__intro">
+        <span class="opt-badge">Option 05</span>
+        <h2>Kinetic Marquee + Bento-Grid</h2>
+        <p>Oben eine dauerhaft laufende Zeile mit den Titeln aller Arbeiten (typografisch groß, sage-Ton) — Zeichen von Bewegung und Serie. Darunter ein Bento-Grid mit klarer Hierarchie: ein Hauptfeld, zwei mittelgroße, ein kleines. Modern, technisch, aber nicht überdreht.</p>
+      </div>
+
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee__track">
+          {marqueeItems.map((w) => (
+            <span class="marquee__item">{w.title} <span class="marquee__dot">●</span></span>
+          ))}
+        </div>
+      </div>
+
+      <div class="wrapper">
+        <div class="bento">
+          <figure class="bento__cell bento__cell--hero">
+            <img src={works[1].image} alt={works[1].imageAlt} loading="lazy" />
+            <figcaption><span>{works[1].idx}</span> {works[1].title}</figcaption>
+          </figure>
+          <figure class="bento__cell">
+            <img src={works[0].image} alt={works[0].imageAlt} loading="lazy" />
+            <figcaption><span>{works[0].idx}</span> {works[0].title}</figcaption>
+          </figure>
+          <figure class="bento__cell">
+            <img src={works[3].image} alt={works[3].imageAlt} loading="lazy" />
+            <figcaption><span>{works[3].idx}</span> {works[3].title}</figcaption>
+          </figure>
+          <figure class="bento__cell bento__cell--wide">
+            <img src={works[2].image} alt={works[2].imageAlt} loading="lazy" />
+            <figcaption><span>{works[2].idx}</span> {works[2].title}</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <script is:inline define:vars={{ galleries: works.map((w) => ({ title: w.title, images: w.gallery })) }}>
+      (() => {
+        const lb = document.querySelector('[data-lightbox]');
+        if (!lb) return;
+        const imgEl = lb.querySelector('[data-lightbox-image]');
+        const titleEl = lb.querySelector('[data-lightbox-title]');
+        const counterEl = lb.querySelector('[data-lightbox-counter]');
+        const prevBtn = lb.querySelector('[data-lightbox-prev]');
+        const nextBtn = lb.querySelector('[data-lightbox-next]');
+        const closeBtn = lb.querySelector('[data-lightbox-close]');
+
+        let currentGallery = null;
+        let currentIndex = 0;
+
+        function render() {
+          const img = currentGallery.images[currentIndex];
+          imgEl.src = img.src;
+          imgEl.alt = img.alt || '';
+          titleEl.textContent = currentGallery.title;
+          const multi = currentGallery.images.length > 1;
+          counterEl.textContent = multi ? `${currentIndex + 1} / ${currentGallery.images.length}` : '';
+          prevBtn.hidden = !multi;
+          nextBtn.hidden = !multi;
+        }
+
+        function open(galleryIdx) {
+          currentGallery = galleries[galleryIdx];
+          currentIndex = 0;
+          render();
+          lb.hidden = false;
+          requestAnimationFrame(() => lb.classList.add('is-open'));
+          lb.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+        }
+
+        function close() {
+          lb.classList.remove('is-open');
+          lb.setAttribute('aria-hidden', 'true');
+          setTimeout(() => { lb.hidden = true; }, 250);
+          document.body.style.overflow = '';
+        }
+
+        function step(delta) {
+          if (!currentGallery) return;
+          const n = currentGallery.images.length;
+          currentIndex = (currentIndex + delta + n) % n;
+          render();
+        }
+
+        document.querySelectorAll('[data-lightbox-open]').forEach((btn) => {
+          btn.addEventListener('click', () => open(parseInt(btn.dataset.lightboxOpen, 10)));
+        });
+        closeBtn.addEventListener('click', close);
+        prevBtn.addEventListener('click', () => step(-1));
+        nextBtn.addEventListener('click', () => step(1));
+        lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
+        document.addEventListener('keydown', (e) => {
+          if (lb.hidden) return;
+          if (e.key === 'Escape') close();
+          if (e.key === 'ArrowRight') step(1);
+          if (e.key === 'ArrowLeft') step(-1);
+        });
+      })();
+    </script>
+
+    <section class="section opt-outro">
+      <div class="wrapper">
+        <p class="opt-outro__note">
+          Sag mir welche Nummer (oder eine Kombination — z. B. „Marquee-Header aus 5 über einem Editorial-Spread aus 1"), dann baue ich sie sauber in die Kutter-Seite ein.
+        </p>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .opt-page {
+    background: #fafaf7;
+    color: var(--color-ink);
+  }
+
+  .opt-eyebrow {
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.75rem;
+    color: var(--color-sage-dark);
+    margin-bottom: 1rem;
+  }
+
+  .opt-h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.25rem, 5vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: 0.03em;
+    margin: 0 0 1.5rem;
+    color: var(--color-ink);
+  }
+
+  .opt-lead {
+    font-size: 1.05rem;
+    max-width: 62ch;
+    margin: 0 0 2rem;
+  }
+
+  .opt-intro {
+    padding-block: clamp(3rem, 8vw, 5rem) 2.5rem;
+  }
+
+  .opt-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .opt-nav a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.55rem 0.95rem;
+    border: 1px solid var(--color-sage);
+    color: var(--color-ink);
+    text-decoration: none;
+    font-size: 0.9rem;
+    background: #fff;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .opt-nav a span {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    color: var(--color-sage-dark);
+  }
+
+  .opt-nav a:hover {
+    background: var(--color-ink);
+    color: #fff;
+  }
+
+  .opt-nav a:hover span {
+    color: #c9d3ca;
+  }
+
+  .opt-block {
+    padding-block: clamp(3.5rem, 8vw, 6rem);
+    border-top: 1px solid #e6e6e0;
+  }
+
+  .opt-block--dark {
+    background: #efeeea;
+  }
+
+  .opt-block__intro {
+    margin-bottom: 3rem;
+  }
+
+  .opt-badge {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    letter-spacing: 0.14em;
+    color: var(--color-sage-dark);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .opt-block__intro h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    letter-spacing: 0.04em;
+    margin: 0 0 0.75rem;
+    color: var(--color-ink);
+    line-height: 1.1;
+  }
+
+  .opt-block__intro p {
+    max-width: 62ch;
+    margin: 0;
+    color: var(--color-ink);
+  }
+
+  /* ============ Option 1 · Editorial Spread ============ */
+  .ed-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  .ed-item {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 1.5rem 2.5rem;
+    align-items: start;
+  }
+
+  .ed-item:nth-child(even) {
+    grid-template-columns: 1fr 180px;
+  }
+  .ed-item:nth-child(even) .ed-item__num,
+  .ed-item:nth-child(even) .ed-item__meta { order: 2; }
+  .ed-item:nth-child(even) .ed-item__title,
+  .ed-item:nth-child(even) .ed-item__image,
+  .ed-item:nth-child(even) .ed-item__body { order: 1; }
+
+  .ed-item__num {
+    grid-column: 1;
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 8vw, 6.5rem);
+    line-height: 1;
+    color: var(--color-sage-dark);
+    letter-spacing: 0.02em;
+  }
+
+  .ed-item__title {
+    grid-column: 2;
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    align-self: end;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #cfd3ca;
+    margin: 0;
+  }
+
+  .ed-item__meta {
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #7a807a;
+  }
+
+  .ed-item__image {
+    grid-column: 2;
+    background: #f4f5f2;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+
+  .ed-item__image img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ed-item__body {
+    grid-column: 2;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  @media (max-width: 800px) {
+    .ed-item,
+    .ed-item:nth-child(even) {
+      grid-template-columns: 1fr;
+    }
+    .ed-item__num, .ed-item__title, .ed-item__meta, .ed-item__image, .ed-item__body {
+      grid-column: 1;
+      order: unset;
+    }
+  }
+
+  /* ============ Option 2 · Sticky Case-Story ============ */
+  .sticky-story {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.2fr);
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .sticky-story__aside {
+    position: sticky;
+    top: 6rem;
+  }
+
+  .sticky-story__card {
+    background: #fff;
+    padding: 2rem;
+    border: 1px solid #e0e2dc;
+  }
+
+  .sticky-story__num {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    letter-spacing: 0.14em;
+    color: var(--color-sage-dark);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .sticky-story__card h3 {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    line-height: 1.15;
+    letter-spacing: 0.03em;
+    margin: 0 0 1.25rem;
+    color: var(--color-ink);
+    font-weight: 400;
+  }
+
+  .sticky-story__card p {
+    margin: 0 0 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  .sticky-story__list {
+    list-style: none;
+    padding: 0; margin: 0;
+    border-top: 1px solid #e0e2dc;
+  }
+
+  .sticky-story__list li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e0e2dc;
+    font-size: 0.9rem;
+  }
+
+  .sticky-story__list li span {
+    font-family: var(--font-display);
+    color: var(--color-sage-dark);
+    letter-spacing: 0.08em;
+  }
+
+  .sticky-story__list li em {
+    color: #7a807a;
+    font-style: italic;
+  }
+
+  .sticky-story__scroll {
+    display: grid;
+    gap: 3rem;
+  }
+
+  .sticky-story__frame {
+    margin: 0;
+    background: #fff;
+    border: 1px solid #e0e2dc;
+  }
+
+  .sticky-story__frame img {
+    width: 100%;
+    display: block;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .sticky-story__frame figcaption {
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: #7a807a;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .sticky-story__frame figcaption strong {
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+  }
+
+  @media (max-width: 900px) {
+    .sticky-story {
+      grid-template-columns: 1fr;
+    }
+    .sticky-story__aside { position: static; }
+  }
+
+  /* ============ Option 3 · Gallery Wall ============ */
+  .gallery-wall {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1.2fr;
+    grid-template-rows: auto auto;
+    gap: 3rem 2.5rem;
+    align-items: end;
+  }
+
+  .gw {
+    margin: 0;
+  }
+
+  .gw__mount {
+    background: #fff;
+    padding: 1.25rem;
+    box-shadow: 0 12px 30px -18px rgba(30, 40, 30, 0.35);
+  }
+
+  .gw__mount img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .gw figcaption {
+    padding-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #7a807a;
+    border-top: 1px solid #cfd3ca;
+    margin-top: 0.75rem;
+  }
+
+  .gw figcaption strong {
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+  }
+
+  .gw--big { grid-column: 1 / span 2; grid-row: 1; }
+  .gw--big .gw__mount { aspect-ratio: 16 / 10; }
+  .gw--tall { grid-column: 3; grid-row: 1 / span 2; }
+  .gw--tall .gw__mount { aspect-ratio: 3 / 4; }
+  .gw--wide { grid-column: 1; grid-row: 2; }
+  .gw--wide .gw__mount { aspect-ratio: 5 / 3; }
+  .gw--sm { grid-column: 2; grid-row: 2; }
+  .gw--sm .gw__mount { aspect-ratio: 4 / 3; }
+
+  @media (max-width: 900px) {
+    .gallery-wall {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .gw--big, .gw--tall, .gw--wide, .gw--sm { grid-column: 1; grid-row: auto; }
+    .gw--big .gw__mount, .gw--tall .gw__mount, .gw--wide .gw__mount, .gw--sm .gw__mount { aspect-ratio: 4 / 3; }
+  }
+
+  /* ============ Option 4 · Slide-Deck ============ */
+  .deck-slide {
+    display: grid;
+    grid-template-columns: minmax(120px, 0.4fr) minmax(0, 1fr);
+    gap: 2rem;
+    padding-block: clamp(2rem, 5vw, 4rem);
+    border-top: 1px dashed #d9dcd5;
+  }
+
+  .deck-slide:first-of-type {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .deck-slide__num {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 10vw, 9rem);
+    line-height: 0.9;
+    color: var(--color-sage);
+    letter-spacing: 0.02em;
+    position: sticky;
+    top: 6rem;
+    align-self: start;
+  }
+
+  .deck-slide__meta {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #7a807a;
+    margin-bottom: 0.75rem;
+  }
+
+  .deck-slide__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    letter-spacing: 0.04em;
+    margin: 0 0 1.5rem;
+    color: var(--color-ink);
+    font-weight: 400;
+    line-height: 1.1;
+  }
+
+  .deck-slide__image {
+    position: relative;
+    display: block;
+    background: #f4f5f2;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    margin: 0 0 1.25rem;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: transform 0.4s ease;
+  }
+
+  .deck-slide__image:hover { transform: translateY(-2px); }
+
+  .deck-slide__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease, filter 0.3s ease;
+  }
+
+  .deck-slide__image:hover img { transform: scale(1.03); filter: brightness(0.85); }
+
+  .deck-slide__zoom {
+    position: absolute;
+    bottom: 1rem; left: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: var(--color-sage-dark);
+    color: #fff;
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: var(--font-body);
+    font-weight: 700;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .deck-slide__zoom svg {
+    width: 16px; height: 16px;
+  }
+
+  .deck-slide__count {
+    color: var(--color-sage-dark);
+    font-weight: 700;
+  }
+
+  /* Lightbox */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(15, 20, 15, 0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1rem, 4vw, 3rem);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .lightbox[hidden] { display: none; }
+  .lightbox.is-open { opacity: 1; }
+
+  .lightbox__figure {
+    margin: 0;
+    max-width: min(1200px, 92vw);
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .lightbox__figure img {
+    display: block;
+    max-width: 100%;
+    max-height: 78vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto;
+    background: #f4f5f2;
+  }
+
+  .lightbox__figure figcaption {
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: var(--font-body);
+  }
+
+  .lightbox__figure figcaption [data-lightbox-counter] {
+    color: #c9d3ca;
+  }
+
+  .lightbox__close,
+  .lightbox__nav {
+    position: absolute;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.25);
+    width: 48px; height: 48px;
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .lightbox__close:hover,
+  .lightbox__nav:hover {
+    background: rgba(255,255,255,0.22);
+  }
+
+  .lightbox__close {
+    top: 1.25rem;
+    right: 1.25rem;
+    font-size: 2rem;
+  }
+
+  .lightbox__nav--prev { left: 1.25rem; top: 50%; transform: translateY(-50%); }
+  .lightbox__nav--next { right: 1.25rem; top: 50%; transform: translateY(-50%); }
+  .lightbox__nav--prev:hover { transform: translateY(-50%) translateX(-2px); }
+  .lightbox__nav--next:hover { transform: translateY(-50%) translateX(2px); }
+
+  .lightbox__nav[hidden] { display: none; }
+
+  @media (max-width: 640px) {
+    .lightbox__nav { width: 40px; height: 40px; font-size: 1.5rem; }
+  }
+
+  .deck-slide__body {
+    max-width: 62ch;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  @media (max-width: 800px) {
+    .deck-slide { grid-template-columns: 1fr; }
+    .deck-slide__num { position: static; font-size: 3rem; }
+  }
+
+  /* ============ Option 5 · Marquee + Bento ============ */
+  .marquee {
+    background: var(--color-ink);
+    color: #fff;
+    overflow: hidden;
+    padding-block: 1.25rem;
+    margin-bottom: 3rem;
+  }
+
+  .marquee__track {
+    display: inline-flex;
+    gap: 3rem;
+    white-space: nowrap;
+    animation: marquee 28s linear infinite;
+    padding-left: 3rem;
+  }
+
+  .marquee__item {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .marquee__dot {
+    color: #c9d3ca;
+    font-size: 1.4rem;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: minmax(220px, auto) minmax(220px, auto);
+    gap: 1.25rem;
+  }
+
+  .bento__cell {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    background: #f4f5f2;
+  }
+
+  .bento__cell img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .bento__cell figcaption {
+    position: absolute;
+    left: 1rem;
+    bottom: 0.85rem;
+    background: rgba(255,255,255,0.92);
+    padding: 0.4rem 0.75rem;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    color: var(--color-ink);
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+
+  .bento__cell figcaption span {
+    color: var(--color-sage-dark);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+  }
+
+  .bento__cell--hero { grid-column: 1 / span 2; grid-row: 1 / span 2; }
+  .bento__cell--wide { grid-column: 3 / span 2; grid-row: 2; }
+
+  @media (max-width: 900px) {
+    .bento { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .bento__cell--hero, .bento__cell--wide { grid-column: 1 / -1; grid-row: auto; }
+    .marquee__item { font-size: 1.5rem; }
+  }
+
+  /* ============ Outro ============ */
+  .opt-outro {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    background: #efeeea;
+    border-top: 1px solid #e6e6e0;
+  }
+
+  .opt-outro__note {
+    font-size: 1rem;
+    max-width: 60ch;
+    margin: 0;
+    color: var(--color-ink);
+  }
+</style>
+</BaseLayout>

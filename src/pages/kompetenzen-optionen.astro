@@ -1,0 +1,834 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import TabCard from '../components/TabCard.astro';
+
+const design = ['Figma', 'Illustrator', 'InDesign', 'Photoshop', 'Canva'];
+const ux = ['User Research', 'Wireframing', 'Prototyping', 'Design Systems', 'User Journeys', 'Personas'];
+const code = ['HTML', 'CSS', 'JavaScript', 'Astro'];
+const weiteres = ['10-Finger-System', 'Fotografie', 'Deutsch (Muttersprache)', 'Englisch (C1)'];
+
+const categories = [
+  { key: 'Design', num: '01', title: 'Design & Tools', items: design, intro: 'Figma als tägliches Werkzeug, ergänzt durch die Adobe-Suite für Print, Illustration und Bildbearbeitung.' },
+  { key: 'UX',     num: '02', title: 'UX & Methoden', items: ux,     intro: 'Recherche, Struktur, Prototyp — die Grundlage jeder Gestaltung, bevor Farbe und Form ins Spiel kommen.' },
+  { key: 'Code',   num: '03', title: 'Code',           items: code,   intro: 'Portfolio- und Studienprojekte code ich selbst — sauberes HTML, CSS, Astro und JS-Grundlagen.' },
+  { key: 'Sonstiges', num: '04', title: 'Sonstiges',   items: weiteres, intro: 'Fähigkeiten, die sich im Studienalltag als überraschend nützlich erwiesen haben.' },
+];
+
+// Timeline-Reihe (chronologisch)
+const timeline = [
+  { date: '2019', label: '10-Finger-System' },
+  { date: '2020', label: 'Adobe Suite' },
+  { date: '2022', label: 'Figma' },
+  { date: '2023', label: 'Prototyping' },
+  { date: '2024', label: 'UX-Research · HTML · CSS' },
+  { date: '2025', label: 'Design Systems · Astro' },
+];
+
+// Polaroid-Wand: Kategorie-Karten
+const polaroids = [
+  { top: 'FIGMA',           bottom: 'Design · seit 2022', tilt: -3.5, w: 260 },
+  { top: 'UX-RESEARCH',     bottom: 'Methode · seit 2024', tilt: 2, w: 240 },
+  { top: 'DESIGN SYSTEMS',  bottom: 'Struktur · seit 2025', tilt: -1, w: 280 },
+  { top: 'ASTRO',           bottom: 'Code · seit 2025', tilt: 3.5, w: 220 },
+  { top: 'FOTOGRAFIE',      bottom: 'Auge · seit 2018', tilt: -2, w: 250 },
+];
+
+// Poster-Komposition: Skills mit Größe/Rolle
+const poster = [
+  { name: 'Figma', size: 'xxl', angle: 0 },
+  { name: 'Prototyping', size: 'xl', angle: 0 },
+  { name: 'User Research', size: 'lg', angle: 0 },
+  { name: 'Design Systems', size: 'lg', angle: 0 },
+  { name: 'HTML/CSS', size: 'md', angle: 0 },
+  { name: 'Astro', size: 'md', angle: 0 },
+  { name: 'Illustrator', size: 'md', angle: 0 },
+  { name: 'InDesign', size: 'sm', angle: 0 },
+  { name: 'Photoshop', size: 'sm', angle: 0 },
+  { name: 'Canva', size: 'sm', angle: 0 },
+  { name: 'JavaScript', size: 'sm', angle: 0 },
+  { name: 'Wireframing', size: 'md', angle: 0 },
+  { name: 'Personas', size: 'sm', angle: 0 },
+  { name: 'Fotografie', size: 'sm', angle: 0 },
+  { name: 'Journeys', size: 'sm', angle: 0 },
+];
+
+// Icons-Grid
+const icons = [
+  { name: 'Figma', short: 'Fg' },
+  { name: 'Illustrator', short: 'Ai' },
+  { name: 'InDesign', short: 'Id' },
+  { name: 'Photoshop', short: 'Ps' },
+  { name: 'Canva', short: 'Cv' },
+  { name: 'HTML', short: '&lt;/&gt;' },
+  { name: 'CSS', short: '::' },
+  { name: 'JavaScript', short: 'Js' },
+  { name: 'Astro', short: 'As' },
+  { name: 'Research', short: 'UR' },
+  { name: 'Wireframes', short: 'Wf' },
+  { name: 'Prototyping', short: 'Pr' },
+  { name: 'Systems', short: 'DS' },
+  { name: 'Personas', short: 'Pe' },
+  { name: 'Fotografie', short: 'Fo' },
+  { name: '10-Finger', short: '10' },
+];
+
+// Kompakt-Register (Zwei-Spalten-Index)
+const register = [
+  ...design.map((s) => ({ cat: 'Design', name: s })),
+  ...ux.map((s) => ({ cat: 'UX', name: s })),
+  ...code.map((s) => ({ cat: 'Code', name: s })),
+  ...weiteres.map((s) => ({ cat: 'Sonstiges', name: s })),
+];
+
+const options = [
+  { id: '1', title: 'Timeline' },
+  { id: '2', title: 'Polaroid-Wand' },
+  { id: '3', title: 'Skill-Poster' },
+  { id: '4', title: 'Sage-Split-Panel' },
+  { id: '5', title: 'Ticker-Band' },
+  { id: '6', title: 'Icon-Grid' },
+  { id: '7', title: 'Prosa mit Inline-Badges' },
+  { id: '8', title: 'Kompakt-Register' },
+];
+---
+
+<BaseLayout title="Kompetenzen — acht Darstellungen" description="Acht deutlich unterschiedliche Darstellungsvarianten für die Kompetenz-Section, alle im Design-System der Portfolio-Seite.">
+  <Header />
+  <main>
+
+    {/* ---------- Intro ---------- */}
+    <section class="section">
+      <div class="wrapper">
+        <span class="eyebrow" data-reveal>
+          <span class="eyebrow__dot" aria-hidden="true"></span>
+          ÜBER MICH · KOMPETENZEN
+        </span>
+        <h1 class="hero__title" data-reveal style="margin-top: 1rem; --reveal-delay: 60ms;">Acht Wege,<br/>Skills zu zeigen.</h1>
+        <p class="case-plain-text" data-reveal style="--reveal-delay: 120ms; max-width: 62ch; margin-top: 1.25rem;">
+          Jede Option greift ein anderes Muster deiner bestehenden Seite auf — Timeline aus Werdegang, Polaroid vom About-Bereich, Deck-Nummern der Case-Studies, TabCard, Section-Heading — und ordnet die Skills konsequent im Sage/Ink/Karla-System an.
+        </p>
+
+        <nav class="k-nav" data-reveal style="--reveal-delay: 180ms;">
+          {options.map((o) => (
+            <a href={`#opt-${o.id}`} class="k-nav__item">
+              <span class="k-nav__num">{o.id}</span>
+              <span class="k-nav__title">{o.title}</span>
+            </a>
+          ))}
+        </nav>
+      </div>
+    </section>
+
+    {/* ============ 1 — Timeline (Werdegang-Motiv) ============ */}
+    <section id="opt-1" class="section">
+      <div class="wrapper">
+        <span class="k-badge">Option 01</span>
+        <h2 class="section-heading" data-reveal>Timeline</h2>
+        <p class="case-plain-text" style="max-width: 62ch;">
+          Skills chronologisch, im gleichen visuellen Muster wie deine <strong>Werdegang-Timeline</strong>: Sage-Linie, kreisrunde Dots, alternierende Chips über und unter der Linie. Erzählt zusätzlich, wann was gelernt wurde.
+        </p>
+
+        <div class="skill-timeline" data-reveal>
+          {timeline.map((s, i) => (
+            <>
+              <div class="st-top" style={`grid-column: ${i + 1}`}>
+                {i % 2 === 0 ? (
+                  <span class="st-date">{s.date}</span>
+                ) : (
+                  <span class="st-chip">
+                    <span class="st-chip__inner">{s.label}</span>
+                  </span>
+                )}
+              </div>
+              <span class="st-dot" style={`grid-column: ${i + 1}`}></span>
+              <div class="st-bottom" style={`grid-column: ${i + 1}`}>
+                {i % 2 === 0 ? (
+                  <span class="st-chip">
+                    <span class="st-chip__inner">{s.label}</span>
+                  </span>
+                ) : (
+                  <span class="st-date">{s.date}</span>
+                )}
+              </div>
+            </>
+          ))}
+          <div class="st-line"></div>
+        </div>
+      </div>
+    </section>
+
+    {/* ============ 2 — Polaroid-Wand ============ */}
+    <section id="opt-2" class="section">
+      <div class="wrapper">
+        <span class="k-badge">Option 02</span>
+        <h2 class="section-heading" data-reveal>Polaroid-Wand</h2>
+        <p class="case-plain-text" style="max-width: 62ch;">
+          Greift das <strong>Polaroid-Motiv</strong> deiner About-Section auf: mehrere weiße Karten mit leichter Schräglage, jede mit einer Skill-„Aufschrift". Statt Fotos zeigt jede Karte eine Kompetenz in großer Staatliches-Type. Persönlich, taktil, unverwechselbar deins.
+        </p>
+
+        <div class="polaroid-wall" data-reveal>
+          {polaroids.map((p, i) => (
+            <figure class="pw" style={`--tilt: ${p.tilt}deg; --w: ${p.w}px; --z: ${i + 1};`}>
+              <div class="pw__frame">
+                <div class="pw__slot">
+                  <span class="pw__word">{p.top}</span>
+                </div>
+              </div>
+              <figcaption class="pw__cap">{p.bottom}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* ============ 3 — Skill-Poster ============ */}
+    <section id="opt-3" class="section">
+      <div class="wrapper">
+        <span class="k-badge">Option 03</span>
+        <h2 class="section-heading" data-reveal>Skill-Poster</h2>
+        <p class="case-plain-text" style="max-width: 62ch;">
+          Eine einzige typografische Komposition — kein Grid, keine Chips. Die wichtigsten Skills groß in Staatliches, weitere kleiner in Karla, Kategorien-Marker als Sage-Punkte. Wirkt wie eine bewusste Aussage, nicht wie eine Liste.
+        </p>
+
+        <div class="poster" data-reveal>
+          {poster.map((p) => (
+            <span class={`poster__word poster__word--${p.size}`}>
+              <span class="poster__dot" aria-hidden="true"></span>
+              {p.name}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* ============ 4 — Sage-Split-Panel ============ */}
+    <section id="opt-4" class="section">
+      <div class="wrapper">
+        <span class="k-badge">Option 04</span>
+        <h2 class="section-heading" data-reveal>Sage-Split-Panel</h2>
+        <p class="case-plain-text" style="max-width: 62ch;">
+          Ein farbiger Block. Links Sage-Panel mit weißer Kategorien-Überschrift, rechts eine schlichte Skill-Liste in Karla auf Weiß. Jede Kategorie ist eine eigene Zeile — mit deutlicher Farbtrennung wie bei einer Editorial-Doppelseite.
+        </p>
+
+        <div class="split-stack" data-reveal>
+          {categories.map((c, i) => (
+            <div class="split-row" style={`--reveal-delay: ${i * 80}ms`}>
+              <div class="split-row__left">
+                <span class="split-row__num">{c.num}</span>
+                <h3 class="split-row__title">{c.title}</h3>
+                <p class="split-row__intro">{c.intro}</p>
+              </div>
+              <ul class="split-row__list">
+                {c.items.map((s) => (
+                  <li>{s}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* ============ 5 — Ticker-Band ============ */}
+    <section id="opt-5" class="section" style="padding-inline: 0;">
+      <div class="wrapper">
+        <span class="k-badge">Option 05</span>
+        <h2 class="section-heading" data-reveal>Ticker-Band</h2>
+        <p class="case-plain-text" style="max-width: 62ch;">
+          Ein einziges, ruhiges Laufband über die gesamte Seitenbreite. Skills in Karla-Bold, getrennt durch feine Sage-Divider. Der einzige „laut"-e Moment auf der Über-mich-Seite — als klare Ansage.
+        </p>
+      </div>
+
+      <div class="ticker" data-reveal>
+        <div class="ticker__track">
+          {[...register, ...register].map((r) => (
+            <span class="ticker__item">
+              {r.name}
+              <span class="ticker__sep" aria-hidden="true">/</span>
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* ============ 6 — Icon-Grid ============ */}
+    <section id="opt-6" class="section">
+      <div class="wrapper">
+        <span class="k-badge">Option 06</span>
+        <h2 class="section-heading" data-reveal>Icon-Grid</h2>
+        <p class="case-plain-text" style="max-width: 62ch;">
+          Kleine quadratische Kacheln mit dem gewohnten <strong>L-Schatten</strong>, aber viel kompakter — nur ein Kürzel pro Skill, Name darunter in kleiner Karla. Wie ein App-Drawer, dicht und übersichtlich für viele Einträge.
+        </p>
+
+        <ul class="icon-grid" data-reveal>
+          {icons.map((it) => (
+            <li class="ig">
+              <span class="ig__square">
+                <span class="ig__short" set:html={it.short}></span>
+              </span>
+              <span class="ig__name">{it.name}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    {/* ============ 7 — Prosa mit Inline-Badges ============ */}
+    <section id="opt-7" class="section">
+      <div class="wrapper">
+        <span class="k-badge">Option 07</span>
+        <h2 class="section-heading" data-reveal>Prosa mit Inline-Badges</h2>
+        <p class="case-plain-text" style="max-width: 62ch;">
+          Ein einziger großer Fließtext in Staatliches — die Skills tauchen als kleine Sage-Badges mitten im Satz auf. Sehr eigenständig, sehr leseintensiv, sehr statement-artig. Passt zur Bio-Erzählung darüber.
+        </p>
+
+        <div class="prose-manifesto" data-reveal>
+          <p>
+            Ich arbeite hauptsächlich in <span class="pb">Figma</span>, ergänze mit
+            <span class="pb">Illustrator</span> · <span class="pb">InDesign</span> · <span class="pb">Photoshop</span> für Print und Bild,
+            und greife zu <span class="pb">Canva</span>, wenn es schnell gehen muss.
+            Vor der Gestaltung steht <span class="pb">User Research</span>, mit
+            <span class="pb">Personas</span> und <span class="pb">User Journeys</span> als Denkrahmen.
+            Daraus wachsen <span class="pb">Wireframes</span>, dann ein <span class="pb">Prototyp</span>,
+            und aus wiederkehrenden Mustern ein <span class="pb">Design System</span>.
+            Weil Interfaces sich am ehrlichsten im Browser anfühlen, code ich meine Projekte selbst — in
+            <span class="pb">HTML</span> · <span class="pb">CSS</span> · <span class="pb">Astro</span>,
+            mit Grundlagen in <span class="pb">JavaScript</span>. Dazu:
+            <span class="pb">10-Finger-System</span> und <span class="pb">Fotografie</span>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* ============ 8 — Kompakt-Register ============ */}
+    <section id="opt-8" class="section">
+      <div class="wrapper">
+        <span class="k-badge">Option 08</span>
+        <h2 class="section-heading" data-reveal>Kompakt-Register</h2>
+        <p class="case-plain-text" style="max-width: 62ch;">
+          Ein zweispaltiges Buch-Register: Skill links in Karla-Bold, Kategorie rechts in Sage-Dark-Kapitälchen, dünne gepunktete Verbindung dazwischen. Sehr dicht, sehr ruhig, funktioniert auch bei 30+ Einträgen.
+        </p>
+
+        <div class="reg" data-reveal>
+          {register.map((r) => (
+            <div class="reg__row">
+              <span class="reg__name">{r.name}</span>
+              <span class="reg__dots" aria-hidden="true"></span>
+              <span class="reg__cat">{r.cat}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- Outro ---------- */}
+    <section class="section">
+      <div class="wrapper">
+        <p class="case-plain-text" style="max-width: 62ch;">
+          <strong>Nächster Schritt:</strong> Sag mir welche Nummer (oder eine Kombination — z. B. „Polaroid-Wand oben, Kompakt-Register darunter"), dann baue ich sie in <code style="background:var(--color-badge-bg); padding: 0.05rem 0.4rem;">Skills.astro</code> ein.
+        </p>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  /* -------- Intro-Nav + Badge (nur Preview-Chrome) -------- */
+  .k-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    max-width: 62rem;
+  }
+  .k-nav__item {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    padding: 0.55rem 1rem 0.55rem 0.85rem;
+    background: #ffffff;
+    border: 1px solid var(--color-sage);
+    color: var(--color-ink);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    transition: background 0.25s, color 0.25s, border-color 0.25s;
+  }
+  .k-nav__num { color: var(--color-sage-dark); font-weight: 700; letter-spacing: 0.08em; }
+  .k-nav__item:hover { background: var(--color-ink); color: #fff; border-color: var(--color-ink); }
+  .k-nav__item:hover .k-nav__num { color: #cfd8d0; }
+
+  .k-badge {
+    display: inline-block;
+    background: var(--color-badge-bg);
+    color: var(--color-sage-dark);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    margin-bottom: 0.75rem;
+    border-radius: 999px;
+  }
+
+  /* =====================================================
+     Option 01 — Timeline (Werdegang-Motiv)
+     ===================================================== */
+  .skill-timeline {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.5rem;
+    align-items: center;
+    padding: 3rem 0.5rem;
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .st-top, .st-bottom {
+    display: flex;
+    justify-content: center;
+    min-height: 3rem;
+  }
+  .st-top { align-items: flex-end; padding-bottom: 1rem; }
+  .st-bottom { align-items: flex-start; padding-top: 1rem; }
+
+  .st-line {
+    position: absolute;
+    left: 0.5rem; right: 0.5rem;
+    top: 50%;
+    height: 0;
+    border-top: 1px dashed var(--color-sage);
+    grid-column: 1 / -1;
+  }
+
+  .st-dot {
+    grid-row: 2 / 3;
+    justify-self: center;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--color-sage-dark);
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px var(--color-sage-dark);
+    z-index: 2;
+    align-self: center;
+  }
+
+  .st-date {
+    font-family: 'Karla', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--color-sage-dark);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .st-chip {
+    position: relative;
+    display: inline-block;
+    isolation: isolate;
+  }
+  .st-chip__inner {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    background: #fff;
+    border: 1px solid var(--color-sage);
+    color: var(--color-ink);
+    padding: 0.5rem 0.9rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-align: center;
+    max-width: 12rem;
+    line-height: 1.25;
+  }
+  .st-chip::before {
+    content: '';
+    position: absolute;
+    top: 8px; left: -4px; right: 10px; bottom: -4px;
+    background: var(--color-sage-tint);
+    z-index: 0;
+  }
+
+  @media (max-width: 760px) {
+    .skill-timeline { grid-template-columns: 1fr; padding: 1rem 0; }
+    .st-line { display: none; }
+    .st-top, .st-bottom { min-height: 0; padding: 0; grid-column: 1 !important; justify-content: flex-start; }
+    .st-dot { grid-column: 1 !important; justify-self: start; margin: 0.25rem 0; }
+    .skill-timeline > * { grid-row: auto !important; }
+    .st-chip__inner { max-width: none; }
+  }
+
+  /* =====================================================
+     Option 02 — Polaroid-Wand
+     ===================================================== */
+  .polaroid-wall {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem 1.25rem;
+    padding: 3rem 1rem;
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    background:
+      radial-gradient(circle at 20% 30%, rgba(128, 149, 130, 0.06), transparent 60%),
+      radial-gradient(circle at 80% 70%, rgba(128, 149, 130, 0.04), transparent 55%);
+  }
+
+  .pw {
+    margin: 0;
+    padding: 0.75rem 0.75rem 2.5rem;
+    background: #ffffff;
+    box-shadow: 0 12px 28px rgba(28, 28, 28, 0.14);
+    transform: rotate(var(--tilt));
+    width: var(--w);
+    max-width: 90vw;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    z-index: var(--z);
+  }
+  .pw:hover {
+    transform: rotate(0deg) translateY(-8px) scale(1.03);
+    box-shadow: 0 22px 44px rgba(28, 28, 28, 0.22);
+    z-index: 20;
+  }
+
+  .pw__frame {
+    aspect-ratio: 4 / 5;
+    background: linear-gradient(135deg, #eaeee6 0%, #d4dccd 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    position: relative;
+  }
+  .pw__slot {
+    text-align: center;
+  }
+  .pw__word {
+    font-family: 'Staatliches', 'Karla', sans-serif;
+    font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+    letter-spacing: 0.06em;
+    color: var(--color-ink);
+    line-height: 1;
+    display: block;
+    word-break: break-word;
+  }
+  .pw__cap {
+    display: block;
+    text-align: center;
+    font-family: 'Karla', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-sage-dark);
+    margin-top: 1.25rem;
+  }
+
+  /* =====================================================
+     Option 03 — Skill-Poster
+     ===================================================== */
+  .poster {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4em 1em;
+    padding: clamp(2rem, 5vw, 4rem) 0;
+    line-height: 1;
+    max-width: 68rem;
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .poster__word {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.35em;
+    color: var(--color-ink);
+    font-family: 'Staatliches', 'Karla', sans-serif;
+    letter-spacing: 0.04em;
+    line-height: 0.95;
+    transition: color 0.2s;
+  }
+  .poster__word:hover { color: var(--color-sage-dark); }
+
+  .poster__dot {
+    display: inline-block;
+    width: 0.35em; height: 0.35em;
+    border-radius: 50%;
+    background: var(--color-sage);
+    transform: translateY(-0.2em);
+  }
+
+  .poster__word--xxl { font-size: clamp(3.5rem, 9vw, 6.5rem); }
+  .poster__word--xl  { font-size: clamp(2.5rem, 6vw, 4.5rem); }
+  .poster__word--lg  { font-size: clamp(1.75rem, 4vw, 3rem); color: var(--color-sage-dark); }
+  .poster__word--md  {
+    font-size: clamp(1rem, 1.8vw, 1.4rem);
+    font-family: 'Karla', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+  }
+  .poster__word--sm  {
+    font-size: 0.85rem;
+    font-family: 'Karla', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 400;
+    color: var(--color-ink);
+  }
+  .poster__word--md .poster__dot,
+  .poster__word--sm .poster__dot { width: 5px; height: 5px; }
+
+  /* =====================================================
+     Option 04 — Sage-Split-Panel
+     ===================================================== */
+  .split-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .split-row {
+    display: grid;
+    grid-template-columns: minmax(0, 0.45fr) minmax(0, 0.55fr);
+    background: #fff;
+    border: 1px solid var(--color-sage);
+    overflow: hidden;
+  }
+  .split-row__left {
+    background: linear-gradient(135deg, var(--color-sage-dark) 0%, var(--color-ink) 100%);
+    color: #fff;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    justify-content: center;
+  }
+  .split-row__num {
+    font-family: 'Staatliches', 'Karla', sans-serif;
+    color: rgba(255,255,255,0.6);
+    font-size: 1.4rem;
+    letter-spacing: 0.06em;
+  }
+  .split-row__title {
+    font-family: 'Karla', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.25rem, 2vw, 1.6rem);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin: 0;
+    color: #fff;
+  }
+  .split-row__intro {
+    margin: 0.5rem 0 0;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.55;
+    font-size: 0.9rem;
+    max-width: 32ch;
+  }
+
+  .split-row__list {
+    list-style: none;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.6rem;
+  }
+  .split-row__list li {
+    font-weight: 700;
+    color: var(--color-ink);
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px dotted var(--color-border);
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  .split-row__list li:last-child { border-bottom: none; }
+  .split-row__list li::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--color-sage);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 720px) {
+    .split-row { grid-template-columns: 1fr; }
+  }
+
+  /* =====================================================
+     Option 05 — Ticker-Band
+     ===================================================== */
+  .ticker {
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    overflow: hidden;
+    background: var(--color-ink);
+    padding-block: 1.25rem;
+    border-top: 1px solid var(--color-sage-dark);
+    border-bottom: 1px solid var(--color-sage-dark);
+  }
+  .ticker__track {
+    display: inline-flex;
+    white-space: nowrap;
+    gap: 0;
+    padding-left: 3rem;
+    animation: ticker-scroll 60s linear infinite;
+    will-change: transform;
+  }
+  .ticker__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 2rem;
+    padding-right: 2rem;
+    font-family: 'Karla', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.06em;
+    color: #fff;
+    text-transform: uppercase;
+  }
+  .ticker__sep {
+    color: var(--color-sage);
+    font-weight: 400;
+    font-size: 1.4rem;
+  }
+  @keyframes ticker-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ticker__track { animation: none; }
+  }
+
+  /* =====================================================
+     Option 06 — Icon-Grid
+     ===================================================== */
+  .icon-grid {
+    list-style: none;
+    padding: 0.5rem;
+    margin: clamp(1.5rem, 3vw, 2.5rem) 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 2rem 1.5rem;
+  }
+  .ig {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .ig__square {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background: #fff;
+    border: 1px solid var(--color-sage);
+    isolation: isolate;
+    transition: transform 0.25s;
+  }
+  .ig__square::before {
+    content: '';
+    position: absolute;
+    top: 10px; left: -5px; right: 12px; bottom: -5px;
+    background: var(--color-sage-tint);
+    z-index: -1;
+  }
+  .ig:hover .ig__square { transform: translateY(-3px); }
+
+  .ig__short {
+    font-family: 'Staatliches', 'Karla', sans-serif;
+    font-size: 1.75rem;
+    color: var(--color-sage-dark);
+    letter-spacing: 0.03em;
+  }
+  .ig__name {
+    font-family: 'Karla', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    text-align: center;
+    font-weight: 700;
+  }
+
+  /* =====================================================
+     Option 07 — Prosa mit Inline-Badges
+     ===================================================== */
+  .prose-manifesto {
+    max-width: 44rem;
+    margin: clamp(1.5rem, 3vw, 2.5rem) 0 0;
+  }
+  .prose-manifesto p {
+    font-family: 'Staatliches', 'Karla', sans-serif;
+    font-size: clamp(1.3rem, 2.4vw, 1.85rem);
+    line-height: 1.5;
+    letter-spacing: 0.03em;
+    color: var(--color-ink);
+    margin: 0;
+  }
+  .prose-manifesto .pb {
+    display: inline-block;
+    background: var(--color-sage-tint);
+    color: var(--color-sage-dark);
+    padding: 0.05rem 0.55rem;
+    margin: 0 0.05em;
+    font-family: 'Karla', sans-serif;
+    font-size: 0.6em;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    vertical-align: 0.15em;
+    border: 1px solid var(--color-sage);
+    line-height: 1.4;
+  }
+
+  /* =====================================================
+     Option 08 — Kompakt-Register
+     ===================================================== */
+  .reg {
+    max-width: 44rem;
+    margin: clamp(1.5rem, 3vw, 2.5rem) 0 0;
+    border-top: 1px solid var(--color-sage);
+    border-bottom: 1px solid var(--color-sage);
+    padding: 0.5rem 0;
+  }
+  .reg__row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+  }
+  .reg__name {
+    font-weight: 700;
+    color: var(--color-ink);
+    font-size: 1rem;
+  }
+  .reg__dots {
+    height: 1px;
+    background-image: linear-gradient(90deg, var(--color-sage) 33%, transparent 0%);
+    background-size: 6px 1px;
+    background-repeat: repeat-x;
+    opacity: 0.55;
+    align-self: center;
+  }
+  .reg__cat {
+    font-family: 'Karla', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-sage-dark);
+    text-align: right;
+  }
+</style>
+</BaseLayout>

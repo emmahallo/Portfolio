@@ -1,0 +1,26 @@
+---
+// Kachel mit Tab (Kachel-Style, siehe kacheln-style.md).
+// Styling lebt zentral in global.css (.tab-card / .tab-card__*),
+// damit alle Verwendungsstellen automatisch gleich aussehen.
+//
+// variant:
+//   (keine)  – Standard, Inhalt frei per Slot (i. d. R. <p class="tab-card__text">)
+//   split    – Text + Bild nebeneinander (z. B. Prozess-Schritte)
+//   showcase – nur ein großer Screenshot, kein Text
+
+interface Props {
+  tab: string;
+  variant?: 'split' | 'showcase';
+}
+
+const { tab, variant, ...rest } = Astro.props;
+---
+
+<article class:list={['tab-card', variant && `tab-card--${variant}`]} {...rest}>
+  <div class="tab-card__frame">
+    <slot />
+  </div>
+  <header class="tab-card__tab">
+    <span class="tab-card__tab-label">{tab}</span>
+  </header>
+</article>

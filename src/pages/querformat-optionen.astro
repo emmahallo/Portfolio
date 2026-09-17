@@ -1,0 +1,2107 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+
+const landscape = [
+  { src: '/images/Fotografie/DSC02545-Verbessert-RR%20Kopie.jpg', alt: 'Portrait mit Seifenblasen, lachend nach oben blickend', title: 'Seifenblasen', meta: 'Portrait · 1. Semester', body: 'Ein spontaner Moment während des Portrait-Shoots. Der Kopf schaut nach oben, die Blasen tanzen im Licht.' },
+  { src: '/images/Fotografie/ungeschnittenendversion.jpg', alt: 'Portrait mit Lichterkette im Hintergrund', title: 'Lichterketten', meta: 'Studio-Setup', body: 'Kontrolliertes Studio-Setup mit warmer Lichterkette als Hintergrund — Bokeh und Portraitlicht in Balance.' },
+  { src: '/images/Fotografie/DSC02542-Verbessert-RR.jpg', alt: 'Portrait mit Seifenblasen, überrascht lachend', title: 'Überraschung', meta: 'Portrait · Serie', body: 'Aus derselben Serie wie das erste Bild — Fokus auf die Emotion, nicht auf Perfektion.' },
+  { src: '/images/Fotografie/busch2.jpg', alt: 'Portrait vor grüner Hecke', title: 'Vor grüner Hecke', meta: 'Natur-Location', body: 'Portrait vor einer sattgrünen Hecke. Kontrast zwischen den Farben, kein zusätzliches Licht.' },
+];
+
+const options = [
+  { id: '1', title: 'Sticky-Stack (Full-Bleed)', desc: 'Aktuelle Variante: jedes Bild füllt den Viewport, sticky Scroll mit Dwell-Time. Ruhig, cineastisch.' },
+  { id: '2', title: 'Editorial-Grid (2 Spalten mit Meta-Zeile)', desc: 'Magazine-Look: 2 Spalten, gleich große Kacheln, Meta + Titel als Bildunterschrift daneben.' },
+  { id: '3', title: 'Split-Screen Story (Bild + Text nebeneinander)', desc: 'Pro Bild eine Zeile: Bild links (oder rechts, alternierend), rechts Titel + kurzer Text. Sehr editorial.' },
+  { id: '4', title: 'Ken-Burns Slideshow (Auto-Play mit sanftem Zoom)', desc: 'Ein großes Bild füllt den Bereich, wechselt alle paar Sekunden mit Cross-Fade + langsamer Scale-Bewegung.' },
+  { id: '5', title: 'Cinema-Strip (Horizontales Scroll-Snap)', desc: 'Horizontal scrollbare Filmstreifen-Reihe. Jedes Bild rastet mittig ein, Caption drunter.' },
+  { id: '6', title: 'Full-Bleed Parallax (Bild volle Breite, Text mit Offset)', desc: 'Jedes Bild spannt sich über die volle Fensterbreite mit dezenter Parallax-Bewegung. Text-Box mit weißem Hintergrund über dem Bild.' },
+  { id: '7', title: 'Sticky-Story (Bild bleibt, Text scrollt)', desc: 'Wie bei den Portraits: Bild bleibt links sticky, rechts scrollt Titel + Text vorbei, Bild wechselt via Cross-Fade.' },
+  { id: '8', title: 'Bento-Grid (1 Hero + 3 kleine)', desc: 'Asymmetrisches Grid: ein großes Hero-Bild, drei kleinere daneben in unterschiedlichen Zellen.' },
+  { id: '9', title: 'Contact-Sheet mit Hover-Zoom', desc: 'Dichtes Thumbnail-Grid im Kontaktbogen-Look. Beim Hover zoomt das Bild sanft rein.' },
+  { id: '10', title: 'Timeline mit Datum', desc: 'Horizontale Zeitleiste: über jedem Bild ein Datum-Chip, verbindende Linie durch alle Bilder.' },
+  { id: '11', title: 'Marquee (Auto-Scroll Filmstreifen)', desc: 'Dauerhaft nach links laufende Reihe. Hover pausiert. Sehr modern und „ambient".' },
+  { id: '12', title: 'Diagonal-Collage (überlappend, leicht rotiert)', desc: 'Bilder überlappen sich leicht, jedes leicht rotiert — wie ein Moodboard. Hover richtet das Bild auf.' },
+  { id: '13', title: 'Typo-Cutout (Bild in Wort)', desc: 'Ein riesiges Wort ("FOTOGRAFIE") wird mit dem Foto gefüllt. Beim Scrollen wechselt das Bild in der Typo. Sehr auffällig, editorial-experimentell.' },
+  { id: '14', title: 'Cover-Flow (3D-Karussell)', desc: 'Ein Bild mittig frontal, die Nachbarn seitlich gekippt in 3D. Klick oder Pfeiltaste wechselt.' },
+  { id: '15', title: 'Streifen-Reveal (Bild in Slices)', desc: 'Jedes Bild ist in vertikale Streifen zerlegt, die abwechselnd von oben/unten reinschieben.' },
+  { id: '16', title: 'Radial-Arc (Kreisbogen-Anordnung)', desc: 'Bilder sitzen entlang eines Kreisbogens — wie Fächer aufgespannt, jedes leicht anders geneigt.' },
+  { id: '17', title: 'Dual-Layer (Blur-Background + Focus-Card)', desc: 'Großes unscharfes Bild als Hintergrund, kleines scharfes Detail-Foto zentriert davor. Wechselt beim Scrollen.' },
+  { id: '18', title: 'Draggable Deck (Karten-Stapel zum Durchziehen)', desc: 'Karten liegen aufeinander gestapelt. User zieht (Drag oder Wisch) die oberste weg, die nächste wird sichtbar.' },
+  { id: '19', title: 'Accordion-Balken (Klick öffnet)', desc: 'Vertikale Balken nebeneinander. Ein Balken ist groß (aktives Bild mit Titel & Info), die anderen bleiben als schmale Balken mit vertikalem Label. Klick auf einen Balken macht ihn zum aktiven Bild.' },
+];
+
+const accordionImages = [
+  { src: '/images/Fotografie/DSC02545-Verbessert-RR%20Kopie.jpg', label: 'Seifenblasen', count: '4 Fotos', location: 'Portrait-Serie' },
+  { src: '/images/Fotografie/ungeschnittenendversion.jpg', label: 'Lichterketten', count: '2 Fotos', location: 'Studio' },
+  { src: '/images/Fotografie/DSC02542-Verbessert-RR.jpg', label: 'Überraschung', count: '3 Fotos', location: 'Portrait' },
+  { src: '/images/Fotografie/busch2.jpg', label: 'Grüne Hecke', count: '2 Fotos', location: 'Natur' },
+];
+---
+
+<BaseLayout title="Querformat-Optionen — Emma Eichin" description="Vorschau verschiedener Darstellungsvarianten für Querformat-Fotos.">
+  <Header />
+  <main class="options-page">
+    <section class="section options-intro">
+      <div class="wrapper">
+        <h1 class="options-title">Vorschau: Querformat-Darstellungen</h1>
+        <p class="options-lead">Neunzehn Varianten für die Landscape-Bilder — Standard bis experimentell. Scroll durch und sag, welche dir gefällt.</p>
+        <nav class="options-nav">
+          {options.map((o) => (
+            <a href={`#opt-${o.id}`}>{o.id}. {o.title}</a>
+          ))}
+        </nav>
+      </div>
+    </section>
+
+    {/* Option 1: Sticky-Stack (current) */}
+    <section id="opt-1" class="section option-block">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 1</span>
+          <h2>{options[0].title}</h2>
+          <p>{options[0].desc}</p>
+        </div>
+      </div>
+
+      <div class="wrapper">
+        <div class="ls-stack">
+          {landscape.map((p, i) => (
+            <figure class="ls-stack__item" style={`z-index: ${i + 1}`}>
+              <div class="ls-stack__image">
+                <img src={p.src} alt={p.alt} loading="lazy" />
+                <figcaption class="ls-stack__caption">{p.title} · {p.meta}</figcaption>
+              </div>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Option 2: Editorial Grid */}
+    <section id="opt-2" class="section option-block">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 2</span>
+          <h2>{options[1].title}</h2>
+          <p>{options[1].desc}</p>
+        </div>
+
+        <div class="ls-editorial">
+          {landscape.map((p) => (
+            <figure class="ls-editorial__item">
+              <img src={p.src} alt={p.alt} loading="lazy" />
+              <figcaption>
+                <span class="ls-editorial__title">{p.title}</span>
+                <span class="ls-editorial__meta">{p.meta}</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Option 3: Split-Screen alternierend */}
+    <section id="opt-3" class="section option-block">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 3</span>
+          <h2>{options[2].title}</h2>
+          <p>{options[2].desc}</p>
+        </div>
+
+        <div class="ls-split">
+          {landscape.map((p, i) => (
+            <article class={`ls-split__row ${i % 2 === 1 ? 'is-flipped' : ''}`}>
+              <div class="ls-split__media">
+                <img src={p.src} alt={p.alt} loading="lazy" />
+              </div>
+              <div class="ls-split__text">
+                <span class="ls-split__meta">{p.meta}</span>
+                <h3 class="ls-split__title">{p.title}</h3>
+                <p class="ls-split__body">{p.body}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Option 4: Ken-Burns Slideshow */}
+    <section id="opt-4" class="section option-block">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 4</span>
+          <h2>{options[3].title}</h2>
+          <p>{options[3].desc}</p>
+        </div>
+
+        <div class="kenburns" data-kenburns>
+          {landscape.map((p, i) => (
+            <div class={`kenburns__slide ${i === 0 ? 'is-active' : ''}`} data-index={i}>
+              <img src={p.src} alt={p.alt} loading={i === 0 ? 'eager' : 'lazy'} />
+              <div class="kenburns__caption">
+                <span class="kenburns__meta">{p.meta}</span>
+                <span class="kenburns__title">{p.title}</span>
+              </div>
+            </div>
+          ))}
+          <div class="kenburns__dots" aria-hidden="true">
+            {landscape.map((_, i) => (
+              <span class={`kenburns__dot ${i === 0 ? 'is-active' : ''}`} data-dot={i}></span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Option 5: Cinema-Strip Scroll-Snap */}
+    <section id="opt-5" class="section option-block option-block--full">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 5</span>
+          <h2>{options[4].title}</h2>
+          <p>{options[4].desc}</p>
+          <p class="option-hint">Tipp: mit dem Trackpad horizontal wischen.</p>
+        </div>
+      </div>
+
+      <div class="cinema-strip">
+        {landscape.map((p) => (
+          <figure class="cinema-strip__item">
+            <img src={p.src} alt={p.alt} loading="lazy" />
+            <figcaption>
+              <span>{p.title}</span>
+              <span class="cinema-strip__meta">{p.meta}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+
+    {/* Option 6: Full-Bleed Parallax */}
+    <section id="opt-6" class="section option-block option-block--full">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 6</span>
+          <h2>{options[5].title}</h2>
+          <p>{options[5].desc}</p>
+        </div>
+      </div>
+
+      <div class="parallax-list" data-parallax>
+        {landscape.map((p) => (
+          <section class="parallax-list__row">
+            <div class="parallax-list__bg" data-parallax-bg>
+              <img src={p.src} alt={p.alt} loading="lazy" />
+            </div>
+            <div class="parallax-list__card">
+              <span class="parallax-list__meta">{p.meta}</span>
+              <h3 class="parallax-list__title">{p.title}</h3>
+              <p class="parallax-list__body">{p.body}</p>
+            </div>
+          </section>
+        ))}
+      </div>
+    </section>
+
+    {/* Option 7: Sticky-Story (Landscape) */}
+    <section id="opt-7" class="section option-block">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 7</span>
+          <h2>{options[6].title}</h2>
+          <p>{options[6].desc}</p>
+        </div>
+
+        <div class="ls-story" data-ls-story>
+          <div class="ls-story__media">
+            {landscape.map((p, i) => (
+              <div class={`ls-story__photo${i === 0 ? ' is-active' : ''}`} data-index={i}>
+                <img src={p.src} alt={p.alt} loading="lazy" />
+              </div>
+            ))}
+          </div>
+          <div class="ls-story__text">
+            {landscape.map((p, i) => (
+              <article class="ls-story__block" data-index={i}>
+                <span class="ls-story__meta">{p.meta}</span>
+                <h3 class="ls-story__title">{p.title}</h3>
+                <p class="ls-story__body">{p.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Option 8: Bento-Grid */}
+    <section id="opt-8" class="section option-block">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 8</span>
+          <h2>{options[7].title}</h2>
+          <p>{options[7].desc}</p>
+        </div>
+
+        <div class="bento">
+          {landscape.slice(0, 4).map((p, i) => (
+            <figure class={`bento__item bento__item--${i + 1}`}>
+              <img src={p.src} alt={p.alt} loading="lazy" />
+              <figcaption>
+                <span class="bento__meta">{p.meta}</span>
+                <span class="bento__title">{p.title}</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Option 9: Contact-Sheet mit Hover-Zoom */}
+    <section id="opt-9" class="section option-block">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 9</span>
+          <h2>{options[8].title}</h2>
+          <p>{options[8].desc}</p>
+        </div>
+
+        <div class="contact-sheet">
+          {[...landscape, ...landscape].map((p, i) => (
+            <figure class="contact-sheet__item">
+              <img src={p.src} alt={p.alt} loading="lazy" />
+              <figcaption class="contact-sheet__label">#{String(i + 1).padStart(2, '0')}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Option 10: Timeline mit Datum */}
+    <section id="opt-10" class="section option-block option-block--full">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 10</span>
+          <h2>{options[9].title}</h2>
+          <p>{options[9].desc}</p>
+        </div>
+      </div>
+
+      <div class="ls-timeline">
+        <div class="ls-timeline__line" aria-hidden="true"></div>
+        {landscape.map((p, i) => (
+          <figure class="ls-timeline__item">
+            <span class="ls-timeline__date">{`0${i + 1}/2024`}</span>
+            <span class="ls-timeline__dot" aria-hidden="true"></span>
+            <div class="ls-timeline__frame">
+              <img src={p.src} alt={p.alt} loading="lazy" />
+            </div>
+            <figcaption>{p.title}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+
+    {/* Option 11: Marquee (Landscape) */}
+    <section id="opt-11" class="section option-block option-block--full">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 11</span>
+          <h2>{options[10].title}</h2>
+          <p>{options[10].desc}</p>
+        </div>
+      </div>
+
+      <div class="ls-marquee">
+        <div class="ls-marquee__track">
+          {[...landscape, ...landscape, ...landscape].map((p) => (
+            <figure class="ls-marquee__item">
+              <img src={p.src} alt={p.alt} loading="lazy" />
+              <figcaption>{p.title}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Option 12: Diagonal-Collage */}
+    <section id="opt-12" class="section option-block">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 12</span>
+          <h2>{options[11].title}</h2>
+          <p>{options[11].desc}</p>
+        </div>
+
+        <div class="ls-collage">
+          {landscape.map((p, i) => (
+            <figure class={`ls-collage__item ls-collage__item--${i + 1}`}>
+              <img src={p.src} alt={p.alt} loading="lazy" />
+              <figcaption>{p.title}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Option 13: Typo-Cutout */}
+    <section id="opt-13" class="section option-block option-block--full">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 13</span>
+          <h2>{options[12].title}</h2>
+          <p>{options[12].desc}</p>
+        </div>
+      </div>
+
+      <div class="typo-cutout" data-typo-cutout>
+        {landscape.map((p, i) => (
+          <div class={`typo-cutout__slide${i === 0 ? ' is-active' : ''}`} data-index={i} style={`background-image: url('${p.src}')`}>
+            <span class="typo-cutout__word">FOTOGRAFIE</span>
+            <span class="typo-cutout__meta">{p.title} · {p.meta}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {/* Option 14: Cover-Flow */}
+    <section id="opt-14" class="section option-block option-block--full">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 14</span>
+          <h2>{options[13].title}</h2>
+          <p>{options[13].desc}</p>
+        </div>
+      </div>
+
+      <div class="coverflow" data-coverflow>
+        <button type="button" class="coverflow__arrow coverflow__arrow--prev" data-cf-prev aria-label="Zurück">‹</button>
+        <div class="coverflow__stage">
+          {landscape.map((p, i) => (
+            <figure class={`coverflow__item${i === 0 ? ' is-active' : ''}`} data-index={i}>
+              <img src={p.src} alt={p.alt} loading="lazy" />
+              <figcaption>{p.title}</figcaption>
+            </figure>
+          ))}
+        </div>
+        <button type="button" class="coverflow__arrow coverflow__arrow--next" data-cf-next aria-label="Weiter">›</button>
+      </div>
+    </section>
+
+    {/* Option 15: Streifen-Reveal */}
+    <section id="opt-15" class="section option-block">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 15</span>
+          <h2>{options[14].title}</h2>
+          <p>{options[14].desc}</p>
+        </div>
+
+        <div class="slice-reveal">
+          {landscape.map((p) => (
+            <figure class="slice-reveal__item" data-slice-reveal>
+              <div class="slice-reveal__slices" aria-hidden="true">
+                {Array.from({ length: 6 }).map((_, s) => (
+                  <span class="slice-reveal__slice" style={`background-image: url('${p.src}'); background-position: ${(-s * 100) / 5}% center; --i: ${s}`}></span>
+                ))}
+              </div>
+              <img src={p.src} alt={p.alt} loading="lazy" />
+              <figcaption>{p.title}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Option 16: Radial-Arc */}
+    <section id="opt-16" class="section option-block option-block--full">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 16</span>
+          <h2>{options[15].title}</h2>
+          <p>{options[15].desc}</p>
+        </div>
+      </div>
+
+      <div class="arc-fan">
+        {landscape.map((p, i) => (
+          <figure class="arc-fan__item" style={`--i: ${i}; --total: ${landscape.length};`}>
+            <img src={p.src} alt={p.alt} loading="lazy" />
+            <figcaption>{p.title}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+
+    {/* Option 17: Dual-Layer Blur */}
+    <section id="opt-17" class="section option-block option-block--full">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 17</span>
+          <h2>{options[16].title}</h2>
+          <p>{options[16].desc}</p>
+        </div>
+      </div>
+
+      <div class="dual-layer" data-dual-layer>
+        {landscape.map((p, i) => (
+          <div class={`dual-layer__slide${i === 0 ? ' is-active' : ''}`} data-index={i}>
+            <img class="dual-layer__bg" src={p.src} alt="" aria-hidden="true" />
+            <div class="dual-layer__card">
+              <img src={p.src} alt={p.alt} loading="lazy" />
+              <figcaption>
+                <span class="dual-layer__meta">{p.meta}</span>
+                <span class="dual-layer__title">{p.title}</span>
+              </figcaption>
+            </div>
+          </div>
+        ))}
+        <div class="dual-layer__dots" aria-hidden="true">
+          {landscape.map((_, i) => (
+            <button type="button" class={`dual-layer__dot${i === 0 ? ' is-active' : ''}`} data-index={i} aria-label={`Zeige Bild ${i + 1}`}></button>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Option 18: Draggable Deck */}
+    <section id="opt-18" class="section option-block">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 18</span>
+          <h2>{options[17].title}</h2>
+          <p>{options[17].desc}</p>
+          <p class="option-hint">Zieh die oberste Karte weg oder klick auf sie.</p>
+        </div>
+
+        <div class="deck" data-deck>
+          {landscape.map((p, i) => (
+            <figure class="deck__card" data-index={i} style={`--i: ${i};`}>
+              <img src={p.src} alt={p.alt} loading="lazy" draggable="false" />
+              <figcaption>
+                <span class="deck__title">{p.title}</span>
+                <span class="deck__meta">{p.meta}</span>
+              </figcaption>
+            </figure>
+          ))}
+          <button type="button" class="deck__reset" data-deck-reset>Neu stapeln</button>
+        </div>
+      </div>
+    </section>
+
+    {/* Option 19: Accordion-Balken */}
+    <section id="opt-19" class="section option-block option-block--full">
+      <div class="wrapper">
+        <div class="option-heading">
+          <span class="option-badge">Option 19</span>
+          <h2>{options[18].title}</h2>
+          <p>{options[18].desc}</p>
+          <p class="option-hint">Klick auf einen Balken macht ihn zum aktiven Bild.</p>
+        </div>
+      </div>
+
+      <div class="accordion" data-accordion>
+        {accordionImages.map((p, i) => (
+          <button
+            type="button"
+            class={`accordion__panel${i === 0 ? ' is-active' : ''}`}
+            data-index={i}
+            aria-label={`${p.label} anzeigen`}
+            style={`background-image: url('${p.src}')`}
+          >
+            <span class="accordion__vertical">{p.label}</span>
+            <span class="accordion__count">{p.count}</span>
+            <span class="accordion__horizontal">
+              <span class="accordion__title">{p.label}</span>
+              <span class="accordion__subtitle">{p.location} · Fotos ansehen ↓</span>
+            </span>
+          </button>
+        ))}
+      </div>
+    </section>
+
+    <script is:inline>
+      /* Option 4: Ken-Burns Auto-Play */
+      (() => {
+        const root = document.querySelector('[data-kenburns]');
+        if (!root) return;
+        const slides = root.querySelectorAll('.kenburns__slide');
+        const dots = root.querySelectorAll('.kenburns__dot');
+        let idx = 0;
+        let timer;
+        const show = (i) => {
+          idx = (i + slides.length) % slides.length;
+          slides.forEach((s, si) => s.classList.toggle('is-active', si === idx));
+          dots.forEach((d, di) => d.classList.toggle('is-active', di === idx));
+        };
+        const start = () => { timer = setInterval(() => show(idx + 1), 5000); };
+        const stop = () => clearInterval(timer);
+        dots.forEach((d, i) => d.addEventListener('click', () => { stop(); show(i); start(); }));
+        root.addEventListener('mouseenter', stop);
+        root.addEventListener('mouseleave', start);
+        start();
+      })();
+
+      /* Option 7: Sticky-Story Landscape — Cross-Fade beim Vorbeiscrollen */
+      (() => {
+        const root = document.querySelector('[data-ls-story]');
+        if (!root) return;
+        const photos = root.querySelectorAll('.ls-story__photo');
+        const blocks = root.querySelectorAll('.ls-story__block');
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const idx = Number(entry.target.dataset.index);
+              photos.forEach((p) => p.classList.toggle('is-active', Number(p.dataset.index) === idx));
+            }
+          });
+        }, { threshold: 0.55 });
+        blocks.forEach((b) => observer.observe(b));
+      })();
+
+      /* Option 6: Parallax */
+      (() => {
+        const root = document.querySelector('[data-parallax]');
+        if (!root) return;
+        const bgs = root.querySelectorAll('[data-parallax-bg]');
+        const update = () => {
+          bgs.forEach((bg) => {
+            const rect = bg.getBoundingClientRect();
+            const vh = window.innerHeight;
+            const progress = (rect.top + rect.height / 2) / (vh + rect.height);
+            const shift = (0.5 - progress) * 40;
+            const img = bg.querySelector('img');
+            if (img) img.style.transform = `translate3d(0, ${shift}px, 0) scale(1.15)`;
+          });
+        };
+        window.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+        window.addEventListener('resize', update);
+        update();
+      })();
+
+      /* Option 13: Typo-Cutout — Bildwechsel per Auto-Play */
+      (() => {
+        const root = document.querySelector('[data-typo-cutout]');
+        if (!root) return;
+        const slides = root.querySelectorAll('.typo-cutout__slide');
+        let i = 0;
+        setInterval(() => {
+          i = (i + 1) % slides.length;
+          slides.forEach((s, si) => s.classList.toggle('is-active', si === i));
+        }, 3500);
+      })();
+
+      /* Option 14: Cover-Flow */
+      (() => {
+        const root = document.querySelector('[data-coverflow]');
+        if (!root) return;
+        const items = Array.from(root.querySelectorAll('.coverflow__item'));
+        const prev = root.querySelector('[data-cf-prev]');
+        const next = root.querySelector('[data-cf-next]');
+        let idx = 0;
+        const layout = () => {
+          items.forEach((el, i) => {
+            const offset = i - idx;
+            const abs = Math.abs(offset);
+            const tx = offset * 40;
+            const ty = abs * 0;
+            const rot = offset * -22;
+            const scale = 1 - Math.min(abs * 0.12, 0.55);
+            const z = 100 - abs;
+            const opacity = abs > 3 ? 0 : 1;
+            el.style.transform = `translate3d(${tx}%, ${ty}%, 0) rotateY(${rot}deg) scale(${scale})`;
+            el.style.zIndex = String(z);
+            el.style.opacity = String(opacity);
+            el.classList.toggle('is-active', i === idx);
+          });
+        };
+        prev.addEventListener('click', () => { idx = (idx - 1 + items.length) % items.length; layout(); });
+        next.addEventListener('click', () => { idx = (idx + 1) % items.length; layout(); });
+        items.forEach((el, i) => el.addEventListener('click', () => { idx = i; layout(); }));
+        window.addEventListener('keydown', (e) => {
+          if (!root.matches(':hover')) return;
+          if (e.key === 'ArrowLeft') { idx = (idx - 1 + items.length) % items.length; layout(); }
+          if (e.key === 'ArrowRight') { idx = (idx + 1) % items.length; layout(); }
+        });
+        layout();
+      })();
+
+      /* Option 15: Streifen-Reveal — animiere beim Einblenden */
+      (() => {
+        const items = document.querySelectorAll('[data-slice-reveal]');
+        if (!items.length) return;
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-revealed');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.35 });
+        items.forEach((el) => observer.observe(el));
+      })();
+
+      /* Option 17: Dual-Layer — Dots wechseln Bild */
+      (() => {
+        const root = document.querySelector('[data-dual-layer]');
+        if (!root) return;
+        const slides = root.querySelectorAll('.dual-layer__slide');
+        const dots = root.querySelectorAll('.dual-layer__dot');
+        let i = 0;
+        const show = (n) => {
+          i = (n + slides.length) % slides.length;
+          slides.forEach((s, si) => s.classList.toggle('is-active', si === i));
+          dots.forEach((d, di) => d.classList.toggle('is-active', di === i));
+        };
+        dots.forEach((d, di) => d.addEventListener('click', () => show(di)));
+        let timer = setInterval(() => show(i + 1), 4500);
+        root.addEventListener('mouseenter', () => clearInterval(timer));
+        root.addEventListener('mouseleave', () => { timer = setInterval(() => show(i + 1), 4500); });
+      })();
+
+      /* Option 18: Draggable Deck */
+      (() => {
+        const root = document.querySelector('[data-deck]');
+        if (!root) return;
+        const cards = Array.from(root.querySelectorAll('.deck__card'));
+        const resetBtn = root.querySelector('[data-deck-reset]');
+        let removed = [];
+
+        const setStack = () => {
+          const visible = cards.filter((c) => !removed.includes(c));
+          visible.forEach((c, i) => {
+            c.style.setProperty('--stack', i);
+            c.style.zIndex = String(1000 - i);
+            c.style.pointerEvents = i === 0 ? 'auto' : 'none';
+          });
+        };
+
+        const swipe = (card, dir = 1) => {
+          card.style.transition = 'transform 400ms ease, opacity 400ms ease';
+          card.style.transform = `translate3d(${dir * 130}%, -20%, 0) rotate(${dir * 15}deg)`;
+          card.style.opacity = '0';
+          setTimeout(() => {
+            removed.push(card);
+            setStack();
+          }, 400);
+        };
+
+        cards.forEach((card) => {
+          let startX = null;
+          let currentX = 0;
+          const onStart = (x) => { startX = x; card.style.transition = 'none'; };
+          const onMove = (x) => {
+            if (startX === null) return;
+            currentX = x - startX;
+            card.style.transform = `translate3d(${currentX}px, 0, 0) rotate(${currentX / 30}deg)`;
+          };
+          const onEnd = () => {
+            if (startX === null) return;
+            if (Math.abs(currentX) > 100) {
+              swipe(card, currentX > 0 ? 1 : -1);
+            } else {
+              card.style.transition = 'transform 250ms ease';
+              card.style.transform = '';
+            }
+            startX = null;
+            currentX = 0;
+          };
+          card.addEventListener('pointerdown', (e) => { card.setPointerCapture(e.pointerId); onStart(e.clientX); });
+          card.addEventListener('pointermove', (e) => onMove(e.clientX));
+          card.addEventListener('pointerup', onEnd);
+          card.addEventListener('pointercancel', onEnd);
+          card.addEventListener('click', () => { if (currentX === 0 && startX === null) swipe(card, 1); });
+        });
+
+        resetBtn.addEventListener('click', () => {
+          removed = [];
+          cards.forEach((c) => { c.style.transition = 'transform 400ms ease, opacity 400ms ease'; c.style.transform = ''; c.style.opacity = ''; });
+          setTimeout(setStack, 50);
+        });
+
+        setStack();
+      })();
+
+      /* Option 19: Accordion-Balken */
+      (() => {
+        const root = document.querySelector('[data-accordion]');
+        if (!root) return;
+        const panels = root.querySelectorAll('.accordion__panel');
+        panels.forEach((panel) => {
+          panel.addEventListener('click', () => {
+            panels.forEach((p) => p.classList.toggle('is-active', p === panel));
+          });
+          panel.addEventListener('mouseenter', () => {
+            panels.forEach((p) => p.classList.toggle('is-active', p === panel));
+          });
+        });
+      })();
+    </script>
+  </main>
+</BaseLayout>
+
+<style>
+  .options-page { background: #ffffff; }
+
+  .options-intro { padding-top: clamp(2rem, 4vw, 3rem); }
+
+  .options-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    color: var(--color-ink);
+    font-size: clamp(2rem, 3.6vw, 3rem);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+  }
+
+  .options-lead {
+    color: var(--color-text);
+    max-width: 60ch;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  .options-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.5rem;
+  }
+
+  .options-nav a {
+    font-size: 0.85rem;
+    color: var(--color-sage-dark);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .option-block {
+    padding-block: clamp(3rem, 5vw, 5rem);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .option-block--full > .wrapper { margin-bottom: 2rem; }
+
+  .option-heading {
+    margin-bottom: 2.5rem;
+    max-width: 60ch;
+  }
+
+  .option-badge {
+    display: inline-block;
+    background: var(--color-sage);
+    color: #ffffff;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .option-heading h2 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    font-size: 1.35rem;
+    margin: 0 0 0.6rem;
+    letter-spacing: 0.02em;
+  }
+
+  .option-heading p {
+    color: var(--color-text);
+    font-weight: 300;
+    margin: 0;
+  }
+
+  .option-hint {
+    margin-top: 0.5rem !important;
+    font-size: 0.85rem;
+    color: var(--color-sage-dark);
+  }
+
+  /* ------- Option 1: Sticky-Stack (Landscape) ------- */
+  .ls-stack { display: block; }
+
+  .ls-stack__item {
+    position: sticky;
+    top: 6rem;
+    margin: 0 0 60vh;
+    height: calc(100vh - 8rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .ls-stack__item:last-child { margin-bottom: 0; }
+
+  .ls-stack__image {
+    position: relative;
+    width: 100%;
+    max-width: min(100%, calc((100vh - 8rem) * 3 / 2));
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background: #f4f5f2;
+  }
+
+  .ls-stack__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ls-stack__caption {
+    position: absolute;
+    left: 1.25rem;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    padding: 0.55rem 0.95rem;
+    background: #ffffff;
+    border: 1px solid var(--color-sage);
+    color: var(--color-ink);
+    font-size: 0.85rem;
+    font-weight: 300;
+  }
+
+  /* ------- Option 2: Editorial Grid ------- */
+  .ls-editorial {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.5rem, 3vw, 3rem);
+  }
+
+  .ls-editorial__item { margin: 0; }
+
+  .ls-editorial__item img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ls-editorial__item figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.75rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .ls-editorial__title {
+    color: var(--color-ink);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+  }
+
+  .ls-editorial__meta {
+    color: var(--color-sage-dark);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* ------- Option 3: Split-Screen ------- */
+  .ls-split {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3rem, 6vw, 5rem);
+  }
+
+  .ls-split__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+
+  .ls-split__row.is-flipped { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); }
+  .ls-split__row.is-flipped .ls-split__media { order: 2; }
+  .ls-split__row.is-flipped .ls-split__text  { order: 1; }
+
+  .ls-split__media img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ls-split__meta {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--color-sage-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.5rem;
+  }
+
+  .ls-split__title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.75rem, 2.5vw, 2.4rem);
+    letter-spacing: 0.04em;
+    color: var(--color-ink);
+    margin: 0 0 1rem;
+  }
+
+  .ls-split__body {
+    color: var(--color-text);
+    font-weight: 300;
+    line-height: 1.6;
+    max-width: 44ch;
+    margin: 0;
+  }
+
+  /* ------- Option 4: Ken-Burns Slideshow ------- */
+  .kenburns {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    max-height: calc(100vh - 8rem);
+    overflow: hidden;
+    background: #000;
+  }
+
+  .kenburns__slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 900ms ease;
+  }
+
+  .kenburns__slide.is-active {
+    opacity: 1;
+    z-index: 1;
+  }
+
+  .kenburns__slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transform: scale(1.05);
+    transition: transform 8s ease-out;
+  }
+
+  .kenburns__slide.is-active img { transform: scale(1.18); }
+
+  .kenburns__caption {
+    position: absolute;
+    left: clamp(1rem, 3vw, 2.5rem);
+    bottom: clamp(1rem, 3vw, 2.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.9rem 1.15rem;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--color-ink);
+    z-index: 2;
+  }
+
+  .kenburns__meta {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-sage-dark);
+  }
+
+  .kenburns__title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.5rem;
+    letter-spacing: 0.04em;
+  }
+
+  .kenburns__dots {
+    position: absolute;
+    left: 50%;
+    bottom: 1rem;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    z-index: 3;
+  }
+
+  .kenburns__dot {
+    width: 9px;
+    height: 9px;
+    background: rgba(255, 255, 255, 0.45);
+    cursor: pointer;
+    transition: background 200ms ease;
+  }
+
+  .kenburns__dot.is-active { background: #ffffff; }
+
+  /* ------- Option 5: Cinema-Strip ------- */
+  .cinema-strip {
+    display: flex;
+    gap: 1.25rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-inline: var(--gutter);
+    padding-block: 1rem 2rem;
+    scrollbar-width: thin;
+  }
+
+  .cinema-strip__item {
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+    margin: 0;
+    width: min(75vw, 640px);
+  }
+
+  .cinema-strip__item img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    display: block;
+  }
+
+  .cinema-strip__item figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.6rem;
+    color: var(--color-ink);
+    font-size: 0.85rem;
+  }
+
+  .cinema-strip__meta {
+    color: var(--color-sage-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.8rem;
+  }
+
+  /* ------- Option 6: Full-Bleed Parallax ------- */
+  .parallax-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .parallax-list__row {
+    position: relative;
+    min-height: 70vh;
+    overflow: hidden;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 5vw, 5rem);
+  }
+
+  .parallax-list__row + .parallax-list__row { border-top: 1px solid rgba(255,255,255,0.15); }
+
+  .parallax-list__bg {
+    position: absolute;
+    inset: -10% 0;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .parallax-list__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    will-change: transform;
+  }
+
+  .parallax-list__bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.2) 55%, rgba(0,0,0,0) 100%);
+  }
+
+  .parallax-list__card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+    max-width: 460px;
+    border-left: 3px solid var(--color-sage);
+  }
+
+  .parallax-list__meta {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--color-sage-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.4rem;
+  }
+
+  .parallax-list__title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+    letter-spacing: 0.04em;
+    color: var(--color-ink);
+    margin: 0 0 0.8rem;
+  }
+
+  .parallax-list__body {
+    color: var(--color-text);
+    font-weight: 300;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* ------- Option 7: Sticky-Story Landscape ------- */
+  .ls-story {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+
+  .ls-story__media {
+    position: sticky;
+    top: 6rem;
+    aspect-ratio: 3 / 2;
+    max-height: calc(100vh - 8rem);
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .ls-story__photo {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 500ms ease;
+  }
+
+  .ls-story__photo.is-active { opacity: 1; }
+
+  .ls-story__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ls-story__text { display: flex; flex-direction: column; }
+
+  .ls-story__block {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .ls-story__block:first-child { border-top: none; }
+
+  .ls-story__meta {
+    font-size: 0.85rem;
+    color: var(--color-sage-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.5rem;
+  }
+
+  .ls-story__title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.75rem, 2.5vw, 2.4rem);
+    letter-spacing: 0.04em;
+    color: var(--color-ink);
+    margin: 0 0 1rem;
+  }
+
+  .ls-story__body {
+    color: var(--color-text);
+    font-weight: 300;
+    line-height: 1.6;
+    max-width: 44ch;
+    margin: 0;
+  }
+
+  /* ------- Option 8: Bento-Grid ------- */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 22vh;
+    gap: 0.75rem;
+  }
+
+  .bento__item {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    background: #f4f5f2;
+  }
+
+  .bento__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 400ms ease;
+  }
+
+  .bento__item:hover img { transform: scale(1.04); }
+
+  .bento__item--1 { grid-column: span 3; grid-row: span 2; }
+  .bento__item--2 { grid-column: span 1; grid-row: span 1; }
+  .bento__item--3 { grid-column: span 1; grid-row: span 1; }
+  .bento__item--4 { grid-column: span 4; grid-row: span 1; }
+
+  .bento__item figcaption {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.35rem 0.7rem;
+    background: rgba(255,255,255,0.92);
+    color: var(--color-ink);
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+  }
+
+  .bento__meta {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--color-sage-dark);
+    letter-spacing: 0.06em;
+  }
+
+  .bento__title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1rem;
+    letter-spacing: 0.03em;
+  }
+
+  /* ------- Option 9: Contact-Sheet ------- */
+  .contact-sheet {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 4px;
+    background: #1c1c1c;
+    padding: 4px;
+  }
+
+  .contact-sheet__item {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    background: #0d0d0d;
+    aspect-ratio: 3 / 2;
+  }
+
+  .contact-sheet__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 400ms ease, filter 400ms ease;
+    filter: brightness(0.85);
+  }
+
+  .contact-sheet__item:hover img {
+    transform: scale(1.1);
+    filter: brightness(1);
+  }
+
+  .contact-sheet__label {
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    color: #ffffff;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(0,0,0,0.4);
+    padding: 2px 6px;
+  }
+
+  /* ------- Option 10: Timeline ------- */
+  .ls-timeline {
+    position: relative;
+    display: flex;
+    gap: clamp(1rem, 3vw, 2rem);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 3rem var(--gutter) 4rem;
+    scrollbar-width: thin;
+  }
+
+  .ls-timeline__line {
+    position: absolute;
+    left: var(--gutter);
+    right: var(--gutter);
+    top: 6rem;
+    height: 1px;
+    background: var(--color-border);
+    z-index: 0;
+  }
+
+  .ls-timeline__item {
+    position: relative;
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+    margin: 0;
+    width: min(60vw, 480px);
+    padding-top: 3rem;
+  }
+
+  .ls-timeline__date {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    padding: 0.35rem 0.7rem;
+    background: #ffffff;
+    border: 1px solid var(--color-sage);
+    color: var(--color-ink);
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    z-index: 2;
+  }
+
+  .ls-timeline__dot {
+    position: absolute;
+    top: 3rem;
+    left: 1.75rem;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-sage);
+    border: 3px solid #ffffff;
+    box-shadow: 0 0 0 1px var(--color-sage);
+    z-index: 1;
+  }
+
+  .ls-timeline__frame {
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background: #f4f5f2;
+  }
+
+  .ls-timeline__frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ls-timeline__item figcaption {
+    margin-top: 0.75rem;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    letter-spacing: 0.03em;
+  }
+
+  /* ------- Option 11: Marquee (Landscape) ------- */
+  .ls-marquee {
+    overflow: hidden;
+    padding-block: 1rem;
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .ls-marquee__track {
+    display: flex;
+    gap: 1.5rem;
+    width: max-content;
+    animation: ls-marquee-scroll 60s linear infinite;
+  }
+
+  .ls-marquee:hover .ls-marquee__track { animation-play-state: paused; }
+
+  .ls-marquee__item {
+    flex: 0 0 auto;
+    margin: 0;
+    position: relative;
+    height: 55vh;
+    max-height: 460px;
+  }
+
+  .ls-marquee__item img {
+    height: 100%;
+    width: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ls-marquee__item figcaption {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.35rem 0.7rem;
+    background: #ffffff;
+    color: var(--color-ink);
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+
+  .ls-marquee__item:hover figcaption { opacity: 1; }
+
+  @keyframes ls-marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-33.333%); }
+  }
+
+  /* ------- Option 12: Diagonal-Collage ------- */
+  .ls-collage {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: 14vh;
+    gap: 0;
+  }
+
+  .ls-collage__item {
+    margin: 0;
+    background: #ffffff;
+    padding: 0.5rem 0.5rem 1.5rem;
+    box-shadow: 0 20px 40px -24px rgba(0,0,0,0.35);
+    transition: transform 300ms ease, z-index 0s linear 0s;
+    position: relative;
+  }
+
+  .ls-collage__item img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ls-collage__item figcaption {
+    margin-top: 0.5rem;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    color: var(--color-ink);
+    letter-spacing: 0.03em;
+  }
+
+  .ls-collage__item--1 {
+    grid-column: 1 / span 3;
+    grid-row: 1 / span 3;
+    transform: rotate(-3deg);
+    z-index: 2;
+  }
+
+  .ls-collage__item--2 {
+    grid-column: 4 / span 3;
+    grid-row: 1 / span 3;
+    transform: rotate(2deg);
+    z-index: 1;
+  }
+
+  .ls-collage__item--3 {
+    grid-column: 2 / span 3;
+    grid-row: 3 / span 3;
+    transform: rotate(-1deg);
+    z-index: 3;
+  }
+
+  .ls-collage__item--4 {
+    grid-column: 5 / span 2;
+    grid-row: 4 / span 3;
+    transform: rotate(4deg);
+    z-index: 2;
+  }
+
+  .ls-collage__item:hover {
+    transform: rotate(0deg) scale(1.03);
+    z-index: 5;
+  }
+
+  /* ------- Option 13: Typo-Cutout ------- */
+  .typo-cutout {
+    position: relative;
+    height: 70vh;
+    min-height: 420px;
+    background: #0d0d0d;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .typo-cutout__slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 900ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: contrast(1.05);
+  }
+
+  .typo-cutout__slide.is-active { opacity: 1; }
+
+  .typo-cutout__slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(13, 13, 13, 0.55);
+    z-index: 1;
+  }
+
+  .typo-cutout__word {
+    position: relative;
+    z-index: 2;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(4rem, 18vw, 22rem);
+    letter-spacing: 0.05em;
+    line-height: 0.95;
+    color: transparent;
+    background: inherit;
+    background-clip: text;
+    -webkit-background-clip: text;
+    background-image: inherit;
+    background-size: cover;
+    background-position: center;
+    text-shadow: 0 0 rgba(0,0,0,0);
+    mix-blend-mode: screen;
+  }
+
+  .typo-cutout__meta {
+    position: absolute;
+    left: clamp(1rem, 3vw, 2.5rem);
+    bottom: clamp(1rem, 3vw, 2rem);
+    z-index: 3;
+    color: #ffffff;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(0,0,0,0.4);
+    padding: 0.35rem 0.7rem;
+  }
+
+  /* ------- Option 14: Cover-Flow ------- */
+  .coverflow {
+    position: relative;
+    padding: 4rem clamp(2rem, 6vw, 5rem);
+    perspective: 1400px;
+    background: linear-gradient(180deg, #f4f5f2 0%, #ffffff 100%);
+    overflow: hidden;
+  }
+
+  .coverflow__stage {
+    position: relative;
+    height: 55vh;
+    min-height: 380px;
+    transform-style: preserve-3d;
+  }
+
+  .coverflow__item {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(60vw, 520px);
+    aspect-ratio: 3 / 2;
+    margin: 0;
+    transform-origin: center center;
+    transition: transform 500ms ease, opacity 500ms ease;
+    cursor: pointer;
+    translate: -50% -50%;
+    box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.55);
+    background: #ffffff;
+    padding: 0.4rem;
+  }
+
+  .coverflow__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .coverflow__item figcaption {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.3rem 0.6rem;
+    background: rgba(255,255,255,0.9);
+    font-size: 0.8rem;
+    color: var(--color-ink);
+    opacity: 0;
+    transition: opacity 300ms ease;
+  }
+
+  .coverflow__item.is-active figcaption { opacity: 1; }
+
+  .coverflow__arrow {
+    all: unset;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-sage);
+    color: #ffffff;
+    font-size: 1.75rem;
+    cursor: pointer;
+    transition: background 200ms ease;
+  }
+
+  .coverflow__arrow:hover { background: var(--color-ink); }
+  .coverflow__arrow--prev { left: 1rem; }
+  .coverflow__arrow--next { right: 1rem; }
+
+  /* ------- Option 15: Streifen-Reveal ------- */
+  .slice-reveal {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+
+  .slice-reveal__item {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    aspect-ratio: 3 / 2;
+    background: #f4f5f2;
+  }
+
+  .slice-reveal__item > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0;
+    transition: opacity 400ms ease 900ms;
+  }
+
+  .slice-reveal__slices {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .slice-reveal__slice {
+    background-size: 600% 100%;
+    background-repeat: no-repeat;
+    transform: translateY(0%);
+    transition: transform 800ms cubic-bezier(0.65, 0, 0.35, 1);
+    transition-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  .slice-reveal__item.is-revealed .slice-reveal__slice:nth-child(odd) {
+    transform: translateY(-105%);
+  }
+
+  .slice-reveal__item.is-revealed .slice-reveal__slice:nth-child(even) {
+    transform: translateY(105%);
+  }
+
+  .slice-reveal__item.is-revealed > img { opacity: 1; }
+
+  .slice-reveal__item figcaption {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+    z-index: 3;
+    padding: 0.4rem 0.75rem;
+    background: rgba(255,255,255,0.92);
+    font-size: 0.85rem;
+    color: var(--color-ink);
+    opacity: 0;
+    transition: opacity 400ms ease 1200ms;
+  }
+
+  .slice-reveal__item.is-revealed figcaption { opacity: 1; }
+
+  /* ------- Option 16: Radial-Arc ------- */
+  .arc-fan {
+    position: relative;
+    height: 60vh;
+    min-height: 460px;
+    background: #f4f5f2;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 4rem;
+  }
+
+  .arc-fan__item {
+    position: absolute;
+    bottom: -30%;
+    left: 50%;
+    margin: 0;
+    width: min(28vw, 260px);
+    transform-origin: 50% 130%;
+    transform: translateX(-50%) rotate(calc((var(--i) - (var(--total) - 1) / 2) * 12deg));
+    transition: transform 400ms ease, z-index 0s linear 0s;
+    background: #ffffff;
+    padding: 0.4rem 0.4rem 1.25rem;
+    box-shadow: 0 24px 40px -20px rgba(0,0,0,0.35);
+  }
+
+  .arc-fan__item img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    display: block;
+  }
+
+  .arc-fan__item figcaption {
+    text-align: center;
+    margin-top: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    color: var(--color-ink);
+  }
+
+  .arc-fan__item:hover {
+    transform: translateX(-50%) rotate(calc((var(--i) - (var(--total) - 1) / 2) * 12deg)) translateY(-40px);
+    z-index: 5;
+  }
+
+  /* ------- Option 17: Dual-Layer ------- */
+  .dual-layer {
+    position: relative;
+    height: 80vh;
+    min-height: 500px;
+    overflow: hidden;
+    background: #0d0d0d;
+  }
+
+  .dual-layer__slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 700ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dual-layer__slide.is-active { opacity: 1; }
+
+  .dual-layer__bg {
+    position: absolute;
+    inset: -5%;
+    width: 110%;
+    height: 110%;
+    object-fit: cover;
+    filter: blur(28px) brightness(0.55);
+    transform: scale(1.08);
+    z-index: 0;
+  }
+
+  .dual-layer__card {
+    position: relative;
+    z-index: 1;
+    background: #ffffff;
+    padding: 0.6rem 0.6rem 1.25rem;
+    box-shadow: 0 30px 60px -30px rgba(0,0,0,0.6);
+    width: min(70vw, 620px);
+    aspect-ratio: 3 / 2;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dual-layer__card > img {
+    flex: 1;
+    width: 100%;
+    object-fit: cover;
+    display: block;
+    min-height: 0;
+  }
+
+  .dual-layer__card figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .dual-layer__meta {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-sage-dark);
+  }
+
+  .dual-layer__title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--color-ink);
+    letter-spacing: 0.03em;
+  }
+
+  .dual-layer__dots {
+    position: absolute;
+    left: 50%;
+    bottom: 1.5rem;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    z-index: 5;
+  }
+
+  .dual-layer__dot {
+    all: unset;
+    width: 10px;
+    height: 10px;
+    background: rgba(255,255,255,0.35);
+    cursor: pointer;
+    transition: background 200ms ease;
+  }
+
+  .dual-layer__dot.is-active { background: #ffffff; }
+
+  /* ------- Option 18: Draggable Deck ------- */
+  .deck {
+    position: relative;
+    height: 60vh;
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .deck__card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(60vw, 560px);
+    aspect-ratio: 3 / 2;
+    margin: 0;
+    background: #ffffff;
+    padding: 0.5rem 0.5rem 1.75rem;
+    box-shadow: 0 30px 60px -30px rgba(0,0,0,0.5);
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    transform: translate(-50%, calc(-50% + (var(--stack, 0) * 10px))) scale(calc(1 - var(--stack, 0) * 0.03));
+    transition: transform 300ms ease;
+    will-change: transform;
+  }
+
+  .deck__card:active { cursor: grabbing; }
+
+  .deck__card img {
+    width: 100%;
+    height: calc(100% - 1.75rem);
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+  }
+
+  .deck__card figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.4rem;
+    font-size: 0.85rem;
+  }
+
+  .deck__title {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    font-size: 1rem;
+    letter-spacing: 0.03em;
+  }
+
+  .deck__meta {
+    color: var(--color-sage-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.75rem;
+  }
+
+  .deck__reset {
+    all: unset;
+    position: absolute;
+    bottom: -3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem 1rem;
+    background: var(--color-sage);
+    color: #ffffff;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    z-index: 1;
+    transition: background 200ms ease;
+  }
+
+  .deck__reset:hover { background: var(--color-ink); }
+
+  /* ------- Option 19: Accordion-Balken ------- */
+  .accordion {
+    display: flex;
+    gap: 0.5rem;
+    padding-inline: var(--gutter);
+    height: 70vh;
+    min-height: 480px;
+  }
+
+  .accordion__panel {
+    all: unset;
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #f4f5f2;
+    cursor: pointer;
+    overflow: hidden;
+    transition: flex 700ms cubic-bezier(0.65, 0, 0.35, 1);
+    isolation: isolate;
+  }
+
+  .accordion__panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.45) 100%);
+    transition: background 500ms ease;
+    z-index: 1;
+  }
+
+  .accordion__panel.is-active {
+    flex: 6;
+  }
+
+  .accordion__panel.is-active::after {
+    background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.55) 100%);
+  }
+
+  .accordion__vertical {
+    position: absolute;
+    left: 50%;
+    bottom: 1.5rem;
+    transform: translateX(-50%) rotate(-90deg);
+    transform-origin: center;
+    white-space: nowrap;
+    color: #ffffff;
+    font-family: var(--font-body);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-size: 0.9rem;
+    z-index: 2;
+    transition: opacity 300ms ease;
+  }
+
+  .accordion__panel.is-active .accordion__vertical {
+    opacity: 0;
+  }
+
+  .accordion__count {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translateX(-50%);
+    padding: 0.35rem 0.9rem;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--color-ink);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 400ms ease 200ms;
+    z-index: 3;
+  }
+
+  .accordion__panel.is-active .accordion__count {
+    opacity: 1;
+  }
+
+  .accordion__horizontal {
+    position: absolute;
+    left: 2rem;
+    bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    color: #ffffff;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 400ms ease 250ms;
+  }
+
+  .accordion__panel.is-active .accordion__horizontal {
+    opacity: 1;
+  }
+
+  .accordion__title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    letter-spacing: 0.03em;
+    line-height: 1;
+  }
+
+  .accordion__subtitle {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+
+  @media (max-width: 760px) {
+    .ls-editorial { grid-template-columns: 1fr; }
+    .ls-split__row,
+    .ls-split__row.is-flipped { grid-template-columns: 1fr; }
+    .ls-split__row.is-flipped .ls-split__media,
+    .ls-split__row.is-flipped .ls-split__text { order: initial; }
+
+    .ls-story { grid-template-columns: 1fr; }
+    .ls-story__media { position: relative; top: 0; max-height: 50vh; }
+
+    .bento {
+      grid-template-columns: 1fr;
+      grid-auto-rows: 30vh;
+    }
+    .bento__item--1,
+    .bento__item--4 { grid-column: span 1; }
+
+    .ls-collage {
+      grid-template-columns: 1fr;
+      grid-auto-rows: auto;
+    }
+    .ls-collage__item--1,
+    .ls-collage__item--2,
+    .ls-collage__item--3,
+    .ls-collage__item--4 {
+      grid-column: 1;
+      grid-row: auto;
+      transform: none;
+    }
+
+    .accordion {
+      height: auto;
+      flex-direction: column;
+    }
+
+    .accordion__panel { height: 100px; }
+    .accordion__panel.is-active { height: 60vh; }
+    .accordion__vertical { transform: translateX(-50%); left: 50%; bottom: 50%; }
+  }
+</style>

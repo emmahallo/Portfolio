@@ -1,0 +1,37 @@
+---
+// Projekt-Karte. Styling zentral in global.css (.project-card / .project-card__*),
+// genutzt sowohl im Startseiten-Karussell (Projects.astro) als auch im
+// "Weitere Projekte"-Raster auf den Projekt-Unterseiten.
+
+interface Props {
+  title: string;
+  meta: string;
+  image: string;
+  href: string;
+  imagePosition?: string;
+}
+
+const { title, meta, image, href, imagePosition } = Astro.props;
+---
+
+<a class="project-card" href={href}>
+  <span class="project-card__image">
+    <img
+      src={image}
+      alt={title}
+      loading="lazy"
+      width="700"
+      height="500"
+      style={imagePosition ? `object-position: ${imagePosition}` : undefined}
+    />
+  </span>
+  <span class="project-card__content">
+    <span class="project-card__title">{title}</span>
+    <span class="project-card__meta-row">
+      <span class="project-card__meta">{meta}</span>
+      <svg class="arrow-icon" viewBox="0 0 14 10" aria-hidden="true">
+        <path d="M0 5H13M13 5L9 1M13 5L9 9" fill="none" stroke="currentColor" stroke-width="1.4" />
+      </svg>
+    </span>
+  </span>
+</a>

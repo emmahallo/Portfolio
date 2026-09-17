@@ -1,0 +1,75 @@
+---
+import '@fontsource-variable/karla';
+import '@fontsource/reenie-beanie';
+import '@fontsource/staatliches';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Emma Eichin — UI/UX Design',
+  description = 'Portfolio von Emma Eichin: Mediendesign-Studentin mit Schwerpunkt UI/UX Design.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+  </head>
+  <body>
+    <slot />
+
+    <script>
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const activate = (el: Element) => {
+        el.classList.add('is-visible');
+      };
+
+      const init = () => {
+        const targets = document.querySelectorAll<HTMLElement>('[data-reveal]');
+        if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+          targets.forEach(activate);
+          return;
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                activate(entry.target);
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
+        );
+
+        targets.forEach((el) => {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
+            activate(el);
+          } else {
+            observer.observe(el);
+          }
+        });
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    </script>
+  </body>
+</html>
