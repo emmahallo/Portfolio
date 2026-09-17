@@ -23,6 +23,3 @@ npm-debug.log*
 # large source files (originals — web uses .mp4 versions)
 *.mov
 *.MOV
-
-# large PDF — host externally or via LFS
-public/dokumente/Projekt-Dokumentation.pdf
