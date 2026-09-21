@@ -18,7 +18,7 @@ const overview = [
 
 const meta = ['4. Semester', 'Partnerarbeit', '2026'];
 
-const learningsHtml = `Im Rahmen des Moduls konnten wir vor allem lernen, wie sich <strong>eigenständiges Coden</strong> und der <strong>gezielte Einsatz von KI</strong> sinnvoll miteinander verbinden lassen. Bei <strong>feineren Detailanpassungen</strong> zeigten sich allerdings weiterhin die <strong>Grenzen der KI</strong> — insbesondere dann, wenn unser Anliegen nicht präzise erfasst wurde und mehrere <strong>Prompt-Iterationen</strong> nötig waren, um zum gewünschten Ergebnis zu gelangen. Mit der Zeit entwickelt sich jedoch ein <strong>besseres Gespür</strong> dafür, was die KI wie interpretiert und wie <strong>Anweisungen formuliert</strong> sein müssen, damit sie besser verstanden werden.`;
+const learningsHtml = `Im Rahmen des Moduls konnten wir vor allem lernen, wie sich <strong>eigenständiges Coden</strong> und der <strong>gezielte Einsatz von KI</strong> sinnvoll miteinander <strong>verbinden</strong> lassen. Bei feineren Detailanpassungen zeigten sich allerdings weiterhin die Grenzen der KI — insbesondere dann, wenn unser Anliegen nicht präzise erfasst wurde und mehrere Prompt-Iterationen nötig waren, um zum gewünschten Ergebnis zu gelangen. Mit der Zeit entwickelt sich jedoch ein besseres Gespür dafür, was die KI wie interpretiert und wie Anweisungen formuliert sein müssen, damit sie besser verstanden werden.`;
 
 const results = [
   {
@@ -69,11 +69,11 @@ const results = [
       <div class="wrapper">
         <h2 class="section-heading" data-reveal>Ausgangspunkt</h2>
         <TabCard tab="Aufgabe" data-reveal>
-          <p class="tab-card__text" style="max-width: 44vw;">
-            Ziel des Moduls Webentwicklung 2 war die <strong>technische Umsetzung einer Webapplikation</strong> mit Fokus auf moderne Webarchitektur: Vorgegeben waren der Stack aus <strong>Astro, SolidJS und SQLite</strong> sowie der Einsatz verschiedener Rendermethoden (SSG, SSR, SPA).
+          <p class="tab-card__text" style="max-width: 48vw;">
+            Ziel des Moduls Webentwicklung 2 war die <strong>technische Umsetzung einer Webapplikation</strong> mit Fokus auf moderne Webarchitektur: Vorgegeben waren der Stack aus Astro, SolidJS und SQLite sowie der Einsatz verschiedener Rendermethoden (SSG, SSR, SPA).
           </p>
-          <p class="tab-card__text" style="margin-top: 0.6rem; max-width: 44vw;">
-            Als Projekt wählten wir eine <strong>Hotel-Website</strong>, um veraltete Buchungsprozesse durch einen <strong>spürbar intuitiveren Flow</strong> zu ersetzen. Während das technische Fundament bereits steht, bietet das Interface optimalen Spielraum, um im nächsten Schritt <strong>visuell, inhaltlich und nutzerzentriert</strong> weiter ausgebaut zu werden.
+          <p class="tab-card__text" style="margin-top: 0.6rem; max-width: 48vw;">
+            Als Projekt wählten wir eine <strong>Hotel-Website</strong>, um veraltete Buchungsprozesse durch einen spürbar intuitiveren Flow zu ersetzen. Während das technische Fundament bereits steht, bietet das Interface optimalen Spielraum, um im nächsten Schritt visuell, inhaltlich und nutzerzentriert weiter ausgebaut zu werden.
           </p>
         </TabCard>
       </div>
@@ -236,8 +236,8 @@ const results = [
         <h2 class="section-heading" data-reveal>Projekt-Details</h2>
 
         <TabCard tab="Workflow" data-reveal>
-          <p class="tab-card__text">Bei der Umsetzung nutzten wir <strong>Claude gezielt als beschleunigendes Werkzeug</strong>. <strong>Architektur, Datenmodell und Login</strong> haben wir selbst aufgebaut.</p>
-          <p class="tab-card__text">Die restliche Website entstand mit <strong>Unterstützung von Claude</strong>. Wichtig war uns dabei, den erzeugten Code <strong>nie blind zu übernehmen</strong>, sondern auch zu <strong>verstehen, zu prüfen</strong> und gegebenenfalls nochmal anzupassen.</p>
+          <p class="tab-card__text">Bei der Umsetzung nutzten wir <strong>Claude gezielt als beschleunigendes Werkzeug</strong>. Architektur, Datenmodell und Login haben wir selbst aufgebaut.</p>
+          <p class="tab-card__text">Die restliche Website entstand mit Unterstützung von Claude. Wichtig war uns dabei, den erzeugten <strong>Code</strong> nie blind zu übernehmen, sondern auch zu <strong>verstehen</strong>, zu prüfen und gegebenenfalls nochmal anzupassen.</p>
         </TabCard>
 
         <TabCard tab="Technische Informationen" data-reveal style="--reveal-delay: 100ms">
@@ -261,15 +261,20 @@ const results = [
 
     <section id="links" class="section">
       <div class="wrapper">
-        <h2 class="section-heading" data-reveal>Links</h2>
-        <p class="case-plain-text" data-reveal>Hier gelangst du direkt auf die Website,<br />um sie live anzusehen.</p>
-        <LinkTile
-          href="https://calestial-haven.vercel.app/hotel"
-          title="Fiktive Hotel-Website"
-          subtitle="Mit einem Klick öffnet sich die Seite in einem neuen Fenster"
-          icon="external"
-          target="_blank"
-        />
+        <h2 class="section-heading" data-reveal>Link</h2>
+
+        <div class="download-grid">
+          <TabCard tab="Link" data-reveal>
+            <p class="tab-card__text">Hier gelangst du direkt auf die Website, um sie live anzusehen.</p>
+            <LinkTile
+              href="https://calestial-haven.vercel.app/hotel"
+              title="Fiktive Hotel-Website"
+              subtitle="Öffnet in einem neuen Fenster"
+              icon="external"
+              target="_blank"
+            />
+          </TabCard>
+        </div>
       </div>
     </section>
 
@@ -293,12 +298,25 @@ const results = [
   }
 
   @media (min-width: 1201px) {
+    main :global(.case-hero) {
+      padding-block-start: 0;
+      margin-block-start: -6rem;
+    }
+
+    @media (max-height: 676px) {
+      main :global(.case-hero) {
+        margin-block-start: -10rem;
+      }
+    }
+
     main :global(.case-hero__frame) {
-      height: 158%;
+      height: 125%;
+      left: 50%;
     }
 
     main :global(.case-hero__shape) {
-      left: -16%;
+      top: 36%;
+      left: -13%;
     }
   }
 
@@ -387,7 +405,7 @@ const results = [
     font-size: 1rem;
     line-height: 1.6;
     margin: 0;
-    color: var(--color-ink);
+    color: var(--color-brown);
   }
 
   @media (max-width: 900px) {
@@ -395,4 +413,48 @@ const results = [
     .deck-slide__num { position: static; font-size: 3rem; }
   }
 
+
+  @media (min-width: 1800px) {
+    main :global(.tab-card) {
+      max-width: 900px;
+    }
+  }
+
+  /* ---------- Link-Section: gleiches Setup wie Ernährungsberatung-Download & Link ---------- */
+  .download-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    align-items: stretch;
+    max-width: 900px;
+  }
+
+  .download-grid :global(.tab-card) {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .download-grid :global(.tab-card__frame) {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    flex: 1;
+  }
+
+  .download-grid :global(.tab-card__text) {
+    max-width: 45ch;
+  }
+
+  .download-grid :global(.link-tile__subtitle) {
+    max-width: none;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 760px) {
+    .download-grid :global(.link-tile__subtitle),
+    .download-grid :global(.link-tile__title) {
+      white-space: normal;
+    }
+  }
 </style>

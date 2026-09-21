@@ -51,7 +51,7 @@ const portraitPhotos = [
         <h2 class="section-heading" data-reveal>Ausgangspunkt</h2>
         <TabCard tab="Details" data-reveal>
           <p class="tab-card__text">
-            Neben Studienprojekten im <strong>Modul Fotografie</strong>, in denen unter anderem <strong>Portraits</strong> entstanden, fotografiere ich <strong>auch in meiner Freizeit sehr gerne</strong>. Dabei liebe ich es, <strong>Momente festzuhalten</strong> – ob Menschen, Natur oder kleine Details im Alltag.
+            Neben Studienprojekten im <strong>Modul Fotografie</strong>, in denen unter anderem <strong>Portraits</strong> entstanden, fotografiere ich auch in meiner Freizeit sehr gerne. Dabei liebe ich es, Momente festzuhalten – ob Menschen, Natur oder kleine Details im Alltag.
           </p>
         </TabCard>
       </div>
@@ -461,9 +461,31 @@ const portraitPhotos = [
   }
 
   @media (min-width: 1201px) {
+    main :global(.case-hero) {
+      padding-block-start: 0;
+      margin-block-start: -6rem;
+    }
+
+    @media (max-height: 676px) {
+      main :global(.case-hero) {
+        margin-block-start: -10rem;
+      }
+    }
+
     main :global(.case-hero__frame) {
-      height: 70%;
-      top: 58%;
+      height: 55%;
+      top: 62%;
+      left: 46%;
+    }
+
+    main :global(.case-hero__shape) {
+      top: 36%;
+      left: -13%;
+    }
+
+    main :global(#ergebnisse .photo-stack__image) {
+      width: min(78%, calc(80vh * 3 / 2));
+      margin-inline: auto;
     }
   }
 
@@ -476,5 +498,31 @@ const portraitPhotos = [
   }
   main :global(#ergebnisse-hochformat) {
     padding-top: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  @media (min-width: 1800px) {
+    main :global(.tab-card) {
+      max-width: 900px;
+    }
+
+    main :global(.sticky-story__block) {
+      min-height: 40vh;
+      opacity: 0;
+      transition: opacity 350ms ease;
+    }
+
+    main :global(.sticky-story__block.is-active) {
+      opacity: 1;
+    }
+
+    main :global(.sticky-story__block.is-active + .sticky-story__block) {
+      opacity: 0.2;
+    }
+
+    main :global(.sticky-story__block:last-child) {
+      position: sticky;
+      top: 6rem;
+      margin-bottom: 40vh;
+    }
   }
 </style>
