@@ -15,7 +15,7 @@ const overview = [
 
 const meta = ['1. Semester', 'Einzelarbeit', '2024'];
 
-const learningsHtml = `Da das Projekt im <strong>ersten Semester</strong> entstanden ist, würde ich aus heutiger Sicht in vielen Bereichen <strong>andere Entscheidungen</strong> treffen. Dennoch bleibt die Arbeit ein wertvoller Ausgangspunkt: Hier habe ich zum ersten Mal mit <strong>grundlegenden Gestaltungsprinzipien</strong> gearbeitet – von <strong>visuellen Hierarchien</strong> über <strong>Typografie</strong> und <strong>Farbsysteme</strong> bis hin zur klaren Aufbereitung komplexer Informationen. Das Kennenlernen erster Regeln sowie das <strong>Aufnehmen und Umsetzen von Feedback</strong> haben ein solides Fundament geschaffen, auf dem alle weiteren Projekte aufbauen konnten.`;
+const learningsHtml = `Da das Projekt im <strong>ersten Semester</strong> entstanden ist, würde ich aus heutiger Sicht in vielen Bereichen <strong>andere Entscheidungen treffen</strong>. <strong>Dennoch</strong> bleibt die Arbeit ein <strong>wertvoller Ausgangspunkt</strong>: Hier habe ich zum ersten Mal mit grundlegenden Gestaltungsprinzipien gearbeitet – von visuellen Hierarchien über Typografie und Farbsysteme bis hin zur klaren Aufbereitung komplexer Informationen. Das Kennenlernen erster Regeln sowie das Aufnehmen und Umsetzen von Feedback haben ein <strong>solides Fundament geschaffen</strong>, auf dem alle weiteren Projekte aufbauen konnten.`;
 
 const works = [
   {
@@ -38,6 +38,7 @@ const works = [
   <main class="page-activity-tracker">
     <CaseHero
       title={`Gestaltung eines<br class="br-tablet" /> Activity Tracker`}
+      eyebrow="UI Design"
       meta={meta}
       image="/images/voschau%20projektsseiten/phonetransparent.png"
       imageAlt="Activity-Tracker-Dashboard auf Tablet und iPhone"
@@ -52,7 +53,7 @@ const works = [
         <h2 class="section-heading" data-reveal>Ausgangspunkt</h2>
         <TabCard tab="Aufgabe" data-reveal>
           <p class="tab-card__text">
-            Im Modul <strong>Grundlagen der Gestaltung</strong> im ersten Semester bestand eine Aufgabe darin, ein <strong>Dashboard für einen Activity Tracker</strong> zu entwerfen. Der Schwerpunkt lag darauf, <strong>große und komplexe Datenmengen visuell klar zu strukturieren</strong> und für die <strong>NutzerInnen intuitiv erfassbar</strong> zu machen.
+            Im Modul <strong>Grundlagen der Gestaltung</strong> im ersten Semester bestand eine Aufgabe darin, ein <strong>Dashboard für einen Activity Tracker</strong> zu entwerfen. Der <strong>Schwerpunkt</strong> lag darauf, große und komplexe <strong>Datenmengen visuell klar zu strukturieren</strong> und für die NutzerInnen intuitiv erfassbar zu machen.
           </p>
         </TabCard>
       </div>
@@ -237,11 +238,41 @@ const works = [
     font-size: 1rem;
     line-height: 1.6;
     margin: 0;
-    color: var(--color-ink);
+    color: var(--color-brown);
   }
 
   @media (max-width: 900px) {
     .deck-slide { grid-template-columns: 1fr; gap: 1rem; }
     .deck-slide__num { position: static; font-size: 3rem; }
+  }
+
+  @media (min-width: 1201px) {
+    main :global(.case-hero) {
+      padding-block-start: 0;
+      margin-block-start: -6rem;
+    }
+
+    @media (max-height: 676px) {
+      main :global(.case-hero) {
+        margin-block-start: -10rem;
+      }
+    }
+
+    main :global(.case-hero__frame) {
+      height: 100%;
+      top: 58% !important;
+      left: 46%;
+    }
+
+    main :global(.case-hero__shape) {
+      top: 36%;
+      left: -13%;
+    }
+  }
+
+  @media (min-width: 1800px) {
+    main :global(.tab-card) {
+      max-width: 900px;
+    }
   }
 </style>

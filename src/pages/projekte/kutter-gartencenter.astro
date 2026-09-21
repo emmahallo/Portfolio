@@ -15,7 +15,7 @@ const overview = [
 
 const meta = ['Werkstudentische Tätigkeit', 'seit 2021'];
 
-const learningsHtml = `Durch die <strong>langjährige Zusammenarbeit</strong> mit dem Kutter Gartencenter konnte ich <strong>wertvolle Praxiserfahrung</strong> im gestalterischen Alltag eines lebendigen Betriebs sammeln. Mit jedem neuen Projekt – vom <strong>fortlaufenden Social-Media-Content</strong> bis hin zu Print-Aufgaben wie der <strong>Neueröffnung in Kempten</strong> – ergaben sich immer wieder <strong>spannende Gestaltungsmöglichkeiten</strong>, durch die ich meine <strong>Fähigkeiten kontinuierlich ausbauen</strong> konnte. Besonders bereichernd ist die <strong>Vielfalt der Formate und Medien</strong>: Sie bietet mir die Möglichkeit, <strong>neue Techniken zu erproben</strong> und mein Auge für Details zu schärfen.`;
+const learningsHtml = `Durch die <strong>langjährige Zusammenarbeit</strong> mit dem Kutter Gartencenter konnte ich <strong>wertvolle Praxiserfahrung</strong> im gestalterischen Alltag eines lebendigen Betriebs sammeln. Mit jedem neuen Projekt ergaben sich immer wieder spannende Gestaltungsmöglichkeiten, durch die ich meine Fähigkeiten kontinuierlich ausbauen konnte. Besonders bereichernd ist die <strong>Vielfalt der Formate und Medien</strong>: Sie bietet mir die Möglichkeit, neue Techniken zu erproben und mein Auge für Details zu schärfen.`;
 
 const works = [
   {
@@ -100,7 +100,7 @@ const works = [
         <h2 class="section-heading" data-reveal>Ausgangspunkt</h2>
         <TabCard tab="Aufgabe" data-reveal>
           <p class="tab-card__text">
-            Parallel zum Studium begleite ich das <strong>Kutter Gartencenter</strong> bei gestalterischen Aufgaben für <strong>digitale und analoge Medien</strong>. Neben der kontinuierlichen Ausarbeitung von <strong>Social-Media-Beiträgen</strong> gestaltete ich unter anderem Print-Medien – beispielsweise <strong>Flyer und Postkarten</strong> für die <strong>Neueröffnung des Kutter Gartencenters in Kempten</strong> oder Werbebanner.
+            Parallel zum Studium begleite ich das <strong>Kutter Gartencenter</strong> bei gestalterischen Aufgaben für digitale und analoge Medien. Neben der kontinuierlichen Ausarbeitung von <strong>Social-Media-Beiträgen</strong> gestaltete ich unter anderem Print-Medien – beispielsweise Flyer und Postkarten für die <strong>Neueröffnung in Kempten</strong> oder Werbebanner.
           </p>
         </TabCard>
       </div>
@@ -281,12 +281,26 @@ const works = [
   }
 
   @media (min-width: 1201px) {
+    main :global(.case-hero) {
+      padding-block-start: 0;
+      margin-block-start: -6rem;
+    }
+
+    @media (max-height: 676px) {
+      main :global(.case-hero) {
+        margin-block-start: -10rem;
+      }
+    }
+
     main :global(.case-hero__frame) {
+      height: 100%;
       top: 58%;
+      left: 46%;
     }
 
     main :global(.case-hero__shape) {
-      left: 0%;
+      top: 36%;
+      left: -13%;
     }
   }
 
@@ -425,7 +439,7 @@ const works = [
     font-size: 1rem;
     line-height: 1.6;
     margin: 0;
-    color: var(--color-ink);
+    color: var(--color-brown);
   }
 
   @media (max-width: 900px) {
@@ -542,4 +556,10 @@ const works = [
     .lightbox__nav { width: 40px; height: 40px; font-size: 1.5rem; }
   }
 
+
+  @media (min-width: 1800px) {
+    main :global(.tab-card) {
+      max-width: 900px;
+    }
+  }
 </style>

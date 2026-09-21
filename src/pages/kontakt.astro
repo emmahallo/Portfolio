@@ -64,6 +64,18 @@ const noteHtml = `
     padding-block: clamp(2.5rem, 5vw, 4.5rem) var(--section-spacing);
   }
 
+  @media (min-width: 1201px) {
+    .kontakt-section {
+      margin-block-start: -1.5rem;
+    }
+
+    @media (max-height: 676px) {
+      .kontakt-section {
+        margin-block-start: -3rem;
+      }
+    }
+  }
+
   .kontakt-wrapper {
     display: flex;
     justify-content: center;
@@ -125,7 +137,7 @@ const noteHtml = `
     display: flex;
     flex-direction: column;
     gap: 0.85rem;
-    color: var(--color-ink);
+    color: var(--color-brown);
     font-family: var(--font-body);
     font-size: 1.05rem;
     line-height: 1.65;
@@ -137,7 +149,7 @@ const noteHtml = `
 
   .note__text :global(em) {
     font-style: normal;
-    color: var(--color-ink);
+    color: var(--color-brown);
     font-weight: 700;
   }
 

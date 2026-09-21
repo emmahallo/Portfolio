@@ -13,7 +13,7 @@ const overview = [
   { number: '3', label: 'Learnings', href: '#learnings' },
 ];
 
-const learningsHtml = `Da es sich um unsere <strong>erste vollständig selbst gecodete Website</strong> handelte, waren die Lernkurven auf mehreren Ebenen spürbar. Wir haben nicht nur zentrale Techniken der Webentwicklung praktisch angewendet, sondern auch viel über das <strong>Aufsetzen und Strukturieren eines Projekts</strong> gelernt. Da wir im Team gearbeitet und die Seiten untereinander aufgeteilt haben, entstanden zunächst pro Seite eigene CSS-Stile. Im Nachhinein wurde uns bewusst, wie wertvoll ein <strong>gemeinsam definiertes Grundgerüst</strong> und geteilte Styles von Beginn an sind.`;
+const learningsHtml = `Da es sich um unsere <strong>erste vollständig selbst gecodete Website</strong> handelte, waren die <strong>Lernkurven</strong> auf mehreren Ebenen <strong>spürbar</strong>. Wir haben nicht nur zentrale Techniken der Webentwicklung praktisch angewendet, sondern auch viel über das Aufsetzen und Strukturieren eines Projekts gelernt. Da wir im Team gearbeitet und die Seiten untereinander aufgeteilt haben, entstanden zunächst pro Seite eigene CSS-Stile. Im Nachhinein wurde uns bewusst, wie wertvoll ein gemeinsam definiertes Grundgerüst und geteilte Styles von Beginn an sind.`;
 
 const meta = ['3. Semester', 'Gruppenarbeit', '2026'];
 
@@ -81,9 +81,9 @@ const works = screens.map((s, i) => {
         <h2 class="section-heading" data-reveal>Ausgangspunkt</h2>
         <TabCard tab="Aufgabe" data-reveal>
           <p class="tab-card__text">
-            Ziel des Moduls Webentwicklung 1 war das Verinnerlichen <strong>elementarer Web-Grundlagen</strong> durch den Bau einer <strong>vollständigen Website</strong>. Um die Kernmechanismen im Detail zu durchdringen, wurde der <strong>gesamte Code eigenständig geschrieben</strong>.
+            Ziel des Moduls Webentwicklung 1 war das <strong>Verinnerlichen</strong> elementarer <strong>Web-Grundlagen</strong> durch den Bau einer vollständigen Website. Um die Kernmechanismen im Detail zu durchdringen, wurde der <strong>gesamte Code eigenständig geschrieben</strong>.
             <br /><br />
-            Im <strong>Fokus</strong> stand somit deutlich stärker das <strong>Aneignen der Web-Grundlagen</strong> als der gestalterische Aspekt – der für uns aber selbstverständlich ebenfalls eine Rolle spielte, da er sich bei einer Website nie ganz ausblenden lässt.
+            Im Fokus stand somit deutlich stärker das Aneignen der Web-Grundlagen als der gestalterische Aspekt – der für uns aber selbstverständlich ebenfalls eine Rolle spielte, da er sich bei einer Website nie ganz ausblenden lässt.
           </p>
         </TabCard>
       </div>
@@ -392,12 +392,25 @@ const works = screens.map((s, i) => {
   }
 
   @media (min-width: 1201px) {
+    main :global(.case-hero) {
+      padding-block-start: 0;
+      margin-block-start: -6rem;
+    }
+
+    @media (max-height: 676px) {
+      main :global(.case-hero) {
+        margin-block-start: -10rem;
+      }
+    }
+
     main :global(.case-hero__frame) {
-      height: 158%;
+      height: 125%;
+      left: 50%;
     }
 
     main :global(.case-hero__shape) {
-      left: -16%;
+      top: 36%;
+      left: -13%;
     }
   }
 
@@ -555,7 +568,7 @@ const works = screens.map((s, i) => {
     font-size: 1rem;
     line-height: 1.6;
     margin: 0;
-    color: var(--color-ink);
+    color: var(--color-brown);
   }
 
   @media (max-width: 900px) {
@@ -670,5 +683,11 @@ const works = screens.map((s, i) => {
 
   @media (max-width: 640px) {
     .lightbox__nav { width: 40px; height: 40px; font-size: 1.5rem; }
+  }
+
+  @media (min-width: 1800px) {
+    main :global(.tab-card) {
+      max-width: 900px;
+    }
   }
 </style>
