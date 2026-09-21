@@ -15,7 +15,8 @@
   --color-sage-dark: #648767; /* Outline-Button */
   --color-sage-tint: rgba(128, 149, 130, 0.31);
   --color-badge-bg: rgba(216, 222, 216, 0.55);
-  --color-brown: #5c4242;     /* Fließtext in den Arbeitsweise-Karten */
+  /* --color-brown deprecated 2026-09-21: Fließtext einheitlich via --color-ink. Token behalten falls Print-Materialien darauf verweisen. */
+  --color-brown: #5c4242;
   --color-border: #d9dcd5;
 
   --font-display: 'Staatliches', 'Arial Narrow', sans-serif;
@@ -262,7 +263,7 @@ h1, h2, h3, p {
 }
 
 .tab-card__text {
-  color: var(--color-brown);
+  color: var(--color-ink);
   font-weight: 300;
   font-size: 1.0625rem;
   line-height: 1.6;
@@ -570,7 +571,7 @@ h1, h2, h3, p {
 }
 
 .sticky-story__body {
-  color: var(--color-brown);
+  color: var(--color-ink);
   font-weight: 300;
   line-height: 1.6;
   max-width: 44ch;
@@ -1044,7 +1045,7 @@ h1, h2, h3, p {
 
 /* Fließtext-Absatz außerhalb einer Kachel (z. B. Links-Section) */
 .case-plain-text {
-  color: var(--color-brown);
+  color: var(--color-ink);
   font-weight: 300;
   font-size: 1.0625rem;
   line-height: 1.6;
@@ -1234,7 +1235,7 @@ h1, h2, h3, p {
 
 /* Fließtext neben dem Portrait */
 .about-bio {
-  color: var(--color-brown);
+  color: var(--color-ink);
   font-weight: 300;
   font-size: clamp(1rem, 0.4vw + 0.95rem, 1.15rem);
   line-height: 1.65;
