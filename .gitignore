@@ -23,3 +23,6 @@ npm-debug.log*
 # large source files (originals — web uses .mp4 versions)
 *.mov
 *.MOV
+
+# image originals (kept locally as backup before resize)
+_originals/

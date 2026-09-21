@@ -22,7 +22,7 @@
   --font-body: 'Karla Variable', 'Karla', system-ui, sans-serif;
 
   --max-width: 1280px;
-  --gutter: clamp(1rem, 2.5vw, 3rem);
+  --gutter: clamp(1rem, 8vw, 11rem);
   --section-spacing: clamp(1.5rem, 3vw, 2.5rem);
   --radius-pill: 999px;
 }
@@ -146,7 +146,11 @@ h1, h2, h3, p {
   padding: 0.85rem 1.6rem;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  line-height: 1.2;
+  transition: background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .btn:hover {
@@ -870,7 +874,7 @@ h1, h2, h3, p {
   display: none;
 }
 
-@media (min-width: 901px) and (max-width: 1200px) {
+@media (min-width: 901px) {
   .case-hero__title .br-tablet {
     display: inline;
   }
@@ -1515,14 +1519,15 @@ h1, h2, h3, p {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: background 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
 
 .video-player__btn:hover {
   background: rgba(255, 255, 255, 0.85);
-  transform: translate(-50%, calc(-50% - 1px));
+  transform: translate(-50%, calc(-50% - 2px));
 }
 
 .video-player__btn svg {
