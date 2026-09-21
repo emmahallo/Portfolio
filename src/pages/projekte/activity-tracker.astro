@@ -101,6 +101,9 @@ const works = [
 <style is:global>
   /* Nur Activity-Tracker: Hero-Bild im Handy-Format kleiner (Phone-Mockup) */
   @media (max-width: 900px) {
+    .page-activity-tracker .case-hero__frame {
+      top: auto !important;
+    }
     .page-activity-tracker .case-hero__frame img {
       transform: translateY(-20px) scale(1.2);
     }
