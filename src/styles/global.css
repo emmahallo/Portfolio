@@ -471,7 +471,7 @@ h1, h2, h3, p {
   background: #f4f5f2;
   box-shadow: 0 20px 40px -20px rgba(20, 25, 20, 0.25);
   transform-origin: center top;
-  transform: scale(calc(1 - var(--depth, 0) * 0.03 - var(--depth, 0) * var(--depth, 0) * 0.02));
+  transform: scale(calc(1 - var(--depth, 0) * 0.025));
   transition: transform 0.2s ease;
 }
 
