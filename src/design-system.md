@@ -9,13 +9,13 @@
 | Token | Wert | Verwendung |
 |---|---|---|
 | `--color-bg` | `#ffffff` | Seiten-Hintergrund |
-| `--color-ink` | `#626c63` | Überschriften, Body auf hellem BG, Primary-Hover |
+| `--color-ink` | `#626c63` | **Standardfarbe für ALLEN Fließtext + Überschriften**, Primary-Hover |
 | `--color-text` | `#1c1c1c` | Alternativ dunkler Text (Header, Eyebrow) |
 | `--color-sage` | `#809582` | Primärfarbe: Buttons, Border der Chips |
 | `--color-sage-dark` | `#648767` | Outline-Button-Border/Text, Eyebrow-Dot |
 | `--color-sage-tint` | `rgba(128, 149, 130, 0.31)` | Kachel-Schatten hinter Karten |
 | `--color-badge-bg` | `rgba(216, 222, 216, 0.55)` | Eyebrow-Pill-BG |
-| `--color-brown` | `#5c4242` | Fließtext in Arbeitsweise-Karten |
+| ~~`--color-brown`~~ | ~~`#5c4242`~~ | **Deprecated 2026-09-21** — Fließtext ist überall `--color-ink`. Token bleibt definiert für Print-Referenzen. |
 | `--color-border` | `#d9dcd5` | Footer-Trennlinie |
 
 ## 2. Typografie
