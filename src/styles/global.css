@@ -30,12 +30,7 @@
 
 @media (min-width: 1800px) {
   :root {
-    --max-width: 1600px;
-  }
-
-  /* 27"-Bildschirme: Case-Hero-Textspalte leicht tiefer setzen */
-  .case-hero__content {
-    padding-top: 18rem;
+    --max-width: 1400px;
   }
 }
 
@@ -1032,6 +1027,18 @@ h1, h2, h3, p {
 @media (min-width: 1025px) and (max-width: 1200px) {
   .case-hero__title {
     font-size: clamp(2.4rem, 4vw, 3rem);
+  }
+}
+
+/* 27"-Bildschirme: Case-Hero-Textspalte vertikal mittig zur Bild-Kachel, leicht tiefer */
+@media (min-width: 1800px) {
+  .case-hero__inner {
+    align-items: center;
+  }
+
+  .case-hero__content {
+    padding-top: 3rem;
+    padding-bottom: 1rem;
   }
 }
 
