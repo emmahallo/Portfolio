@@ -32,6 +32,11 @@
   :root {
     --max-width: 1600px;
   }
+
+  /* 27"-Bildschirme: Case-Hero-Textspalte leicht tiefer setzen */
+  .case-hero__content {
+    padding-top: 13rem;
+  }
 }
 
 *,
