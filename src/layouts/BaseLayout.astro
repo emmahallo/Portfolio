@@ -3,15 +3,22 @@ import '@fontsource-variable/karla';
 import '@fontsource/reenie-beanie';
 import '@fontsource/staatliches';
 import '../styles/global.css';
+import MetaTags from '../components/MetaTags.astro';
 
 interface Props {
   title?: string;
   description?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  robots?: string;
 }
 
 const {
   title = 'Emma Eichin — UI/UX Design',
   description = 'Portfolio von Emma Eichin: Mediendesign-Studentin mit Schwerpunkt UI/UX Design.',
+  ogImage,
+  ogType,
+  robots,
 } = Astro.props;
 ---
 
@@ -22,12 +29,48 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/faviconneu.png?v=7" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-
+    <MetaTags title={title} description={description} ogImage={ogImage} ogType={ogType} robots={robots} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      'name': 'Emma Eichin',
+      'jobTitle': 'UI/UX Designerin',
+      'description': 'Mediendesign-Studentin mit Schwerpunkt UI/UX Design.',
+      'url': 'https://portfolioemmaeichin.vercel.app',
+      'image': 'https://portfolioemmaeichin.vercel.app/Bild.jpg',
+      'sameAs': [],
+      'knowsAbout': ['UI Design', 'UX Design', 'Interaction Design', 'Prototyping', 'Figma', 'Webdesign'],
+    })} />
   </head>
   <body>
-    <slot />
+    <a href="#main-content" class="skip-link">Zum Inhalt springen</a>
+    <div id="main-content" tabindex="-1">
+      <slot />
+    </div>
+    <style>
+      .skip-link {
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 200;
+        padding: 0.5rem 1rem;
+        background: #ffffff;
+        color: #212a1a;
+        border: 2px solid #333;
+        border-radius: 0.375rem;
+        font-family: 'Karla Variable', system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 0.875rem;
+        text-decoration: none;
+        transform: translateY(-200%);
+        transition: transform 200ms ease;
+      }
+      .skip-link:focus {
+        transform: translateY(0);
+        outline: none;
+      }
+    </style>
 
     <script>
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

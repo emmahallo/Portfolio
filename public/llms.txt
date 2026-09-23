@@ -1,0 +1,47 @@
+# Emma Eichin – UI/UX Design Portfolio
+
+**Mediendesign-Studentin mit Schwerpunkt UI/UX Design.**
+
+> Portfolio von Emma Eichin, Studentin im Studiengang Mediendesign an der Hochschule Ravensburg-Weingarten (RWU). Fokus auf UI/UX Design, ergänzt durch Grafikdesign und Fotografie. Enthält Case Studies aus dem Studium sowie eigenständige Praxis- und Kundenprojekte.
+
+## Hauptseiten
+
+- [Startseite](https://portfolioemmaeichin.vercel.app/): Portfolio-Übersicht mit Vorstellung, Projekten, Kompetenzen und Prozess
+- [Projekte](https://portfolioemmaeichin.vercel.app/projekte/): Übersicht aller Case Studies und Arbeiten
+- [Über mich](https://portfolioemmaeichin.vercel.app/ueber-mich/): Werdegang, Interessen, Studium und Persönliches
+- [Kontakt](https://portfolioemmaeichin.vercel.app/kontakt/): E-Mail, LinkedIn und weitere Kontaktmöglichkeiten
+- [Impressum](https://portfolioemmaeichin.vercel.app/impressum/): Anbieterkennzeichnung nach § 5 TMG
+- [Datenschutz](https://portfolioemmaeichin.vercel.app/datenschutz/): Datenschutzerklärung gemäß DSGVO
+
+## Case Studies & Projekte
+
+- [Website für eine Ernährungsberaterin](https://portfolioemmaeichin.vercel.app/projekte/website-ernaehrungsberatung/): Konzeption und Umsetzung der ersten Webpräsenz für die Ernährungsberaterin Sonja Eichin – UI/UX Design, 4. Semester
+- [Website für ein imaginäres Hotel (Celestial Haven)](https://portfolioemmaeichin.vercel.app/projekte/hotel-website/): Konzeption und technische Umsetzung einer Hotel-Website im Modul Webentwicklung 2 – Astro, SolidJS, SQLite
+- [Website für ein imaginäres Surfcamp](https://portfolioemmaeichin.vercel.app/projekte/surfcamp/): Eigenständige Umsetzung einer vollständigen Website im Modul Webentwicklung 1
+- [Gestaltung eines Activity Trackers](https://portfolioemmaeichin.vercel.app/projekte/activity-tracker/): Dashboard-Gestaltung im Modul Grundlagen der Gestaltung – klare Struktur komplexer Datenmengen
+- [Arbeiten für das Kutter Gartencenter](https://portfolioemmaeichin.vercel.app/projekte/kutter-gartencenter/): Werkstudentische Grafikdesign-Arbeiten – Social Media, Flyer, Postkarten, Werbebanner (digital und analog)
+- [Foto-Projekte der letzten Jahre](https://portfolioemmaeichin.vercel.app/projekte/foto-projekte/): Fotografie-Arbeiten aus dem Modul Fotografie sowie private Aufnahmen – Portraits, Natur und Detail
+
+## Über mich
+
+Emma Eichin ist Mediendesign-Studentin an der Hochschule Ravensburg-Weingarten (RWU) mit Schwerpunkt UI/UX Design. Das Portfolio zeigt eine Auswahl aus Studienprojekten und eigenständig realisierten Praxisarbeiten.
+
+**Name:** Emma Eichin
+**Rolle:** Mediendesign-Studentin, Schwerpunkt UI/UX Design
+**Hochschule:** RWU – Hochschule Ravensburg-Weingarten
+**Sprache:** Deutsch
+**Website:** https://portfolioemmaeichin.vercel.app
+
+## Schwerpunkte & Kompetenzen
+
+- UI Design & UX Design
+- Interaction Design & Prototyping
+- Webdesign & Webentwicklung (Astro, HTML/CSS, JavaScript)
+- Figma
+- Grafikdesign (Print & Digital)
+- Fotografie (Portrait, Natur, Editorial)
+
+## Kontakt
+
+Website: https://portfolioemmaeichin.vercel.app
+Kontakt: https://portfolioemmaeichin.vercel.app/kontakt/

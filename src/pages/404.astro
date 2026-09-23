@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+---
+
+<BaseLayout title="Seite nicht gefunden — Emma Eichin" description="Fehler 404 – Die aufgerufene Seite existiert nicht." robots="noindex, nofollow">
+  <Header />
+  <main class="notfound">
+    <div class="wrapper notfound__inner">
+      <div class="notfound__content" data-reveal>
+        <h1 class="notfound__title">Oops!<br />Hier geht's<br /><span class="notfound__title-line">nicht weiter.</span></h1>
+
+        <p class="notfound__text">
+          Die Seite, die du suchst, gibt es leider nicht (mehr).
+          Vielleicht findest du hier weiter:
+        </p>
+
+        <div class="notfound__actions">
+          <a href="/" class="btn btn--primary">Zur Startseite</a>
+          <a href="/projekte" class="btn btn--outline">Meine Projekte</a>
+        </div>
+      </div>
+
+      <div class="notfound__number" aria-hidden="true">404</div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .notfound {
+    position: relative;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    overflow: hidden;
+  }
+
+  .notfound__inner {
+    position: relative;
+    width: 100%;
+  }
+
+  .notfound__content {
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .notfound__content.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .notfound__title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    color: var(--color-ink);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1.05;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .notfound__title-line {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .notfound__text {
+    font-family: var(--font-body);
+    font-weight: 300;
+    color: var(--color-ink);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    max-width: 44ch;
+    margin: 0;
+  }
+
+  .notfound__actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.75rem;
+  }
+
+  .notfound__number {
+    position: absolute;
+    top: 50%;
+    right: calc(-1 * var(--gutter) * 0.3);
+    transform: translateY(-58%);
+    font-family: 'Reenie Beanie', cursive;
+    color: var(--color-sage);
+    font-size: clamp(18rem, 46vw, 44rem);
+    line-height: 0.8;
+    letter-spacing: -0.03em;
+    user-select: none;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 0;
+  }
+
+  .notfound__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (max-width: 900px) {
+    .notfound {
+      min-height: calc(100vh - 64px);
+      padding-block: 3rem;
+    }
+
+    .notfound__number {
+      top: 6%;
+      right: calc(-1 * var(--gutter) * 0.5);
+      transform: none;
+      font-size: clamp(11rem, 55vw, 22rem);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .notfound__actions .btn {
+      width: 100%;
+    }
+  }
+</style>
