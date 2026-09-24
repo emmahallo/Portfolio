@@ -9,13 +9,7 @@ export default defineConfig({
       changefreq: 'monthly',
       priority: 0.7,
       lastmod: new Date(),
-      filter: (page) =>
-        !page.includes('cursor-optionen') &&
-        !page.includes('portrait-optionen') &&
-        !page.includes('querformat-optionen') &&
-        !page.includes('kompetenzen-optionen') &&
-        !page.includes('kutter-ergebnisse-optionen') &&
-        !page.includes('/404'),
+      filter: (page) => !page.includes('/404'),
     }),
   ],
 });

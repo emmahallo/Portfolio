@@ -1,9 +1,5 @@
 User-agent: *
-Disallow: /cursor-optionen
-Disallow: /portrait-optionen
-Disallow: /querformat-optionen
-Disallow: /kompetenzen-optionen
-Disallow: /kutter-ergebnisse-optionen
+Allow: /
 
 Sitemap: https://portfolioemmaeichin.vercel.app/sitemap-index.xml
 
