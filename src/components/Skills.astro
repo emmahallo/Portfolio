@@ -1,35 +1,68 @@
 ---
-const skills = ['Figma', 'Illustrator', 'InDesign', 'Photoshop', 'Claude', '10-Finger-System'];
+const skills = [
+  'Figma',
+  'Illustrator',
+  'InDesign',
+  'Photoshop',
+  'HTML, CSS, JS Basics',
+  'Claude',
+  'ChatGPT',
+  'Gemini',
+  '10-Finger-System',
+];
+const track = [...skills, ...skills];
 ---
 
 <section class="section skills">
   <div class="wrapper">
     <h2 class="section-heading" data-reveal>Meine Kompetenzen</h2>
-    <ul class="skills__list" data-reveal style="--reveal-delay: 80ms">
-      {skills.map((skill) => (
-        <li class="skills__chip">
-          <span class="skills__chip-label">{skill}</span>
-        </li>
-      ))}
-    </ul>
+
+    <div
+      class="skills-marquee"
+      data-reveal
+      style="--reveal-delay: 80ms"
+      aria-label="Kompetenzen — automatisches Laufband, per Drag manuell scrollbar"
+    >
+      <ul class="skills-marquee__track">
+        {track.map((skill, i) => (
+          <li class="skills__chip" aria-hidden={i >= skills.length ? 'true' : undefined}>
+            <span class="skills__chip-label">{skill}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
   </div>
 </section>
 
 <style>
-  .skills__list {
+  .skills-marquee {
+    overflow: hidden;
+    padding-block: 1.25rem 1.75rem;
+    cursor: grab;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .skills-marquee.is-grabbing {
+    cursor: grabbing;
+  }
+
+  .skills-marquee__track {
     list-style: none;
     padding: 0;
-    margin: 0 0 0 6px;
+    margin: 0;
     display: flex;
-    flex-wrap: wrap;
-    gap: clamp(1.5rem, 3vw, 2.25rem);
-    padding-bottom: 1rem;
+    width: max-content;
+    will-change: transform;
   }
 
   .skills__chip {
     position: relative;
     display: inline-block;
     isolation: isolate;
+    flex-shrink: 0;
+    margin-right: clamp(1.5rem, 3vw, 2.25rem);
   }
 
   .skills__chip-label {
@@ -44,6 +77,9 @@ const skills = ['Figma', 'Illustrator', 'InDesign', 'Photoshop', 'Claude', '10-F
     padding: 0.9rem 2rem;
     min-width: 9rem;
     z-index: 1;
+    transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transform-origin: center center;
+    pointer-events: none;
   }
 
   .skills__chip::before {
@@ -55,48 +91,134 @@ const skills = ['Figma', 'Illustrator', 'InDesign', 'Photoshop', 'Claude', '10-F
     bottom: -6px;
     background: var(--color-sage-tint);
     z-index: 0;
+    transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+    pointer-events: none;
   }
 
-  @media (min-width: 641px) and (max-width: 1024px) {
-    .skills__list {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.25rem;
-      margin-left: 6px;
-      margin-right: 6px;
+  @media (hover: hover) {
+    .skills-marquee:not(.is-grabbing) .skills__chip:hover .skills__chip-label {
+      transform: rotate(-2deg) translateY(-2px);
     }
 
-    .skills__chip {
-      display: block;
-    }
-
-    .skills__chip-label {
-      min-width: 0;
-      width: 100%;
-      padding: 0.85rem 1rem;
-      font-size: 0.9rem;
+    .skills-marquee:not(.is-grabbing) .skills__chip:hover::before {
+      transform: translate(-4px, 4px);
     }
   }
 
   @media (max-width: 640px) {
-    .skills__list {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.25rem 1.25rem;
-      margin-left: 6px;
-      margin-right: 6px;
-    }
-
     .skills__chip {
-      display: block;
+      margin-right: 1.25rem;
     }
 
     .skills__chip-label {
       min-width: 0;
-      width: 100%;
-      padding: 0.85rem 0.5rem;
-      font-size: 0.8rem;
+      padding: 0.85rem 1.25rem;
+      font-size: 0.85rem;
       white-space: nowrap;
     }
   }
 </style>
+
+<script>
+  const initSkillsMarquee = () => {
+    const marquee = document.querySelector<HTMLElement>('.skills-marquee');
+    const track = marquee?.querySelector<HTMLElement>('.skills-marquee__track');
+    if (!marquee || !track) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const SPEED = 0.5; // px per frame (~30 px/s)
+    const RESUME_DELAY = 1200;
+
+    let halfWidth = 0;
+    let offset = 0; // negative = scrolled to the right (chips moved left)
+    let hovered = false;
+    let dragging = false;
+    let dragStartX = 0;
+    let dragStartOffset = 0;
+    let activePointer: number | null = null;
+    let lastInteraction = 0;
+
+    const measure = () => {
+      halfWidth = track.scrollWidth / 2;
+    };
+
+    const applyTransform = () => {
+      if (halfWidth > 0) {
+        while (offset <= -halfWidth) offset += halfWidth;
+        while (offset > 0) offset -= halfWidth;
+      }
+      track.style.transform = `translate3d(${offset}px, 0, 0)`;
+    };
+
+    measure();
+    applyTransform();
+    window.addEventListener('resize', () => {
+      measure();
+      applyTransform();
+    });
+    if ('fonts' in document) {
+      (document as any).fonts?.ready?.then?.(() => {
+        measure();
+        applyTransform();
+      });
+    }
+
+    const step = () => {
+      const now = performance.now();
+      const canAutoplay =
+        !prefersReducedMotion &&
+        !hovered &&
+        !dragging &&
+        now - lastInteraction > RESUME_DELAY;
+
+      if (canAutoplay) {
+        offset -= SPEED;
+        applyTransform();
+      }
+      requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+
+    marquee.addEventListener('mouseenter', () => { hovered = true; });
+    marquee.addEventListener('mouseleave', () => { hovered = false; });
+
+    marquee.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      dragging = true;
+      activePointer = e.pointerId;
+      dragStartX = e.clientX;
+      dragStartOffset = offset;
+      marquee.classList.add('is-grabbing');
+      try { marquee.setPointerCapture(e.pointerId); } catch {}
+      lastInteraction = performance.now();
+      e.preventDefault();
+    });
+
+    marquee.addEventListener('pointermove', (e) => {
+      if (!dragging || e.pointerId !== activePointer) return;
+      const dx = e.clientX - dragStartX;
+      offset = dragStartOffset + dx;
+      applyTransform();
+      lastInteraction = performance.now();
+    });
+
+    const endDrag = (e: PointerEvent) => {
+      if (!dragging) return;
+      if (activePointer !== null && e.pointerId !== activePointer) return;
+      dragging = false;
+      activePointer = null;
+      marquee.classList.remove('is-grabbing');
+      lastInteraction = performance.now();
+    };
+    marquee.addEventListener('pointerup', endDrag);
+    marquee.addEventListener('pointercancel', endDrag);
+    marquee.addEventListener('lostpointercapture', endDrag);
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSkillsMarquee);
+  } else {
+    initSkillsMarquee();
+  }
+</script>

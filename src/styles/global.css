@@ -1317,7 +1317,22 @@ h1, h2, h3, p {
 
 .timeline__dot--dark {
   background: var(--color-sage);
-  box-shadow: 0 0 0 6px rgba(129, 149, 122, 0.28);
+  animation: timeline-dot-pulse 2s ease-out infinite;
+}
+
+@keyframes timeline-dot-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(129, 149, 122, 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 12px rgba(129, 149, 122, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline__dot--dark {
+    animation: none;
+  }
 }
 
 .timeline__date {
