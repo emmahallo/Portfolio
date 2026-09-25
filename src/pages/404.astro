@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <BaseLayout title="Seite nicht gefunden - Emma Eichin" description="Fehler 404 – Die aufgerufene Seite existiert nicht." robots="noindex, nofollow">
@@ -12,7 +13,7 @@ import Header from '../components/Header.astro';
 
         <p class="notfound__text">
           Die Seite, die du suchst, gibt es leider nicht (mehr).
-          Vielleicht findest du hier weiter:
+          Vielleicht hilft dir eine dieser Seiten weiter — oder gönn dir einfach kurz einen Sonnenuntergang.
         </p>
 
         <div class="notfound__actions">
@@ -24,6 +25,7 @@ import Header from '../components/Header.astro';
       <div class="notfound__number" aria-hidden="true">404</div>
     </div>
   </main>
+  <Footer />
 </BaseLayout>
 
 <style>
@@ -110,21 +112,28 @@ import Header from '../components/Header.astro';
     z-index: 1;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 640px) {
     .notfound {
       min-height: calc(100vh - 64px);
-      padding-block: 3rem;
+      padding-block: 2.5rem;
+    }
+
+    .notfound__inner {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
     }
 
     .notfound__number {
-      top: 6%;
-      right: calc(-1 * var(--gutter) * 0.5);
+      position: static;
       transform: none;
-      font-size: clamp(11rem, 55vw, 22rem);
+      order: -1;
+      font-size: clamp(6rem, 22vw, 10rem);
+      line-height: 0.85;
+      margin-bottom: -0.5rem;
     }
-  }
 
-  @media (max-width: 640px) {
     .notfound__actions .btn {
       width: 100%;
     }
