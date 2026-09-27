@@ -17,6 +17,8 @@ const noteHtml = `
   description="Schreib mir gerne — per E-Mail oder auf LinkedIn. Emma Eichin, Mediendesign-Studentin mit Fokus auf UI/UX-Design."
 >
   <Header />
+  <div class="kontakt-bg" aria-hidden="true"></div>
+  <div class="kontakt-bg kontakt-bg--right" aria-hidden="true"></div>
   <main>
     <section class="section kontakt-section">
       <div class="wrapper kontakt-wrapper">
@@ -60,6 +62,30 @@ const noteHtml = `
 </BaseLayout>
 
 <style>
+  .kontakt-bg {
+    position: fixed;
+    inset: 0;
+    background-image: url('/stern-3.svg');
+    background-repeat: no-repeat;
+    background-position: 2% 25%;
+    background-size: min(48vmin, 440px) auto;
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .kontakt-bg--right {
+    background-position: 96% 38%;
+    background-size: min(35vmin, 320px) auto;
+    transform: rotate(18deg);
+    transform-origin: center;
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+  }
+
   .kontakt-section {
     padding-block: clamp(2.5rem, 5vw, 4.5rem) var(--section-spacing);
   }

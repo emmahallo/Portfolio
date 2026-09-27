@@ -100,7 +100,7 @@ const works = [
         <h2 class="section-heading" data-reveal>Ausgangspunkt</h2>
         <TabCard tab="Aufgabe" data-reveal>
           <p class="tab-card__text">
-            Parallel zum Studium begleite ich das <strong>Kutter Gartencenter</strong> bei gestalterischen Aufgaben für digitale und analoge Medien. Neben der kontinuierlichen Ausarbeitung von <strong>Social-Media-Beiträgen</strong> gestaltete ich unter anderem Print-Medien – beispielsweise Flyer und Postkarten für die <strong>Neueröffnung in Kempten</strong> oder Werbebanner.
+            Parallel zum Studium begleite ich das <strong>Kutter Gartencenter</strong> bei gestalterischen Aufgaben für digitale und analoge Medien. Neben der kontinuierlichen Ausarbeitung von <strong>Social-Media-Beiträgen</strong> gestaltete ich unter anderem <strong>Print-Medien</strong> – beispielsweise Flyer und Postkarten für die Neueröffnung in Kempten oder Werbebanner.
           </p>
         </TabCard>
       </div>
@@ -121,24 +121,44 @@ const works = [
               {w.jahr && <span class="deck-slide__year">{w.jahr}</span>}
             </div>
             <h3 class="deck-slide__title">{w.title}</h3>
-            <button
-              type="button"
-              class="deck-slide__image"
-              data-lightbox-open={i}
-              aria-label={`${w.title} – ${w.gallery.length > 1 ? `${w.gallery.length} Bilder ansehen` : 'Bild vergrößern'}`}
-            >
-              <img src={w.image} alt={w.imageAlt} loading="lazy" />
+            <div class="deck-slide__image" data-preview-idx={i}>
+              <button
+                type="button"
+                class="deck-slide__image-trigger"
+                data-lightbox-open={i}
+                aria-label={`${w.title} – ${w.gallery.length > 1 ? `${w.gallery.length} Bilder ansehen` : 'Bild vergrößern'}`}
+              >
+                <img src={w.image} alt={w.imageAlt} loading="lazy" data-preview-image />
+                {w.gallery.length > 1 && (
+                  <span class="deck-slide__zoom">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8" />
+                      <path d="M16 16l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                      <path d="M11 8v6M8 11h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                    </svg>
+                    Alle {w.gallery.length} Bilder ansehen
+                  </span>
+                )}
+              </button>
               {w.gallery.length > 1 && (
-                <span class="deck-slide__zoom">
-                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8" />
-                    <path d="M16 16l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                    <path d="M11 8v6M8 11h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
-                  </svg>
-                  Alle {w.gallery.length} Bilder ansehen
-                </span>
+                <>
+                  <button
+                    type="button"
+                    class="deck-slide__arrow deck-slide__arrow--prev"
+                    data-preview-nav="prev"
+                    data-preview-nav-idx={i}
+                    aria-label="Vorheriges Bild"
+                  >‹</button>
+                  <button
+                    type="button"
+                    class="deck-slide__arrow deck-slide__arrow--next"
+                    data-preview-nav="next"
+                    data-preview-nav-idx={i}
+                    aria-label="Nächstes Bild"
+                  >›</button>
+                </>
               )}
-            </button>
+            </div>
             <p class="deck-slide__body">{w.kontext}</p>
           </div>
         </div>
@@ -210,6 +230,29 @@ const works = [
 
         document.querySelectorAll('[data-lightbox-open]').forEach((btn) => {
           btn.addEventListener('click', () => open(parseInt(btn.dataset.lightboxOpen, 10)));
+        });
+
+        // Preview-Pfeil-Navigation: Bild direkt im Preview wechseln
+        const previewIndices = new Map();
+        document.querySelectorAll('[data-preview-nav]').forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const idx = parseInt(btn.dataset.previewNavIdx, 10);
+            const dir = btn.dataset.previewNav === 'next' ? 1 : -1;
+            const gallery = galleries[idx];
+            if (!gallery || gallery.images.length < 2) return;
+            const container = document.querySelector(`[data-preview-idx="${idx}"]`);
+            const imgEl = container && container.querySelector('[data-preview-image]');
+            if (!imgEl) return;
+            const n = gallery.images.length;
+            const current = previewIndices.get(idx) || 0;
+            const next = (current + dir + n) % n;
+            previewIndices.set(idx, next);
+            const nextImg = gallery.images[next];
+            imgEl.src = nextImg.src;
+            imgEl.alt = nextImg.alt || '';
+          });
         });
         closeBtn.addEventListener('click', close);
         prevBtn.addEventListener('click', () => step(-1));
@@ -388,20 +431,28 @@ const works = [
 
   .deck-slide__image {
     position: relative;
-    display: block;
     background: #f4f5f2;
     aspect-ratio: 16 / 10;
     overflow: hidden;
     margin: 0 0 1.25rem;
-    padding: 0;
     border: 1px solid var(--color-sage);
-    cursor: pointer;
     width: 100%;
-    text-align: left;
     transition: transform 0.4s ease;
   }
 
   .deck-slide__image:hover { transform: translateY(-2px); }
+
+  .deck-slide__image-trigger {
+    display: block;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: transparent;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    text-align: left;
+  }
 
   .deck-slide__image img {
     width: 100%;
@@ -411,6 +462,67 @@ const works = [
   }
 
   .deck-slide__image:hover img { transform: scale(1.03); filter: brightness(0.85); }
+
+  .deck-slide__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: 0;
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.95);
+    font-family: var(--font-body);
+    font-size: 1.5rem;
+    line-height: 1;
+    font-weight: 500;
+    cursor: pointer;
+    z-index: 3;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, background 0.2s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .deck-slide__arrow--prev { left: 0.75rem; }
+  .deck-slide__arrow--next { right: 0.75rem; }
+
+  .deck-slide__image:hover .deck-slide__arrow {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .deck-slide__arrow:hover {
+    background: rgba(255, 255, 255, 0.28);
+    transform: translateY(-50%) scale(1.05);
+  }
+
+  .deck-slide__arrow:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+
+  @media (hover: none) {
+    .deck-slide__arrow {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .deck-slide__arrow {
+      width: 36px;
+      height: 36px;
+      font-size: 1.4rem;
+    }
+    .deck-slide__arrow--prev { left: 0.4rem; }
+    .deck-slide__arrow--next { right: 0.4rem; }
+  }
 
   .deck-slide__zoom {
     position: absolute;
