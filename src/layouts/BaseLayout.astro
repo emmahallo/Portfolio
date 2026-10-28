@@ -3,7 +3,9 @@ import '@fontsource-variable/karla';
 import '@fontsource/reenie-beanie';
 import '@fontsource/staatliches';
 import '../styles/global.css';
+import '../styles/interactions.css';
 import MetaTags from '../components/MetaTags.astro';
+import { ViewTransitions } from 'astro:transitions';
 
 interface Props {
   title?: string;
@@ -31,6 +33,7 @@ const {
     <meta name="generator" content={Astro.generator} />
     <MetaTags title={title} description={description} ogImage={ogImage} ogType={ogType} robots={robots} />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <ViewTransitions />
     <script is:inline type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Person',
@@ -73,6 +76,10 @@ const {
     </style>
 
     <script>
+      import '../scripts/interactions.js';
+    </script>
+
+    <script>
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       const activate = (el: Element) => {
@@ -108,11 +115,7 @@ const {
         });
       };
 
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-      } else {
-        init();
-      }
+      document.addEventListener('astro:page-load', init);
     </script>
   </body>
 </html>

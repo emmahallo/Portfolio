@@ -16,6 +16,8 @@ const allProjects = [
     image: '/images/Vorschau%20Bilder/Website-Vorschau01.jpg',
     imagePosition: 'center 70%',
     href: '/projekte/website-ernährungsberatung',
+    cursorSpark: 'dark',
+    darkOverlay: true,
   },
   {
     title: 'Website für ein imaginäres Hotel',
@@ -23,6 +25,7 @@ const allProjects = [
     image: '/images/Vorschau%20Bilder/Website-Vorschau02.jpg',
     imagePosition: 'center 70%',
     href: '/projekte/hotel-website',
+    cursorSpark: 'light',
   },
   {
     title: 'Website für ein imaginäres Surfcamp',
@@ -30,6 +33,7 @@ const allProjects = [
     image: '/images/Vorschau%20Bilder/Website-Vorschau03.jpg',
     imagePosition: 'center 70%',
     href: '/projekte/surfcamp',
+    cursorSpark: 'light',
   },
   {
     title: 'Activity Tracker',
@@ -37,12 +41,16 @@ const allProjects = [
     image: '/images/Vorschau%20Bilder/Activity-Tracker.jpg',
     imagePosition: 'center 55%',
     href: '/projekte/activity-tracker',
+    cursorSpark: 'dark',
+    darkOverlay: true,
   },
   {
     title: 'Projekte für das Kutter Gartencenter',
     meta: 'Kommunikationsdesign | seit 2021',
     image: '/images/Vorschau%20Bilder/Work_Voschau.jpg',
     href: '/projekte/kutter-gartencenter',
+    cursorSpark: 'dark',
+    darkOverlay: true,
   },
   {
     title: 'Foto-Projekte',
@@ -50,6 +58,7 @@ const allProjects = [
     image: '/images/Vorschau%20Bilder/DSC02545-Verbessert-RR%20Kopie.jpg',
     imagePosition: '20% center',
     href: '/projekte/foto-projekte',
+    cursorSpark: 'light',
   },
 ];
 
@@ -57,19 +66,21 @@ const projects = excludeHref ? allProjects.filter((p) => p.href !== excludeHref)
 const dotCount = projects.length;
 ---
 
-<section id={id} class="section projects">
+<section id={id} class="section projects" data-projects>
   <div class="wrapper">
-    <h2 class="section-heading" data-reveal>{heading}</h2>
+    <h2 class="section-heading" data-split>{heading}</h2>
 
     <div class="projects__carousel" data-reveal style="--reveal-delay: 80ms">
       <button type="button" class="projects__arrow projects__arrow--prev" data-dir="-1" aria-label="Vorheriges Projekt">
         <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
 
-      <div class="projects__track" id="projects-track">
-        {projects.map((project) => (
-          <ProjectCard title={project.title} meta={project.meta} image={project.image} href={project.href} imagePosition={project.imagePosition} />
-        ))}
+      <div class="projects__viewport">
+        <div class="projects__track">
+          {projects.map((project) => (
+            <ProjectCard title={project.title} meta={project.meta} image={project.image} href={project.href} imagePosition={project.imagePosition} cursorSpark={project.cursorSpark} darkOverlay={project.darkOverlay} />
+          ))}
+        </div>
       </div>
 
       <button type="button" class="projects__arrow projects__arrow--next" data-dir="1" aria-label="Nächstes Projekt">
@@ -81,7 +92,7 @@ const dotCount = projects.length;
       <button type="button" class="projects__arrow projects__arrow--mobile projects__arrow--prev" data-dir="-1" aria-label="Vorheriges Projekt">
         <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <div class="projects__dots" id="projects-dots" aria-hidden="true">
+      <div class="projects__dots" aria-hidden="true">
         {Array.from({ length: dotCount }).map((_, i) => <span class="projects__dot" data-index={i}></span>)}
       </div>
       <button type="button" class="projects__arrow projects__arrow--mobile projects__arrow--next" data-dir="1" aria-label="Nächstes Projekt">
@@ -92,104 +103,276 @@ const dotCount = projects.length;
 </section>
 
 <script>
-  const track = document.getElementById('projects-track');
-  const dotsWrap = document.getElementById('projects-dots');
-  if (track && dotsWrap) {
+  // Endlos-Karussell: rastet immer bündig auf ganzen Karten ein.
+  // Bedienung: Trackpad-Swipe / Shift+Mausrad, Ziehen (Maus & Touch), Pfeile, Punkte.
+  const initProjectCarousel = (section: HTMLElement) => {
+    const carousel = section.querySelector<HTMLElement>('.projects__carousel');
+    const viewport = section.querySelector<HTMLElement>('.projects__viewport');
+    const track = section.querySelector<HTMLElement>('.projects__track');
+    if (!carousel || !viewport || !track) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const EASE = reduceMotion ? 1 : 0.09; // kleiner = weicheres Ausgleiten
+
     const originals = Array.from(track.children) as HTMLElement[];
-    const dots = Array.from(dotsWrap.children) as HTMLElement[];
-    const visibleCount = 3;
-    const total = originals.length;
+    const n = originals.length;
+    if (n === 0) return;
 
-    const startClones = originals.slice(-visibleCount).map((c) => c.cloneNode(true) as HTMLElement);
-    const endClones = originals.slice(0, visibleCount).map((c) => c.cloneNode(true) as HTMLElement);
-    for (let i = startClones.length - 1; i >= 0; i--) track.insertBefore(startClones[i], track.firstChild);
-    endClones.forEach((clone) => track.appendChild(clone));
+    // Je eine Kopie davor und dahinter, damit links und rechts immer Karten sind
+    const makeClone = (el: HTMLElement) => {
+      const c = el.cloneNode(true) as HTMLElement;
+      c.setAttribute('aria-hidden', 'true');
+      c.setAttribute('tabindex', '-1');
+      c.querySelectorAll('a, button').forEach((x) => x.setAttribute('tabindex', '-1'));
+      return c;
+    };
+    originals.map(makeClone).reverse().forEach((c) => track.prepend(c));
+    originals.map(makeClone).forEach((c) => track.append(c));
 
-    const cards = Array.from(track.children) as HTMLElement[];
-    const firstOriginal = visibleCount;
-    let position = firstOriginal;
-    let isAnimating = false;
+    const dots = Array.from(section.querySelectorAll<HTMLElement>('.projects__dot'));
 
-    const ANIMATION_DURATION = 650;
-    const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    let step = 1; // Kartenbreite + Abstand
+    let setW = 1; // Breite eines kompletten Satzes
+    let current = 0; // dargestellte Position (px)
+    let target = 0; // Zielposition (px), current läuft weich hinterher
 
-    let rafId = 0;
-    const scrollToPosition = (p, animate) => {
-      const target = cards[p];
-      if (!target) return;
-      const to = target.offsetLeft;
-      if (rafId) cancelAnimationFrame(rafId);
-      if (!animate) {
-        track.scrollLeft = to;
-        return;
-      }
-      const from = track.scrollLeft;
-      const distance = to - from;
-      if (distance === 0) return;
-      const prevSnap = track.style.scrollSnapType;
-      track.style.scrollSnapType = 'none';
-      const startTime = performance.now();
-      const step = (now) => {
-        const elapsed = now - startTime;
-        const t = Math.min(elapsed / ANIMATION_DURATION, 1);
-        track.scrollLeft = from + distance * easeInOutCubic(t);
-        if (t < 1) {
-          rafId = requestAnimationFrame(step);
-        } else {
-          rafId = 0;
-          track.style.scrollSnapType = prevSnap;
-        }
-      };
-      rafId = requestAnimationFrame(step);
+    const measure = () => {
+      const cards = track.children as HTMLCollectionOf<HTMLElement>;
+      const oldStep = step;
+      // exakt messen (ohne Runden), sonst verrutscht es bei krummen Breiten
+      setW = cards[n].getBoundingClientRect().left - cards[0].getBoundingClientRect().left || 1;
+      step = setW / n;
+      // Position beim Größenwechsel auf ganzer Karte halten
+      const idx = Math.round(target / oldStep);
+      target = idx * step;
+      current = target;
+    };
+
+    const snap = () => {
+      target = Math.round(target / step) * step;
+    };
+
+    const activeIndex = () => (((Math.round(target / step)) % n) + n) % n;
+
+    const render = () => {
+      // Endlos: current/target gemeinsam um einen Satz verschieben
+      while (current >= setW) { current -= setW; target -= setW; }
+      while (current < 0) { current += setW; target += setW; }
+      track.style.transform = `translate3d(${(-(setW + current)).toFixed(2)}px, 0, 0)`;
     };
 
     const updateDots = () => {
-      const originalIdx = ((position - firstOriginal) % total + total) % total;
-      dots.forEach((dot, i) => dot.classList.toggle('is-active', i === originalIdx));
+      const i = activeIndex();
+      dots.forEach((d, j) => d.classList.toggle('is-active', j === i));
     };
 
-    const goTo = (newPosition: number) => {
-      if (isAnimating) return;
-      isAnimating = true;
-      position = newPosition;
-      scrollToPosition(position, true);
+    const tick = () => {
+      current += (target - current) * EASE;
+      if (Math.abs(target - current) < 0.05) current = target;
+      render();
       updateDots();
-
-      window.setTimeout(() => {
-        if (position >= firstOriginal + total) {
-          position -= total;
-          scrollToPosition(position, false);
-        } else if (position < firstOriginal) {
-          position += total;
-          scrollToPosition(position, false);
-        }
-        isAnimating = false;
-      }, ANIMATION_DURATION + 40);
+      requestAnimationFrame(tick);
     };
 
-    document.querySelectorAll<HTMLButtonElement>('.projects__arrow').forEach((btn) => {
+    measure();
+    render();
+    requestAnimationFrame(tick);
+    window.addEventListener('resize', () => { measure(); render(); });
+
+    // ---- Pfeile & Punkte ----
+    section.querySelectorAll<HTMLButtonElement>('.projects__arrow').forEach((btn) => {
       btn.addEventListener('click', () => {
-        const dir = Number(btn.dataset.dir ?? '1');
-        goTo(position + dir);
+        snap();
+        target += Number(btn.dataset.dir ?? '1') * step;
       });
     });
-
     dots.forEach((dot, i) => {
       dot.addEventListener('click', () => {
-        goTo(firstOriginal + i);
+        snap();
+        target += (i - activeIndex()) * step;
       });
     });
 
-    requestAnimationFrame(() => {
-      scrollToPosition(firstOriginal, false);
-      updateDots();
+    // ---- Trackpad-Swipe / Shift + Mausrad ----
+    // Während der Finger auf dem Trackpad ist, folgt das Karussell 1:1.
+    // Beim Loslassen wird aus dem Tempo berechnet, wie weit der Schwung
+    // tragen würde – das Ziel landet direkt auf der passenden ganzen Karte.
+    // Schnell wischen = weit fliegen, sanft wischen = eine Karte.
+    let lastWheel = 0;
+    let locked = false;
+    let peak = 0;
+    let lastAd = 0;
+    let gestureDir = 0;
+    let idleTimer = 0;
+
+    const launch = (dir: number, speed: number, decay = 0.92) => {
+      // Restweg des Schwungs (geometrische Reihe), maximal ein ganzer Satz
+      const glide = Math.min(setW, (speed * decay) / (1 - decay));
+      const pos = (target + dir * glide) / step;
+      const idx = dir > 0 ? Math.ceil(pos - 0.02) : Math.floor(pos + 0.02);
+      target = idx * step;
+    };
+
+    const lockGesture = () => {
+      if (locked) return;
+      locked = true;
+      launch(gestureDir, lastAd);
+    };
+
+    viewport.addEventListener(
+      'wheel',
+      (e) => {
+        const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? viewport.clientWidth : 1;
+        let dx = e.deltaX * unit;
+        if (e.shiftKey && dx === 0) dx = e.deltaY * unit;
+        if (Math.abs(dx) <= Math.abs(e.deltaY * unit) && !e.shiftKey) return; // vertikal: Seite scrollt
+        e.preventDefault();
+
+        const now = performance.now();
+        const ad = Math.abs(dx);
+        const dir = Math.sign(dx);
+        // Neue Geste: Pause, Richtungswechsel oder erneutes Anschieben während des Gleitens
+        const reaccelerating = locked && ad > lastAd * 1.35 && ad > 6;
+        if (now - lastWheel > 200 || dir !== gestureDir || reaccelerating) {
+          locked = false;
+          peak = 0;
+          gestureDir = dir;
+        }
+        lastWheel = now;
+        if (locked) {
+          lastAd = ad; // Trackpad-Nachlauf schlucken, nur Tempo merken
+          return;
+        }
+
+        target += dx;
+        peak = Math.max(peak, ad);
+        const lifting = peak > 6 && ad < peak * 0.6; // Ausschläge fallen ab = Finger los
+        lastAd = ad;
+        if (lifting) lockGesture();
+
+        window.clearTimeout(idleTimer);
+        idleTimer = window.setTimeout(lockGesture, 90);
+      },
+      { passive: false }
+    );
+
+    // ---- Ziehen mit Maus / Finger ----
+    let pointerId: number | null = null;
+    let startX = 0;
+    let startTarget = 0;
+    let dragging = false;
+    let lastX = 0;
+    let lastT = 0;
+    let velocity = 0;
+    let suppressClick = false;
+
+    viewport.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      pointerId = e.pointerId;
+      startX = lastX = e.clientX;
+      lastT = performance.now();
+      startTarget = target;
+      velocity = 0;
+      dragging = false;
     });
-  }
+
+    viewport.addEventListener('pointermove', (e) => {
+      if (e.pointerId !== pointerId) return;
+      const dx = e.clientX - startX;
+      if (!dragging && Math.abs(dx) > 6) {
+        dragging = true;
+        try { viewport.setPointerCapture(e.pointerId); } catch {}
+        viewport.classList.add('is-dragging');
+      }
+      if (!dragging) return;
+      const now = performance.now();
+      velocity = velocity * 0.6 + ((e.clientX - lastX) / Math.max(1, now - lastT)) * 16 * 0.4;
+      lastX = e.clientX;
+      lastT = now;
+      target = startTarget - dx;
+    });
+
+    const endDrag = (e: PointerEvent) => {
+      if (e.pointerId !== pointerId) return;
+      pointerId = null;
+      if (!dragging) return;
+      dragging = false;
+      viewport.classList.remove('is-dragging');
+      const moving = performance.now() - lastT < 80 && Math.abs(velocity) > 0.5;
+      if (moving) {
+        launch(-Math.sign(velocity), Math.abs(velocity), 0.9); // Schwung wie beim Trackpad
+      } else {
+        snap();
+      }
+      suppressClick = true; // Ziehen soll kein Projekt öffnen
+      window.setTimeout(() => { suppressClick = false; }, 0);
+    };
+    viewport.addEventListener('pointerup', endDrag);
+    viewport.addEventListener('pointercancel', endDrag);
+
+    viewport.addEventListener(
+      'click',
+      (e) => {
+        if (suppressClick) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      },
+      true
+    );
+    viewport.addEventListener('dragstart', (e) => e.preventDefault());
+
+    // ---- Tastatur: fokussierte Karte ins Bild holen ----
+    originals.forEach((card, i) => {
+      card.addEventListener('focus', () => {
+        const perView = Math.max(1, Math.round(viewport.clientWidth / step));
+        const first = activeIndex();
+        const visible = Array.from({ length: perView }, (_, k) => (first + k) % n);
+        if (!visible.includes(i)) {
+          snap();
+          target += (i - first) * step;
+        }
+        viewport.scrollLeft = 0;
+      });
+    });
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-projects]').forEach(initProjectCarousel);
 </script>
 
 <style>
   .projects__carousel {
+    --per-view: 3;
+    --gap: 1rem;
     position: relative;
+  }
+
+  .projects__viewport {
+    overflow: hidden;
+    padding-block: 14px 32px;
+    margin-block: -14px -32px;
+    /* 2px Luft links/rechts, damit der Kartenrand nie abgeschnitten wird */
+    padding-inline: 2px;
+    margin-inline: -2px;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .projects__track {
+    display: flex;
+    gap: var(--gap);
+    will-change: transform;
+  }
+
+  .projects__track > :global(*) {
+    flex: 0 0 calc((100% - (var(--per-view) - 1) * var(--gap)) / var(--per-view));
+    min-width: 0;
+  }
+
+  .projects__track :global(img) {
+    -webkit-user-drag: none;
+    user-select: none;
   }
 
   .projects__arrow {
@@ -221,23 +404,6 @@ const dotCount = projects.length;
     right: -22px;
   }
 
-  .projects__track {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: calc((100% - 2rem) / 3);
-    gap: 1rem;
-    overflow-x: auto;
-    overflow-y: visible;
-    scrollbar-width: none;
-    scroll-behavior: auto;
-    padding-block: 14px 32px;
-    margin-block: -14px -32px;
-  }
-
-  .projects__track::-webkit-scrollbar {
-    display: none;
-  }
-
   .projects__dots {
     display: flex;
     justify-content: center;
@@ -253,37 +419,26 @@ const dotCount = projects.length;
     cursor: pointer;
     border: none;
     padding: 0;
+    transition: background-color 0.3s ease, transform 0.3s ease;
   }
 
   .projects__dot.is-active {
     background: var(--color-sage);
+    transform: scale(1.2);
   }
 
   .projects__controls {
     display: none;
   }
 
-  @media (max-width: 900px) {
-    .projects__track {
-      grid-auto-columns: 80%;
+  /* Tablet: 2 Karten */
+  @media (min-width: 641px) and (max-width: 1200px) {
+    .projects__carousel {
+      --per-view: 2;
     }
 
-    .projects__arrow--prev { left: 4px; }
-    .projects__arrow--next { right: 4px; }
-  }
-
-  @media (min-width: 641px) and (max-width: 1200px) {
     .projects__carousel .projects__arrow {
       display: none;
-    }
-
-    .projects__track {
-      grid-auto-columns: calc((100% - 1rem) / 2);
-      scroll-snap-type: x mandatory;
-    }
-
-    .projects__track > :global(*) {
-      scroll-snap-align: start;
     }
 
     .projects__track :global(.project-card__title) {
@@ -302,50 +457,26 @@ const dotCount = projects.length;
       white-space: normal;
       overflow-wrap: anywhere;
     }
-
-    .projects__controls {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-
-    .projects__arrow--mobile {
-      position: static;
-      transform: none;
-      width: 40px;
-      height: 40px;
-      flex: 0 0 auto;
-      background: var(--color-sage);
-      border-radius: 0;
-    }
-
-    .projects__dots {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: 0;
-    }
   }
 
+  /* Handy: 1 Karte */
   @media (max-width: 640px) {
+    .projects__carousel {
+      --per-view: 1;
+      --gap: 0.75rem;
+    }
+
     .projects__carousel .projects__arrow {
       display: none;
     }
 
-    .projects__track {
-      grid-auto-columns: 100%;
-      gap: 0.75rem;
-      scroll-snap-type: x mandatory;
+    .projects__viewport {
       padding-block: 8px 20px;
       margin-block: -8px -20px;
     }
+  }
 
-    .projects__track > * {
-      scroll-snap-align: center;
-    }
-
+  @media (max-width: 1200px) {
     .projects__controls {
       display: flex;
       align-items: center;

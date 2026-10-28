@@ -1,89 +1,289 @@
 ---
-import TabCard from './TabCard.astro';
-
+// Liste zum Aufklappen (Variante D). Die vorherige Variante mit Pfeilen
+// ist in src/arbeitsweise-weg.md gesichert.
 const steps = [
   {
     number: '01',
     title: 'Recherche vor Gestaltung',
+    note: 'erst verstehen, dann gestalten!',
     text: 'Was gestaltet wird, ergibt sich aus dem, was gebraucht wird. Am Anfang steht deshalb die <strong>Analyse von Problem und Zielgruppe</strong>, welche mit etablierten <strong>UX-Methoden</strong> herausgearbeitet werden.',
   },
   {
     number: '02',
     title: 'Design',
+    note: 'früh sichtbar machen!',
     text: '<strong>Figma und KI-Werkzeuge</strong> helfen mir, Ideen und gesammelte Erkenntnisse schnell sichtbar zu machen. Je früher ein Entwurf greifbar ist, desto früher lässt er sich prüfen.',
   },
   {
     number: '03',
     title: 'Testing',
+    note: 'testen, testen, testen!',
     text: 'Ob eine Lösung funktioniert, zeigt sich erst in der Anwendung. Daher führe ich <strong>früh und wiederholt Tests</strong> durch, die dafür sorgen, dass die Nutzung am Ende reibungslos gelingt.',
   },
   {
     number: '04',
     title: 'Teamarbeit',
+    note: "zusammen geht's besser\u00a0:)",
     text: 'Gute Projekte entstehen selten allein. Ich arbeite gern im <strong>Team</strong> und setze dabei auf eine <strong>offene Kommunikation</strong>, um effizient miteinander zu arbeiten.',
   },
 ];
 ---
 
-<section id="ueber-mich" class="section process">
+<section id="ueber-mich" class="section process" data-process>
   <div class="wrapper">
-    <h2 class="section-heading" data-reveal>Meine Arbeitsweise</h2>
+    <h2 class="section-heading" data-split>Meine Arbeitsweise</h2>
 
-    <div class="process__grid">
+    <div class="process__list">
       {steps.map((step, i) => (
-        <TabCard tab={`${step.number} ${step.title}`} data-reveal style={`--reveal-delay: ${(i % 2) * 120}ms`}>
-          <p class="tab-card__text" set:html={step.text} />
-        </TabCard>
+        <div class="process__row">
+          <h3 class="process__row-head">
+            <button
+              type="button"
+              class="process__row-btn"
+              aria-expanded="false"
+              aria-controls={`process-body-${i}`}
+            >
+              <span class="process__num">{step.number}</span>
+              <span class="process__title">{step.title}</span>
+              <span class="process__plus" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 1v14M1 8h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg>
+              </span>
+            </button>
+          </h3>
+          <div class="process__body" id={`process-body-${i}`}>
+            <div class="process__body-clip">
+              <div class="process__body-inner">
+                <p class="process__text" set:html={step.text} />
+                <p class="process__note" aria-hidden="true">{step.note}</p>
+              </div>
+            </div>
+          </div>
+        </div>
       ))}
     </div>
+
   </div>
 </section>
 
+<script>
+  // Am Anfang sind alle Zeilen zu.
+  // Drüberfahren (Maus): Zeile geht auf, beim Verlassen der Liste wieder zu.
+  // Klick/Tippen: Zeile wird festgeheftet und bleibt offen, nochmal klicken löst sie.
+  const initProcess = () => {
+    const section = document.querySelector<HTMLElement>('[data-process]');
+    const list = section?.querySelector<HTMLElement>('.process__list');
+    if (!section || !list) return;
+    const rows = Array.from(section.querySelectorAll<HTMLElement>('.process__row'));
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    const pinned = new Set<HTMLElement>();
+    let hovered: HTMLElement | null = null;
+
+    const render = () => {
+      rows.forEach((r) => {
+        const on = pinned.has(r) || r === hovered;
+        r.classList.toggle('is-open', on);
+        r.classList.toggle('is-pinned', pinned.has(r));
+        r.querySelector('.process__row-btn')?.setAttribute('aria-expanded', String(on));
+      });
+    };
+
+    rows.forEach((row) => {
+      row.querySelector('.process__row-btn')?.addEventListener('click', () => {
+        if (pinned.has(row)) {
+          pinned.delete(row);
+          if (hovered === row) hovered = null; // gelöst → sofort zu
+        } else {
+          pinned.add(row);
+        }
+        render();
+      });
+
+      if (fine) {
+        row.addEventListener('mouseenter', () => {
+          hovered = row;
+          render();
+        });
+      }
+    });
+
+    if (fine) {
+      list.addEventListener('mouseleave', () => {
+        hovered = null;
+        render();
+      });
+    }
+
+  };
+
+  document.addEventListener('astro:page-load', initProcess);
+</script>
+
 <style>
-  .process__grid {
+  .process {
+    position: relative;
+    overflow-x: clip;
+  }
+
+  .process__list {
+    border-bottom: 1px solid var(--color-sage);
+  }
+
+  .process__row {
+    border-top: 1px solid var(--color-sage);
+  }
+
+  .process__row-head {
+    margin: 0;
+    font: inherit;
+  }
+
+  .process__row-btn {
+    all: unset;
+    box-sizing: border-box;
+    width: 100%;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: repeat(2, auto);
-    gap: clamp(2rem, 3.5vw, 2.75rem) clamp(3rem, 6vw, 5rem);
-    align-items: stretch;
+    grid-template-columns: clamp(4.5rem, 10vw, 8rem) 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 0;
+    cursor: pointer;
   }
 
-  .process__grid .tab-card + .tab-card {
-    margin-top: 0;
+  .process__row-btn:focus-visible {
+    outline: 2px solid var(--color-sage-dark);
+    outline-offset: 4px;
   }
 
-  .process__grid .tab-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+  .process__num {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 0.9;
+    color: var(--color-ink);
+    transition: color 0.3s ease;
   }
 
-  .process__grid .tab-card :global(.tab-card__frame) {
-    flex: 1;
+  .process__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
+    letter-spacing: 0.04em;
+    line-height: 1;
+    color: var(--color-ink);
+    transition: translate 0.45s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s ease;
   }
 
-  .process__grid .tab-card__text {
-    font-size: 0.95rem;
-    line-height: 1.55;
-    max-width: none;
+  .process__plus {
+    width: 38px;
+    height: 38px;
+    margin-right: clamp(0.5rem, 1.5vw, 1.25rem); /* nicht direkt am rechten Rand */
+    border: 1px solid var(--color-sage);
+    display: grid;
+    place-items: center;
+    color: var(--color-sage-dark);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
   }
 
-  .process__grid .tab-card__text :global(strong) {
+  /* nur das Plus dreht sich zum ×, das Kästchen bleibt gerade */
+  .process__plus svg {
+    transition: rotate 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Aufklappen über grid-template-rows (0fr → 1fr) = weiche Höhe ohne JS */
+  .process__body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .process__body-clip {
+    overflow: hidden;
+  }
+
+  .process__body-inner {
+    display: grid;
+    grid-template-columns: clamp(4.5rem, 10vw, 8rem) minmax(0, 34rem) minmax(0, 1fr);
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    align-items: start;
+  }
+
+  .process__text {
+    grid-column: 2;
+    color: var(--color-ink);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 52ch;
+  }
+
+  .process__text :global(strong) {
     font-weight: 700;
+    color: var(--color-sage-dark);
   }
 
-  @media (min-width: 761px) and (max-width: 1024px) {
-    .process__grid {
-      grid-template-rows: 1fr 1fr;
+  .process__note {
+    grid-column: 3;
+    /* näher am Text und auf dessen Höhe mittig */
+    align-self: center;
+    justify-self: start;
+    margin-left: clamp(2rem, 6vw, 6rem);
+    font-family: 'Reenie Beanie', cursive;
+    font-size: clamp(1.7rem, 2.2vw, 2.15rem);
+    line-height: 1.05;
+    color: var(--color-forest);
+    rotate: -3deg;
+  }
+
+  .process__row.is-open .process__body {
+    grid-template-rows: 1fr;
+  }
+
+  .process__row.is-open .process__title {
+    translate: 0.5rem 0;
+    color: var(--color-sage);
+  }
+
+  .process__row.is-open .process__num {
+    color: var(--color-sage);
+  }
+
+  .process__row.is-open .process__plus svg {
+    rotate: 45deg;
+  }
+
+  .process__row.is-open .process__plus {
+    background: var(--color-sage);
+    color: #ffffff;
+  }
+
+  /* Festgeheftet (per Klick): dunkles ×, bleibt offen */
+  .process__row.is-pinned .process__plus {
+    background: var(--color-forest);
+    border-color: var(--color-forest);
+  }
+
+  /* Handy: Text und Notiz untereinander */
+  @media (max-width: 900px) {
+    .process__body-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .process__text,
+    .process__note {
+      grid-column: 1;
+    }
+
+    .process__note {
+      justify-self: end;
+      margin-left: 0;
+      font-size: 1.7rem;
     }
   }
 
-  @media (max-width: 760px) {
-    .process__grid {
-      grid-template-columns: 1fr;
-      grid-template-rows: auto;
-      grid-auto-flow: row;
-      gap: 1.75rem;
+  @media (prefers-reduced-motion: reduce) {
+    .process__body,
+    .process__title,
+    .process__plus {
+      transition: none;
     }
   }
 </style>

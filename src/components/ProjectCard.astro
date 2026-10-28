@@ -9,13 +9,15 @@ interface Props {
   image: string;
   href: string;
   imagePosition?: string;
+  cursorSpark?: 'dark' | 'light';
+  darkOverlay?: boolean;
 }
 
-const { title, meta, image, href, imagePosition } = Astro.props;
+const { title, meta, image, href, imagePosition, cursorSpark, darkOverlay } = Astro.props;
 ---
 
-<a class="project-card" href={href}>
-  <span class="project-card__image">
+<a class="project-card" href={href} data-cursor="view" data-cursor-label="Projekt ansehen!" data-cursor-spark={cursorSpark}>
+  <span class:list={['project-card__image', darkOverlay && 'project-card__image--overlay']}>
     <img
       src={image}
       alt={title}

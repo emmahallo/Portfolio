@@ -18,6 +18,7 @@
   /* --color-brown deprecated 2026-09-21: Fließtext einheitlich via --color-ink. Token behalten falls Print-Materialien darauf verweisen. */
   --color-brown: #5c4242;
   --color-border: #d9dcd5;
+  --color-forest: #2f3730;    /* dunkles Waldgrün: Footer, Swipe-Cursor */
 
   --font-display: 'Staatliches', 'Arial Narrow', sans-serif;
   --font-body: 'Karla Variable', 'Karla', system-ui, sans-serif;
@@ -86,6 +87,21 @@ ul {
 
 h1, h2, h3, p {
   margin: 0;
+}
+
+/* Inhalt liegt über dem Footer, damit dieser beim Scrollen
+   „aufgedeckt“ wird (siehe Footer.astro) */
+main {
+  position: relative;
+  z-index: 1;
+  background: var(--color-bg);
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+/* Offene Lightbox muss über allem liegen (auch über dem Header):
+   solange sie offen ist, die eigene Ebene von <main> aufheben */
+body:has(.lightbox:not([hidden])) main {
+  z-index: auto;
 }
 
 .wrapper {
@@ -640,6 +656,14 @@ h1, h2, h3, p {
   align-items: flex-start;
   gap: 0;
   color: var(--color-ink);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.case-toc__hint.is-visible {
+  opacity: 1;
+  transform: none;
 }
 
 .case-toc__hint-text {
@@ -706,6 +730,8 @@ h1, h2, h3, p {
   bottom: calc(0.6rem + 1.25rem * 0.75);
   width: 1px;
   background: var(--color-sage);
+  transform: scaleY(var(--toc-line-scale, 0));
+  transform-origin: top center;
 }
 
 .toc-chip {
@@ -728,13 +754,49 @@ h1, h2, h3, p {
   border: 2px solid var(--color-sage);
   background: #ffffff;
   transform: translateY(-50%);
-  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  opacity: 0;
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease, opacity 0.3s ease;
 }
 
-.toc-chip:hover::before {
+/* Punkt erscheint gefüllt wenn die Linie ihn gerade erreicht */
+.case-toc__list li.is-active .toc-chip::before {
+  opacity: 1;
+  background: var(--color-sage-dark);
+  border-color: var(--color-sage-dark);
+}
+
+/* Punkt wird zur Umrandung sobald die Linie weiter geht */
+.case-toc__list li.is-past .toc-chip::before {
+  opacity: 1;
+  background: #ffffff;
+  border-color: var(--color-sage);
+}
+
+.case-toc__list li:hover .toc-chip::before {
+  opacity: 1;
   background: var(--color-sage-dark);
   border-color: var(--color-sage-dark);
   transform: translateY(-50%) scale(1.15);
+}
+
+/* Pfeil unter dem letzten Punkt */
+.case-toc__track {
+  position: relative;
+  display: inline-block;
+}
+
+.case-toc__arrow {
+  position: absolute;
+  left: calc(1.75rem - 5px + 7px);
+  bottom: -1.5rem;
+  color: var(--color-sage-dark);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.case-toc__arrow.is-visible {
+  opacity: 1;
 }
 
 .toc-chip__number,
@@ -744,7 +806,15 @@ h1, h2, h3, p {
   font-family: var(--font-body);
   font-variation-settings: 'wght' 400;
   color: var(--color-ink);
-  transition: font-variation-settings 0.4s ease, color 0.4s ease;
+  opacity: 0;
+  transition: font-variation-settings 0.4s ease, color 0.4s ease, opacity 0.45s ease;
+}
+
+.case-toc__list li.is-active .toc-chip__number,
+.case-toc__list li.is-active .toc-chip__label,
+.case-toc__list li.is-past .toc-chip__number,
+.case-toc__list li.is-past .toc-chip__label {
+  opacity: 1;
 }
 
 .toc-chip__number {
@@ -770,8 +840,8 @@ h1, h2, h3, p {
   pointer-events: none;
 }
 
-.toc-chip:hover .toc-chip__number,
-.toc-chip:hover .toc-chip__label {
+.case-toc__list li:hover .toc-chip__number,
+.case-toc__list li:hover .toc-chip__label {
   color: var(--color-sage-dark);
   font-variation-settings: 'wght' 600;
 }
@@ -1139,6 +1209,15 @@ h1, h2, h3, p {
   background: #d9dcd5;
   aspect-ratio: 16 / 10;
   overflow: hidden;
+  position: relative;
+}
+
+.project-card__image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(28, 28, 28, 0.4);
+  pointer-events: none;
 }
 
 /*

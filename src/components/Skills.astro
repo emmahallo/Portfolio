@@ -15,10 +15,12 @@ const track = [...skills, ...skills];
 
 <section class="section skills">
   <div class="wrapper">
-    <h2 class="section-heading" data-reveal>Meine Kompetenzen</h2>
+    <h2 class="section-heading" data-split>Meine Kompetenzen</h2>
 
     <div
       class="skills-marquee"
+      data-cursor="drag"
+      data-cursor-label="swipe!"
       data-reveal
       style="--reveal-delay: 80ms"
       aria-label="Kompetenzen — automatisches Laufband, per Drag manuell scrollbar"
@@ -120,6 +122,8 @@ const track = [...skills, ...skills];
 </style>
 
 <script>
+  // Laufband: läuft von selbst, lässt sich ziehen (Maus/Touch) und per
+  // Trackpad-Swipe bzw. Shift+Mausrad bewegen. Alles läuft weich nach (Lerp).
   const initSkillsMarquee = () => {
     const marquee = document.querySelector<HTMLElement>('.skills-marquee');
     const track = marquee?.querySelector<HTMLElement>('.skills-marquee__track');
@@ -127,15 +131,21 @@ const track = [...skills, ...skills];
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const SPEED = 0.5; // px per frame (~30 px/s)
-    const RESUME_DELAY = 1200;
+    const SPEED = 0.5; // Autoplay in px pro Frame (~30 px/s)
+    const EASE = prefersReducedMotion ? 1 : 0.1; // wie weich es nachläuft
+    const RESUME_DELAY = 1400; // ms bis Autoplay nach Interaktion weiterläuft
+    const FLING = 14; // Schwung nach dem Loslassen
 
     let halfWidth = 0;
-    let offset = 0; // negative = scrolled to the right (chips moved left)
+    let offset = 0; // dargestellte Position
+    let target = 0; // Zielposition, offset läuft weich hinterher
     let hovered = false;
     let dragging = false;
     let dragStartX = 0;
-    let dragStartOffset = 0;
+    let dragStartTarget = 0;
+    let lastX = 0;
+    let lastT = 0;
+    let velocity = 0;
     let activePointer: number | null = null;
     let lastInteraction = 0;
 
@@ -143,39 +153,45 @@ const track = [...skills, ...skills];
       halfWidth = track.scrollWidth / 2;
     };
 
-    const applyTransform = () => {
-      if (halfWidth > 0) {
-        while (offset <= -halfWidth) offset += halfWidth;
-        while (offset > 0) offset -= halfWidth;
+    // Endlos-Schleife: offset und target gemeinsam verschieben,
+    // damit der Abstand (und damit die Bewegung) erhalten bleibt
+    const wrap = () => {
+      if (halfWidth <= 0) return;
+      while (offset <= -halfWidth) {
+        offset += halfWidth;
+        target += halfWidth;
       }
-      track.style.transform = `translate3d(${offset}px, 0, 0)`;
+      while (offset > 0) {
+        offset -= halfWidth;
+        target -= halfWidth;
+      }
+    };
+
+    const render = () => {
+      wrap();
+      track.style.transform = `translate3d(${offset.toFixed(2)}px, 0, 0)`;
     };
 
     measure();
-    applyTransform();
+    render();
     window.addEventListener('resize', () => {
       measure();
-      applyTransform();
+      render();
     });
-    if ('fonts' in document) {
-      (document as any).fonts?.ready?.then?.(() => {
-        measure();
-        applyTransform();
-      });
-    }
+    (document as any).fonts?.ready?.then?.(() => {
+      measure();
+      render();
+    });
 
     const step = () => {
       const now = performance.now();
       const canAutoplay =
-        !prefersReducedMotion &&
-        !hovered &&
-        !dragging &&
-        now - lastInteraction > RESUME_DELAY;
+        !prefersReducedMotion && !hovered && !dragging && now - lastInteraction > RESUME_DELAY;
 
-      if (canAutoplay) {
-        offset -= SPEED;
-        applyTransform();
-      }
+      if (canAutoplay) target -= SPEED;
+      offset += (target - offset) * EASE;
+      if (Math.abs(target - offset) < 0.01) offset = target;
+      render();
       requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
@@ -183,12 +199,32 @@ const track = [...skills, ...skills];
     marquee.addEventListener('mouseenter', () => { hovered = true; });
     marquee.addEventListener('mouseleave', () => { hovered = false; });
 
+    // ---- Trackpad-Swipe / Shift + Mausrad ----
+    marquee.addEventListener(
+      'wheel',
+      (e) => {
+        const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerWidth : 1;
+        let dx = e.deltaX * unit;
+        if (e.shiftKey && dx === 0) dx = e.deltaY * unit;
+        // Nur horizontale Gesten abfangen, vertikal scrollt die Seite normal weiter
+        if (Math.abs(dx) <= Math.abs(e.deltaY * unit) && !e.shiftKey) return;
+        e.preventDefault();
+        target -= dx;
+        lastInteraction = performance.now();
+      },
+      { passive: false }
+    );
+
+    // ---- Ziehen mit Maus / Finger ----
     marquee.addEventListener('pointerdown', (e) => {
       if (e.pointerType === 'mouse' && e.button !== 0) return;
       dragging = true;
       activePointer = e.pointerId;
       dragStartX = e.clientX;
-      dragStartOffset = offset;
+      dragStartTarget = target;
+      lastX = e.clientX;
+      lastT = performance.now();
+      velocity = 0;
       marquee.classList.add('is-grabbing');
       try { marquee.setPointerCapture(e.pointerId); } catch {}
       lastInteraction = performance.now();
@@ -197,10 +233,13 @@ const track = [...skills, ...skills];
 
     marquee.addEventListener('pointermove', (e) => {
       if (!dragging || e.pointerId !== activePointer) return;
-      const dx = e.clientX - dragStartX;
-      offset = dragStartOffset + dx;
-      applyTransform();
-      lastInteraction = performance.now();
+      const now = performance.now();
+      const dt = Math.max(1, now - lastT);
+      velocity = velocity * 0.6 + ((e.clientX - lastX) / dt) * 16 * 0.4; // px pro Frame
+      lastX = e.clientX;
+      lastT = now;
+      target = dragStartTarget + (e.clientX - dragStartX);
+      lastInteraction = now;
     });
 
     const endDrag = (e: PointerEvent) => {
@@ -209,6 +248,8 @@ const track = [...skills, ...skills];
       dragging = false;
       activePointer = null;
       marquee.classList.remove('is-grabbing');
+      // Schwung mitnehmen, wenn kurz vor dem Loslassen noch bewegt wurde
+      if (performance.now() - lastT < 80) target += velocity * FLING;
       lastInteraction = performance.now();
     };
     marquee.addEventListener('pointerup', endDrag);
@@ -216,9 +257,5 @@ const track = [...skills, ...skills];
     marquee.addEventListener('lostpointercapture', endDrag);
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSkillsMarquee);
-  } else {
-    initSkillsMarquee();
-  }
+  document.addEventListener('astro:page-load', initSkillsMarquee);
 </script>

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Werdegang – Optionen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Magnetischer Hover ── */
+    [data-magnetic] {
+      --mx: 0px;
+      --my: 0px;
+      translate: var(--mx) var(--my);
+      transition: translate 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      cursor: default;
+    }
+    [data-magnetic].is-magnet {
+      transition: translate 0.15s linear;
+    }
+
+    /* ── exakte Portfolio-Tokens ── */
+    :root {
+      --forest:    #2f3730;
+      --ink:       #626c63;
+      --sage:      #809582;
+      --sage-dark: #648767;
+      --sage-tint: rgba(128,149,130,.31);
+      --badge-bg:  rgba(216,222,216,.55);
+      --bg:        #ffffff;
+      --radius:    6px;
+      --radius-pill: 999px;
+      --f-body:    system-ui, sans-serif;
+      --f-hand:    'Reenie Beanie', cursive;
+    }
+
+    body {
+      font-family: var(--f-body);
+      background: #f4f5f2;
+      color: var(--ink);
+      padding: 3rem 1.5rem 8rem;
+    }
+
+    h1 {
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 3.5rem;
+      text-align: center;
+    }
+
+    .option {
+      background: var(--bg);
+      border-radius: 16px;
+      padding: clamp(2rem, 5vw, 3.5rem);
+      margin-bottom: 2.5rem;
+      max-width: 860px;
+      margin-inline: auto;
+    }
+
+    .option__label {
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+    .option__label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--sage-tint);
+    }
+
+    .section-heading {
+      font-size: clamp(1.25rem, 1.4vw + 1rem, 1.5rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--ink);
+      letter-spacing: .02em;
+      margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    }
+
+    /* ══════════════════════════════════════════════
+       A – Handschrift-Datum + Chip (wie jetzt,
+           aber Datum als Reenie-Beanie oben)
+    ══════════════════════════════════════════════ */
+    .tl-hand {
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+    .tl-hand__item {
+      display: grid;
+      grid-template-columns: 7rem 1fr;
+      gap: 1rem 1.5rem;
+      align-items: start;
+    }
+    .tl-hand__date {
+      font-family: var(--f-hand);
+      font-size: 2rem;
+      line-height: 1;
+      color: var(--sage-dark);
+      padding-top: .25rem;
+      text-align: right;
+    }
+    .tl-hand__chip {
+      position: relative;
+      isolation: isolate;
+    }
+    .tl-hand__chip::before {
+      content: '';
+      position: absolute;
+      top: 7px;
+      left: -5px;
+      right: 9px;
+      bottom: -5px;
+      background: var(--sage-tint);
+      z-index: 0;
+    }
+    .tl-hand__inner {
+      position: relative;
+      z-index: 1;
+      border: 1px solid var(--sage);
+      background: var(--bg);
+      padding: .65rem 1rem;
+    }
+    .tl-hand__item--dark .tl-hand__inner {
+      background: var(--sage);
+      border-color: var(--sage);
+      color: #fff;
+    }
+    .tl-hand__item--dark .tl-hand__date { color: var(--forest); }
+    .tl-hand__title {
+      font-weight: 700;
+      font-size: .95rem;
+      color: var(--forest);
+      display: block;
+    }
+    .tl-hand__item--dark .tl-hand__title { color: #fff; }
+    .tl-hand__sub {
+      font-weight: 300;
+      font-size: .9rem;
+      display: block;
+    }
+
+    /* ══════════════════════════════════════════════
+       B – Eyebrow-Badge pro Station (wie Hero/CTA)
+    ══════════════════════════════════════════════ */
+    .tl-eye {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .tl-eye__item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: .75rem 1.5rem;
+      align-items: center;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--sage-tint);
+    }
+    .tl-eye__item:first-child { border-top: 1px solid var(--sage-tint); }
+    .tl-eye__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      background: var(--badge-bg);
+      border-radius: var(--radius-pill);
+      padding: .35rem 1rem .35rem .8rem;
+      font-size: .75rem;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      color: var(--forest);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .tl-eye__badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--sage-dark);
+      flex-shrink: 0;
+    }
+    .tl-eye__item--dark .tl-eye__badge {
+      background: var(--forest);
+      color: #fff;
+    }
+    .tl-eye__item--dark .tl-eye__badge-dot {
+      background: rgba(255,255,255,.5);
+      animation: dot-pulse 2s ease-out infinite;
+    }
+    @keyframes dot-pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(255,255,255,.5); }
+      100% { box-shadow: 0 0 0 8px rgba(255,255,255,0); }
+    }
+    .tl-eye__title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--forest);
+      margin-bottom: .15rem;
+    }
+    .tl-eye__sub {
+      font-size: .875rem;
+      color: var(--ink);
+    }
+
+    /* ══════════════════════════════════════════════
+       C – Vertikale Linie + Dot (wie aktuelle,
+           aber vertikal und aufgeräumter)
+    ══════════════════════════════════════════════ */
+    .tl-dot {
+      position: relative;
+      padding-left: 1.5rem;
+    }
+    .tl-dot::before {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 6px;
+      bottom: 6px;
+      width: 1px;
+      background: var(--sage);
+    }
+    .tl-dot__item {
+      position: relative;
+      padding: 0 0 2.25rem 1.5rem;
+      display: grid;
+      grid-template-columns: 6.5rem 1fr;
+      gap: .5rem 1.25rem;
+      align-items: start;
+    }
+    .tl-dot__item:last-child { padding-bottom: 0; }
+    .tl-dot__item::before {
+      content: '';
+      position: absolute;
+      left: -4px;
+      top: 7px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--sage);
+      border: 2px solid var(--bg);
+    }
+    .tl-dot__item--dark::before {
+      background: var(--forest);
+      animation: dot-pulse-dark 2s ease-out infinite;
+    }
+    @keyframes dot-pulse-dark {
+      0%   { box-shadow: 0 0 0 0 rgba(129,149,122,.55); }
+      100% { box-shadow: 0 0 0 8px rgba(129,149,122,0); }
+    }
+    .tl-dot__date {
+      font-size: .8rem;
+      color: var(--sage);
+      letter-spacing: .03em;
+      padding-top: .15rem;
+      line-height: 1.4;
+    }
+    .tl-dot__title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--forest);
+      margin-bottom: .2rem;
+    }
+    .tl-dot__sub { font-size: .875rem; color: var(--ink); }
+
+    /* ══════════════════════════════════════════════
+       D – Polaroid-Karten (wie die Fotos auf
+           über mich – gleiche CSS-Werte)
+    ══════════════════════════════════════════════ */
+    .tl-pola {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+    .tl-pola__card {
+      flex: 1;
+      min-width: 150px;
+      max-width: 200px;
+      padding: .75rem .75rem 2.5rem;
+      background: var(--bg);
+      box-shadow: 0 12px 28px rgba(28,28,28,.14);
+      transform: rotate(-1deg);
+      transition: transform .4s ease, box-shadow .4s ease;
+      cursor: default;
+    }
+    .tl-pola__card:nth-child(2) { transform: rotate(1.2deg); }
+    .tl-pola__card:nth-child(3) { transform: rotate(-.5deg); }
+    .tl-pola__card:nth-child(4) {
+      transform: rotate(1deg);
+      background: var(--forest);
+    }
+    .tl-pola__card:hover {
+      transform: rotate(0) translateY(-6px) scale(1.02) !important;
+      box-shadow: 0 20px 40px rgba(28,28,28,.22);
+    }
+    .tl-pola__top {
+      background: var(--sage-tint);
+      aspect-ratio: 4 / 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: .6rem;
+    }
+    .tl-pola__card:nth-child(4) .tl-pola__top {
+      background: rgba(255,255,255,.08);
+    }
+    .tl-pola__year {
+      font-family: var(--f-hand);
+      font-size: 2.8rem;
+      color: var(--sage-dark);
+      line-height: 1;
+    }
+    .tl-pola__card:nth-child(4) .tl-pola__year { color: rgba(255,255,255,.4); }
+    .tl-pola__title {
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--forest);
+      margin-bottom: .2rem;
+      line-height: 1.3;
+    }
+    .tl-pola__card:nth-child(4) .tl-pola__title { color: #fff; }
+    .tl-pola__sub {
+      font-size: .78rem;
+      color: var(--ink);
+    }
+    .tl-pola__card:nth-child(4) .tl-pola__sub { color: rgba(255,255,255,.6); }
+
+    /* ══════════════════════════════════════════════
+       E – Nummer groß (wie Arbeitsweise 01 02 03)
+    ══════════════════════════════════════════════ */
+    .tl-proc { display: flex; flex-direction: column; gap: 0; }
+    .tl-proc__item {
+      display: grid;
+      grid-template-columns: 3.5rem 1fr auto;
+      align-items: baseline;
+      gap: .75rem 1.25rem;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--sage-tint);
+    }
+    .tl-proc__item:first-child { border-top: 1px solid var(--sage-tint); }
+    .tl-proc__num {
+      font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+      font-weight: 800;
+      color: var(--sage-tint);
+      letter-spacing: -.02em;
+      line-height: 1;
+    }
+    .tl-proc__item--dark .tl-proc__num { color: var(--forest); }
+    .tl-proc__body {}
+    .tl-proc__title {
+      font-size: .975rem;
+      font-weight: 700;
+      color: var(--forest);
+      margin-bottom: .2rem;
+    }
+    .tl-proc__sub { font-size: .875rem; color: var(--ink); }
+    .tl-proc__date {
+      font-size: .78rem;
+      color: var(--sage);
+      letter-spacing: .03em;
+      white-space: nowrap;
+      background: var(--badge-bg);
+      padding: .25rem .75rem;
+      border-radius: var(--radius-pill);
+    }
+  </style>
+</head>
+<body>
+  <h1>Werdegang — Optionen · localhost:4321/werdegang-optionen.html</h1>
+
+  <!-- ── A: Handschrift-Datum ── -->
+  <div class="option">
+    <div class="option__label">A — Reenie-Beanie-Datum + Chip</div>
+    <h2 class="section-heading">Werdegang</h2>
+    <div class="tl-hand">
+      <div class="tl-hand__item" data-magnetic="-0.3">
+        <div class="tl-hand__date">2023</div>
+        <div class="tl-hand__chip">
+          <div class="tl-hand__inner">
+            <span class="tl-hand__title">Fachgebundene Hochschulreife</span>
+            <span class="tl-hand__sub">an der FOS/BOS in Memmingen</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-hand__item" data-magnetic="-0.3">
+        <div class="tl-hand__date">2023–24</div>
+        <div class="tl-hand__chip">
+          <div class="tl-hand__inner">
+            <span class="tl-hand__title">Aushilfstätigkeiten</span>
+            <span class="tl-hand__sub">im Kutter Gartencenter &amp; Rituals</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-hand__item" data-magnetic="-0.3">
+        <div class="tl-hand__date">2024→</div>
+        <div class="tl-hand__chip">
+          <div class="tl-hand__inner">
+            <span class="tl-hand__title">Mediendesign (B.Sc.)</span>
+            <span class="tl-hand__sub">an der RWU in Weingarten</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-hand__item tl-hand__item--dark">
+        <div class="tl-hand__date">2026→</div>
+        <div class="tl-hand__chip">
+          <div class="tl-hand__inner">
+            <span class="tl-hand__title">UX-Design Tutorin</span>
+            <span class="tl-hand__sub">an der RWU in Weingarten</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── B: Eyebrow-Badges ── -->
+  <div class="option">
+    <div class="option__label">B — Eyebrow-Badge wie auf der Startseite</div>
+    <h2 class="section-heading">Werdegang</h2>
+    <div class="tl-eye">
+      <div class="tl-eye__item" data-magnetic="-0.3">
+        <div class="tl-eye__badge">
+          <span class="tl-eye__badge-dot"></span>2023
+        </div>
+        <div>
+          <div class="tl-eye__title">Fachgebundene Hochschulreife</div>
+          <div class="tl-eye__sub">an der FOS/BOS in Memmingen</div>
+        </div>
+      </div>
+      <div class="tl-eye__item" data-magnetic="-0.3">
+        <div class="tl-eye__badge">
+          <span class="tl-eye__badge-dot"></span>2023–24
+        </div>
+        <div>
+          <div class="tl-eye__title">Aushilfstätigkeiten</div>
+          <div class="tl-eye__sub">im Kutter Gartencenter &amp; Rituals</div>
+        </div>
+      </div>
+      <div class="tl-eye__item" data-magnetic="-0.3">
+        <div class="tl-eye__badge">
+          <span class="tl-eye__badge-dot"></span>seit 2024
+        </div>
+        <div>
+          <div class="tl-eye__title">Mediendesign (B.Sc.)</div>
+          <div class="tl-eye__sub">an der RWU in Weingarten</div>
+        </div>
+      </div>
+      <div class="tl-eye__item tl-eye__item--dark">
+        <div class="tl-eye__badge">
+          <span class="tl-eye__badge-dot"></span>ab 2026
+        </div>
+        <div>
+          <div class="tl-eye__title">UX-Design Tutorin</div>
+          <div class="tl-eye__sub">an der RWU in Weingarten</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── C: Dot + Linie vertikal ── -->
+  <div class="option">
+    <div class="option__label">C — Linie + Dot vertikal mit Datum links</div>
+    <h2 class="section-heading">Werdegang</h2>
+    <div class="tl-dot">
+      <div class="tl-dot__item" data-magnetic="-0.3">
+        <div class="tl-dot__date">2023</div>
+        <div>
+          <div class="tl-dot__title">Fachgebundene Hochschulreife</div>
+          <div class="tl-dot__sub">an der FOS/BOS in Memmingen</div>
+        </div>
+      </div>
+      <div class="tl-dot__item" data-magnetic="-0.3">
+        <div class="tl-dot__date">11/2023–08/2024</div>
+        <div>
+          <div class="tl-dot__title">Aushilfstätigkeiten</div>
+          <div class="tl-dot__sub">im Kutter Gartencenter &amp; Rituals</div>
+        </div>
+      </div>
+      <div class="tl-dot__item" data-magnetic="-0.3">
+        <div class="tl-dot__date">seit 10/2024</div>
+        <div>
+          <div class="tl-dot__title">Mediendesign (B.Sc.)</div>
+          <div class="tl-dot__sub">an der RWU in Weingarten</div>
+        </div>
+      </div>
+      <div class="tl-dot__item tl-dot__item--dark">
+        <div class="tl-dot__date">ab 10/2026</div>
+        <div>
+          <div class="tl-dot__title">UX-Design Tutorin</div>
+          <div class="tl-dot__sub">an der RWU in Weingarten</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── D: Polaroid-Karten ── -->
+  <div class="option">
+    <div class="option__label">D — Polaroid-Karten (wie die Fotos)</div>
+    <h2 class="section-heading">Werdegang</h2>
+    <div class="tl-pola">
+      <div class="tl-pola__card" data-magnetic="-0.25">
+        <div class="tl-pola__top"><span class="tl-pola__year">2023</span></div>
+        <div class="tl-pola__title">Fachgebundene Hochschulreife</div>
+        <div class="tl-pola__sub">FOS/BOS Memmingen</div>
+      </div>
+      <div class="tl-pola__card" data-magnetic="-0.25">
+        <div class="tl-pola__top"><span class="tl-pola__year">23–24</span></div>
+        <div class="tl-pola__title">Aushilfstätigkeiten</div>
+        <div class="tl-pola__sub">Kutter &amp; Rituals</div>
+      </div>
+      <div class="tl-pola__card" data-magnetic="-0.25">
+        <div class="tl-pola__top"><span class="tl-pola__year">2024→</span></div>
+        <div class="tl-pola__title">Mediendesign B.Sc.</div>
+        <div class="tl-pola__sub">RWU Weingarten</div>
+      </div>
+      <div class="tl-pola__card" data-magnetic="-0.25">
+        <div class="tl-pola__top"><span class="tl-pola__year">2026→</span></div>
+        <div class="tl-pola__title">UX-Design Tutorin</div>
+        <div class="tl-pola__sub">RWU Weingarten</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── E: Nummeriert wie Arbeitsweise ── -->
+  <div class="option">
+    <div class="option__label">E — Nummeriert wie Meine Arbeitsweise</div>
+    <h2 class="section-heading">Werdegang</h2>
+    <div class="tl-proc">
+      <div class="tl-proc__item" data-magnetic="-0.3">
+        <div class="tl-proc__num">01</div>
+        <div class="tl-proc__body">
+          <div class="tl-proc__title">Fachgebundene Hochschulreife</div>
+          <div class="tl-proc__sub">an der FOS/BOS in Memmingen</div>
+        </div>
+        <div class="tl-proc__date">2023</div>
+      </div>
+      <div class="tl-proc__item" data-magnetic="-0.3">
+        <div class="tl-proc__num">02</div>
+        <div class="tl-proc__body">
+          <div class="tl-proc__title">Aushilfstätigkeiten</div>
+          <div class="tl-proc__sub">im Kutter Gartencenter &amp; Rituals</div>
+        </div>
+        <div class="tl-proc__date">2023–24</div>
+      </div>
+      <div class="tl-proc__item" data-magnetic="-0.3">
+        <div class="tl-proc__num">03</div>
+        <div class="tl-proc__body">
+          <div class="tl-proc__title">Mediendesign (B.Sc.)</div>
+          <div class="tl-proc__sub">an der RWU in Weingarten</div>
+        </div>
+        <div class="tl-proc__date">seit 2024</div>
+      </div>
+      <div class="tl-proc__item tl-proc__item--dark">
+        <div class="tl-proc__num">04</div>
+        <div class="tl-proc__body">
+          <div class="tl-proc__title">UX-Design Tutorin</div>
+          <div class="tl-proc__sub">an der RWU in Weingarten</div>
+        </div>
+        <div class="tl-proc__date">ab 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (fine) {
+      document.querySelectorAll('[data-magnetic]').forEach((el) => {
+        const strength = parseFloat(el.dataset.magnetic) || 0.35;
+        el.addEventListener('pointermove', (e) => {
+          const r = el.getBoundingClientRect();
+          const dx = e.clientX - (r.left + r.width / 2);
+          const dy = e.clientY - (r.top + r.height / 2);
+          el.style.setProperty('--mx', `${dx * strength}px`);
+          el.style.setProperty('--my', `${dy * strength}px`);
+          el.classList.add('is-magnet');
+        });
+        el.addEventListener('pointerleave', () => {
+          el.style.setProperty('--mx', '0px');
+          el.style.setProperty('--my', '0px');
+          el.classList.remove('is-magnet');
+        });
+      });
+    }
+  </script>
+</body>
+</html>

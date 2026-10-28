@@ -17,9 +17,11 @@ const noteHtml = `
   description="Schreib mir gerne — per E-Mail oder auf LinkedIn. Emma Eichin, Mediendesign-Studentin mit Fokus auf UI/UX-Design."
 >
   <Header />
-  <div class="kontakt-bg" aria-hidden="true"></div>
-  <div class="kontakt-bg kontakt-bg--right" aria-hidden="true"></div>
   <main>
+    <!-- Sterne im Hintergrund: innerhalb von <main>, damit der weiße
+         main-Hintergrund (für den Footer-Effekt) sie nicht verdeckt -->
+    <div class="kontakt-bg" aria-hidden="true"></div>
+    <div class="kontakt-bg kontakt-bg--right" aria-hidden="true"></div>
     <section class="section kontakt-section">
       <div class="wrapper kontakt-wrapper">
         <TabCard tab="Kontakt" data-reveal>
@@ -71,7 +73,7 @@ const noteHtml = `
     background-size: min(48vmin, 440px) auto;
     opacity: 0.025;
     pointer-events: none;
-    z-index: 0;
+    z-index: -1; /* über dem weißen main-Hintergrund, aber hinter dem Inhalt */
   }
 
   .kontakt-bg--right {
@@ -84,6 +86,8 @@ const noteHtml = `
   main {
     position: relative;
     z-index: 1;
+    min-height: 100vh;
+    min-height: 100svh;
   }
 
   .kontakt-section {

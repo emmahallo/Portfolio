@@ -1,0 +1,323 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Button-Optionen">
+<style>
+  body { background: #f5f4f0; }
+
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 2rem 8rem;
+    font-family: sans-serif;
+  }
+
+  h1 {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 4rem;
+  }
+
+  .variant {
+    margin-bottom: 4rem;
+  }
+
+  .variant-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #bbb;
+    margin-bottom: 1.25rem;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  /* ── Basis ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    padding: 0.85rem 1.75rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+    line-height: 1.2;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    font-family: sans-serif;
+  }
+
+  /* ══════════════════════════════════════
+     A · Aktuell: hochschieben + Farbwechsel
+  ══════════════════════════════════════ */
+  .a-p { background:#809582; color:#fff; transition: background .3s ease, transform .3s ease; }
+  .a-p:hover { background:#2c302d; transform:translateY(-3px); }
+  .a-o { border-color:#648767; color:#648767; transition: background .3s ease, transform .3s ease; }
+  .a-o:hover { background:rgba(100,135,103,.1); transform:translateY(-3px); }
+
+  /* ══════════════════════════════════════
+     B · Slide-Fill von links
+  ══════════════════════════════════════ */
+  .b-p { background:#809582; color:#fff; transition:color .4s ease; }
+  .b-p::before { content:''; position:absolute; inset:0; background:#2c302d; transform:translateX(-101%); transition:transform .45s cubic-bezier(.22,1,.36,1); z-index:0; }
+  .b-p:hover::before { transform:translateX(0); }
+  .b-p > * { position:relative; z-index:1; }
+
+  .b-o { border-color:#648767; color:#648767; transition:color .4s ease; }
+  .b-o::before { content:''; position:absolute; inset:0; background:#648767; transform:translateX(-101%); transition:transform .45s cubic-bezier(.22,1,.36,1); z-index:0; }
+  .b-o:hover { color:#fff; }
+  .b-o:hover::before { transform:translateX(0); }
+  .b-o > * { position:relative; z-index:1; }
+
+  /* ══════════════════════════════════════
+     C · Slide-Fill von unten
+  ══════════════════════════════════════ */
+  .c-p { background:#809582; color:#fff; transition:color .4s ease; }
+  .c-p::before { content:''; position:absolute; inset:0; background:#2c302d; transform:translateY(101%); transition:transform .45s cubic-bezier(.22,1,.36,1); z-index:0; }
+  .c-p:hover::before { transform:translateY(0); }
+  .c-p > * { position:relative; z-index:1; }
+
+  .c-o { border-color:#648767; color:#648767; transition:color .4s ease; }
+  .c-o::before { content:''; position:absolute; inset:0; background:#648767; transform:translateY(101%); transition:transform .45s cubic-bezier(.22,1,.36,1); z-index:0; }
+  .c-o:hover { color:#fff; }
+  .c-o:hover::before { transform:translateY(0); }
+  .c-o > * { position:relative; z-index:1; }
+
+  /* ══════════════════════════════════════
+     D · Schatten-Offset (wie CTA-Button)
+  ══════════════════════════════════════ */
+  .d-wrap { position:relative; display:inline-flex; }
+  .d-wrap::before { content:''; position:absolute; inset:0; background:rgba(128,149,130,.35); transform:translate(-5px,5px); transition:transform .35s ease; }
+  .d-wrap:hover::before { transform:translate(-8px,8px); }
+
+  .d-p { background:#809582; color:#fff; position:relative; z-index:1; transition:background .35s ease, transform .35s ease; }
+  .d-wrap:hover .d-p { background:#2c302d; transform:translateY(-2px); }
+
+  .d-o { background:#fff; border-color:#648767; color:#648767; position:relative; z-index:1; transition:background .35s ease, color .35s ease, transform .35s ease; }
+  .d-wrap:hover .d-o { background:#648767; color:#fff; transform:translateY(-2px); }
+
+  /* ══════════════════════════════════════
+     E · Pfeil erscheint + Text schiebt
+  ══════════════════════════════════════ */
+  .e-p {
+    background:#809582; color:#fff;
+    transition: background .3s ease, padding-right .35s cubic-bezier(.22,1,.36,1);
+  }
+  .e-p:hover { background:#2c302d; padding-right:2.4rem; }
+  .e-arrow {
+    position:absolute; right:1.75rem;
+    opacity:0; transform:translateX(-6px);
+    transition: opacity .3s ease .05s, transform .35s cubic-bezier(.22,1,.36,1);
+    font-size:1.1rem; line-height:1;
+  }
+  .e-p:hover .e-arrow { opacity:1; transform:translateX(0); }
+
+  .e-o {
+    border-color:#648767; color:#648767;
+    transition: border-color .3s ease, color .3s ease, padding-right .35s cubic-bezier(.22,1,.36,1);
+  }
+  .e-o:hover { border-color:#2c302d; color:#2c302d; padding-right:2.4rem; }
+  .e-o:hover .e-arrow { opacity:1; transform:translateX(0); color:#2c302d; }
+
+  /* ══════════════════════════════════════
+     F · Underline wächst
+  ══════════════════════════════════════ */
+  .f-p {
+    background:#809582; color:#fff;
+    transition: background .3s ease;
+  }
+  .f-p::after {
+    content:''; position:absolute; left:1.75rem; right:1.75rem; bottom:10px; height:1.5px;
+    background:#fff; transform:scaleX(0); transform-origin:left;
+    transition:transform .4s cubic-bezier(.22,1,.36,1);
+  }
+  .f-p:hover { background:#648767; }
+  .f-p:hover::after { transform:scaleX(1); }
+
+  .f-o {
+    border-color:#648767; color:#648767;
+    transition: color .3s ease, border-color .3s ease;
+  }
+  .f-o::after {
+    content:''; position:absolute; left:1.75rem; right:1.75rem; bottom:10px; height:1.5px;
+    background:#648767; transform:scaleX(0); transform-origin:left;
+    transition:transform .4s cubic-bezier(.22,1,.36,1);
+  }
+  .f-o:hover { color:#2c302d; border-color:#2c302d; }
+  .f-o:hover::after { transform:scaleX(1); background:#2c302d; }
+
+  /* ══════════════════════════════════════
+     G · Ripple-Kreis
+  ══════════════════════════════════════ */
+  .g-p { background:#809582; color:#fff; transition:background .3s ease; }
+  .g-p::after {
+    content:''; position:absolute; inset:50%;
+    background:rgba(255,255,255,.25); border-radius:50%;
+    transition: inset .55s cubic-bezier(.22,1,.36,1), opacity .4s ease;
+    opacity:0;
+  }
+  .g-p:hover { background:#648767; }
+  .g-p:hover::after { inset:-30%; opacity:1; }
+
+  .g-o { border-color:#648767; color:#648767; }
+  .g-o::after {
+    content:''; position:absolute; inset:50%;
+    background:rgba(100,135,103,.18); border-radius:50%;
+    transition: inset .55s cubic-bezier(.22,1,.36,1), opacity .4s ease;
+    opacity:0;
+  }
+  .g-o:hover::after { inset:-30%; opacity:1; }
+
+  /* ══════════════════════════════════════
+     H · Border wächst (inset ring)
+  ══════════════════════════════════════ */
+  .h-p {
+    background:#809582; color:#fff;
+    box-shadow: inset 0 0 0 0 #2c302d;
+    transition: box-shadow .4s cubic-bezier(.22,1,.36,1), color .3s ease;
+  }
+  .h-p:hover { box-shadow: inset 0 0 0 60px #2c302d; }
+
+  .h-o {
+    border-color:#648767; color:#648767;
+    box-shadow: inset 0 0 0 0 #648767;
+    transition: box-shadow .4s cubic-bezier(.22,1,.36,1), color .3s ease;
+  }
+  .h-o:hover { box-shadow: inset 0 0 0 60px #648767; color:#fff; }
+
+  /* ══════════════════════════════════════
+     I · Bounce + Farbwechsel
+  ══════════════════════════════════════ */
+  .i-p { background:#809582; color:#fff; transition:background .3s ease; }
+  .i-p:hover { background:#2c302d; animation: bounce .5s cubic-bezier(.22,1,.36,1); }
+
+  .i-o { border-color:#648767; color:#648767; transition:background .3s ease, color .3s ease; }
+  .i-o:hover { background:#648767; color:#fff; animation: bounce .5s cubic-bezier(.22,1,.36,1); }
+
+  @keyframes bounce {
+    0%   { transform:translateY(0); }
+    35%  { transform:translateY(-6px); }
+    65%  { transform:translateY(2px); }
+    100% { transform:translateY(0); }
+  }
+
+  /* ══════════════════════════════════════
+     J · Outlined → Filled + rotate Pfeil
+  ══════════════════════════════════════ */
+  .j-p {
+    background:#809582; color:#fff;
+    transition: background .35s ease, gap .35s ease;
+  }
+  .j-p:hover { background:#2c302d; gap:1.1rem; }
+  .j-icon {
+    display:inline-block;
+    transition: transform .4s cubic-bezier(.22,1,.36,1);
+    font-style:normal; font-size:1.1rem;
+  }
+  .j-p:hover .j-icon { transform:rotate(45deg) scale(1.2); }
+
+  .j-o {
+    border-color:#648767; color:#648767;
+    transition: background .35s ease, color .35s ease, gap .35s ease;
+  }
+  .j-o:hover { background:#648767; color:#fff; gap:1.1rem; }
+  .j-o:hover .j-icon { transform:rotate(45deg) scale(1.2); }
+</style>
+
+<div class="page">
+  <h1>Button-Animationen – Vorschau</h1>
+
+  <div class="variant">
+    <div class="variant-label">A · Aktuell – Hochschieben + Farbwechsel</div>
+    <div class="row">
+      <a href="#" class="btn a-p">Zu meinen Projekten</a>
+      <a href="#" class="btn a-o">Über mich</a>
+    </div>
+  </div>
+
+  <div class="variant">
+    <div class="variant-label">B · Fill schiebt von links rein</div>
+    <div class="row">
+      <a href="#" class="btn b-p"><span>Zu meinen Projekten</span></a>
+      <a href="#" class="btn b-o"><span>Über mich</span></a>
+    </div>
+  </div>
+
+  <div class="variant">
+    <div class="variant-label">C · Fill schiebt von unten rein</div>
+    <div class="row">
+      <a href="#" class="btn c-p"><span>Zu meinen Projekten</span></a>
+      <a href="#" class="btn c-o"><span>Über mich</span></a>
+    </div>
+  </div>
+
+  <div class="variant">
+    <div class="variant-label">D · Schatten-Offset (wie der CTA-Button)</div>
+    <div class="row">
+      <div class="d-wrap"><a href="#" class="btn d-p">Zu meinen Projekten</a></div>
+      <div class="d-wrap"><a href="#" class="btn d-o">Über mich</a></div>
+    </div>
+  </div>
+
+  <div class="variant">
+    <div class="variant-label">E · Pfeil erscheint, Text schiebt nach links</div>
+    <div class="row">
+      <a href="#" class="btn e-p">Zu meinen Projekten <span class="e-arrow">→</span></a>
+      <a href="#" class="btn e-o">Über mich <span class="e-arrow">→</span></a>
+    </div>
+  </div>
+
+  <div class="variant">
+    <div class="variant-label">F · Underline wächst von links</div>
+    <div class="row">
+      <a href="#" class="btn f-p">Zu meinen Projekten</a>
+      <a href="#" class="btn f-o">Über mich</a>
+    </div>
+  </div>
+
+  <div class="variant">
+    <div class="variant-label">G · Ripple-Kreis expandiert nach außen</div>
+    <div class="row">
+      <a href="#" class="btn g-p">Zu meinen Projekten</a>
+      <a href="#" class="btn g-o">Über mich</a>
+    </div>
+  </div>
+
+  <div class="variant">
+    <div class="variant-label">H · Füllung wächst von innen (Inset-Fill)</div>
+    <div class="row">
+      <a href="#" class="btn h-p">Zu meinen Projekten</a>
+      <a href="#" class="btn h-o">Über mich</a>
+    </div>
+  </div>
+
+  <div class="variant">
+    <div class="variant-label">I · Bounce + Farbwechsel</div>
+    <div class="row">
+      <a href="#" class="btn i-p">Zu meinen Projekten</a>
+      <a href="#" class="btn i-o">Über mich</a>
+    </div>
+  </div>
+
+  <div class="variant">
+    <div class="variant-label">J · Pfeil dreht sich beim Hover</div>
+    <div class="row">
+      <a href="#" class="btn j-p">Zu meinen Projekten <i class="j-icon">↗</i></a>
+      <a href="#" class="btn j-o">Über mich <i class="j-icon">↗</i></a>
+    </div>
+  </div>
+
+</div>
+</BaseLayout>

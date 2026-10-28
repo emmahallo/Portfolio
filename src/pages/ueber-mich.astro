@@ -18,6 +18,45 @@ const werdegang = [
   { date: 'seit 10/2024', title: 'Mediendesign (B.Sc.)', subtitle: 'an der RWU in Weingarten' },
   { date: 'ab 10/2026', title: 'UX-Design Tutorin', subtitle: 'an der RWU in Weingarten', variant: 'dark' },
 ];
+
+const trailImages = [
+  '/images/bilder-animation-trail/0B1029F6-3106-40C8-8197-39A3CCAC978F.JPG',
+  '/images/bilder-animation-trail/20250829_194046.JPG',
+  '/images/bilder-animation-trail/2941700c-95bc-4e73-9cd5-7291fe50de6f.JPG',
+  '/images/bilder-animation-trail/4044E22F-6B73-45A1-8CEC-AA34A7F5834F.JPG',
+  '/images/bilder-animation-trail/6cc8f6f9-b809-4a48-8163-3acb4727db0a.JPG',
+  '/images/bilder-animation-trail/FullSizeRender_2.jpg',
+  '/images/bilder-animation-trail/FullSizeRender_3.jpg',
+  '/images/bilder-animation-trail/FullSizeRender_4.jpg',
+  '/images/bilder-animation-trail/FullSizeRender_5.jpg',
+  '/images/bilder-animation-trail/FullSizeRender_6.jpg',
+  '/images/bilder-animation-trail/FullSizeRender_14.JPG',
+  '/images/bilder-animation-trail/FullSizeRender.jpg',
+  '/images/bilder-animation-trail/IMG_0534.JPG',
+  '/images/bilder-animation-trail/IMG_0541.jpg',
+  '/images/bilder-animation-trail/IMG_0559.JPG',
+  '/images/bilder-animation-trail/IMG_1075.JPG',
+  '/images/bilder-animation-trail/IMG_1331.JPG',
+  '/images/bilder-animation-trail/IMG_2600.JPG',
+  '/images/bilder-animation-trail/IMG_3155.jpg',
+  '/images/bilder-animation-trail/IMG_3978.JPG',
+  '/images/bilder-animation-trail/IMG_4082.JPG',
+  '/images/bilder-animation-trail/IMG_4117.JPG',
+  '/images/bilder-animation-trail/IMG_4324.JPG',
+  '/images/bilder-animation-trail/IMG_4487.JPG',
+  '/images/bilder-animation-trail/IMG_4502.JPG',
+  '/images/bilder-animation-trail/IMG_4922.JPG',
+  '/images/bilder-animation-trail/IMG_4936.JPG',
+  '/images/bilder-animation-trail/IMG_5263.JPG',
+  '/images/bilder-animation-trail/IMG_6705.jpg',
+  '/images/bilder-animation-trail/IMG_6938.JPG',
+  '/images/bilder-animation-trail/IMG_7795.JPG',
+  '/images/bilder-animation-trail/IMG_7994.JPG',
+  '/images/bilder-animation-trail/IMG_8077.jpg',
+  '/images/bilder-animation-trail/IMG_8522.JPG',
+  '/images/bilder-animation-trail/IMG_8969.JPG',
+  '/images/bilder-animation-trail/IMG_9884.JPG',
+];
 ---
 
 <BaseLayout
@@ -46,7 +85,28 @@ const werdegang = [
       </div>
     </section>
 
-    <section id="werdegang" class="section">
+    <section class="section about-more">
+      <div class="wrapper">
+        <h2 class="section-heading" data-split>Mehr zu mir</h2>
+      </div>
+      <div class="about-more__canvas" data-trail={trailImages.join('|')}>
+        <p class="about-more__hint" aria-hidden="true">
+          <span class="about-more__hint-text--mouse">psst&nbsp;… beweg mal die Maus hier!</span>
+          <span class="about-more__hint-text--touch">psst&nbsp;… tipp mal irgendwo hin!</span>
+        </p>
+      </div>
+      <div class="about-more__mobile" aria-hidden="true">
+        <img src="/images/bilder-animation-trail/IMG_0534.JPG" alt="" />
+        <img src="/images/bilder-animation-trail/IMG_1331.JPG" alt="" />
+        <img src="/images/bilder-animation-trail/IMG_2600.JPG" alt="" />
+        <img src="/images/bilder-animation-trail/IMG_8522.JPG" alt="" />
+        <img src="/images/bilder-animation-trail/6cc8f6f9-b809-4a48-8163-3acb4727db0a.JPG" alt="" />
+        <img src="/images/bilder-animation-trail/IMG_0559.JPG" alt="" />
+        <img src="/images/bilder-animation-trail/IMG_6705.jpg" alt="" />
+      </div>
+    </section>
+
+    <section id="werdegang" class="section" style="padding-bottom: clamp(5rem, 12vw, 10rem);">
       <div class="wrapper">
         <h2 class="section-heading" data-reveal>Werdegang</h2>
 
@@ -55,9 +115,9 @@ const werdegang = [
             <div class="timeline__station">
               <div class="timeline__top" style={`grid-column: ${i + 1}`}>
                 {i % 2 === 0 ? (
-                  <span class="timeline__date">{station.date}</span>
+                  <span class="timeline__date" data-magnetic="-0.25">{station.date}</span>
                 ) : (
-                  <span class:list={["timeline__chip", station.variant === 'dark' && "timeline__chip--dark"]}>
+                  <span class:list={["timeline__chip", station.variant === 'dark' && "timeline__chip--dark"]} data-magnetic="-0.25">
                     <span class="timeline__chip-inner">
                       <span class="timeline__chip-title">{station.title}</span>
                       <span class="timeline__chip-subtitle">{station.subtitle}</span>
@@ -68,14 +128,14 @@ const werdegang = [
               <span class:list={["timeline__dot", station.variant === 'dark' && "timeline__dot--dark"]} style={`grid-column: ${i + 1}`}></span>
               <div class="timeline__bottom" style={`grid-column: ${i + 1}`}>
                 {i % 2 === 0 ? (
-                  <span class:list={["timeline__chip", station.variant === 'dark' && "timeline__chip--dark"]}>
+                  <span class:list={["timeline__chip", station.variant === 'dark' && "timeline__chip--dark"]} data-magnetic="-0.25">
                     <span class="timeline__chip-inner">
                       <span class="timeline__chip-title">{station.title}</span>
                       <span class="timeline__chip-subtitle">{station.subtitle}</span>
                     </span>
                   </span>
                 ) : (
-                  <span class="timeline__date">{station.date}</span>
+                  <span class="timeline__date" data-magnetic="-0.25">{station.date}</span>
                 )}
               </div>
             </div>
@@ -118,9 +178,9 @@ const werdegang = [
 
   main :global(.polaroid) {
     margin: 0;
-    padding: 0.75rem 0.75rem 2.5rem;
+    padding: 1.1rem 1.1rem 5.5rem;
     background: #ffffff;
-    box-shadow: 0 12px 28px rgba(28, 28, 28, 0.14);
+    box-shadow: 0 8px 32px rgba(28, 28, 28, 0.22);
     transform: rotate(1.5deg);
     max-width: 500px;
     width: 100%;
@@ -129,7 +189,7 @@ const werdegang = [
 
   main :global(.polaroid:hover) {
     transform: rotate(-1deg) translateY(-6px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(28, 28, 28, 0.22);
+    box-shadow: 0 22px 44px rgba(28, 28, 28, 0.28);
   }
 
   main :global(.polaroid img) {
@@ -260,8 +320,138 @@ const werdegang = [
   @media (max-width: 480px) {
     main :global(.polaroid) {
       max-width: 260px;
-      padding: 0.6rem 0.6rem 2rem;
+      padding: 0.6rem 0.6rem 3rem;
     }
   }
 
+  main :global(.process) {
+    padding-bottom: clamp(5rem, 12vw, 10rem);
+  }
+
+  /* "Mehr zu mir" – Weißraum als interaktive Spielfläche */
+  .about-more {
+    padding-bottom: 0;
+  }
+
+  .about-more__canvas {
+    height: clamp(20rem, 60vh, 50rem);
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    clip-path: inset(0);
+  }
+
+  /* Mobile: statische Bildauswahl statt Trail */
+  .about-more__mobile {
+    display: none;
+  }
+
+  @media (hover: none) {
+    .about-more__canvas {
+      display: none;
+    }
+
+    .about-more__mobile {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 1.5rem var(--gutter) 2.5rem;
+    }
+
+    .about-more__mobile img {
+      width: calc(33% - 0.5rem);
+      max-width: 130px;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      border: 5px solid #fff;
+      border-bottom: 22px solid #fff;
+      box-shadow: 0 4px 14px rgba(28, 28, 28, 0.18);
+    }
+  }
+
+  /* Polaroid-Stil: einheitliche Größe, quadratischer Bildausschnitt */
+  .about-more__canvas :global(.trail-img) {
+    width: clamp(130px, 12vw, 170px);
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center;
+    border: 8px solid #fff;
+    border-bottom: 36px solid #fff;
+    box-shadow: 0 8px 28px rgba(28, 28, 28, 0.22);
+  }
+
+  .about-more__hint {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: 'Reenie Beanie', cursive;
+    font-size: 2.4rem;
+    line-height: 1;
+    color: var(--color-sage-dark);
+    transform: rotate(-3deg);
+    opacity: 0;
+    animation: about-hint-in 0.8s ease 0.6s forwards;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .about-more__canvas.hint-done .about-more__hint {
+    animation: none;
+    opacity: 0;
+  }
+
+  .about-more__hint-text--touch { display: none; }
+
+  @media (hover: none) {
+    .about-more__hint-text--mouse { display: none; }
+    .about-more__hint-text--touch { display: inline; }
+  }
+
+  @keyframes about-hint-in {
+    to { opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .about-more__hint { display: none; }
+  }
+
 </style>
+
+<script>
+  const canvas = document.querySelector<HTMLElement>('.about-more__canvas');
+  if (canvas) {
+    const layer = canvas.querySelector<HTMLElement>('.trail-layer')
+      ?? (() => {
+          // trail-layer wird von interactions.js erst kurz nach DOMContentLoaded erzeugt
+          const observer = new MutationObserver(() => {
+            const l = canvas.querySelector<HTMLElement>('.trail-layer');
+            if (l) { observer.disconnect(); watchLayer(l); }
+          });
+          observer.observe(canvas, { childList: true });
+          return null;
+        })();
+
+    if (layer) watchLayer(layer);
+
+    function watchLayer(l: HTMLElement) {
+      let count = 0;
+      const mo = new MutationObserver((mutations) => {
+        for (const m of mutations) {
+          count += m.addedNodes.length;
+          if (count >= 3) {
+            canvas!.classList.add('hint-done');
+            mo.disconnect();
+            break;
+          }
+        }
+      });
+      mo.observe(l, { childList: true });
+    }
+  }
+</script>

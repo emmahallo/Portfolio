@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cursor-Optionen – Vorschau</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #2f3730;
+      --sage:   #809582;
+      --ink:    #626c63;
+      --border: #d9dcd5;
+      --marker: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M7 12.5C38 6.5 92 4.8 140 6.2c19 .6 38 1.6 53 3.4 3.2 4.6 4.4 12 2.6 18.6-1 4-3.3 6.4-6.6 7.1-34 2.4-92 3.6-149 2.4-12-.3-26-1.3-37-2.9C1.9 30.6 1 24 2.4 18.4c.9-3.4 2.4-5.2 4.6-5.9Z' fill='%23fff'/%3E%3C/svg%3E");
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f5f5f0;
+      color: var(--forest);
+      min-height: 100vh;
+      padding: clamp(2rem, 6vw, 4rem) clamp(1.5rem, 5vw, 3rem);
+    }
+
+    .page-header {
+      max-width: 1100px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .page-header h1 {
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.4rem;
+    }
+
+    .page-header p {
+      color: var(--ink);
+      font-size: 0.9rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 860px)  { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 500px)  { .grid { grid-template-columns: 1fr; } }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      cursor: none;
+      user-select: none;
+      transition: box-shadow 0.35s ease, transform 0.35s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 16px 48px rgba(47,55,48,.14);
+      transform: translateY(-3px);
+    }
+
+    .card__top {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card__bottom {
+      padding: 1.1rem 1.4rem 1.3rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .card__name {
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-bottom: 0.3rem;
+    }
+
+    .card__desc {
+      font-size: 0.78rem;
+      color: var(--ink);
+      line-height: 1.55;
+    }
+
+    /* ────────────── Cursor ────────────── */
+    .cursor {
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 9999;
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    .cursor__inner {
+      position: absolute;
+      left: 0; top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.2rem;
+      opacity: 0;
+      transform: translate(-50%, -56px) scale(0.3);
+      transform-origin: 50% 100%;
+      transition:
+        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity   0.25s ease;
+    }
+
+    .cursor.is-active .cursor__inner {
+      opacity: 1;
+      transform: translate(-50%, -56px) scale(1);
+    }
+
+    /* alle Arts ausblenden */
+    [data-art] { display: none; }
+
+    /* die passende Art einblenden */
+    .cursor[data-mode='kamera']   [data-art='kamera'],
+    .cursor[data-mode='sparkles'] [data-art='sparkles'],
+    .cursor[data-mode='sticker']  [data-art='sticker'],
+    .cursor[data-mode='lupe']     [data-art='lupe'],
+    .cursor[data-mode='pinsel']   [data-art='pinsel'],
+    .cursor[data-mode='kreis']    [data-art='kreis'],
+    .cursor[data-mode='sp-a']     [data-art='sp-a'],
+    .cursor[data-mode='sp-b']     [data-art='sp-b'],
+    .cursor[data-mode='sp-c']     [data-art='sp-c'],
+    .cursor[data-mode='sp-d']     [data-art='sp-d'],
+    .cursor[data-mode='sp-e']     [data-art='sp-e'] {
+      display: block;
+    }
+
+    .cursor__text {
+      font-family: 'Reenie Beanie', cursive;
+      font-size: 1.7rem;
+      line-height: 1;
+      white-space: nowrap;
+      color: var(--forest);
+      transform: rotate(-4deg);
+      padding: 0.12em 0.45em 0.08em;
+      background: var(--marker) center / 100% 100% no-repeat;
+    }
+
+    .cursor[data-mode='sticker'] .cursor__text { display: none; }
+
+    /* ────────────── Animationen ────────────── */
+    @keyframes spin    { to { transform: rotate(360deg); } }
+    @keyframes twinkle-a {
+      0%,100% { transform: scale(1)   rotate(0deg);  opacity: .7; }
+      50%     { transform: scale(1.5) rotate(25deg); opacity: 1;  }
+    }
+    @keyframes twinkle-b {
+      0%,100% { transform: scale(.8)  rotate(10deg);  opacity: .5; }
+      50%     { transform: scale(1.3) rotate(-15deg); opacity: 1;  }
+    }
+    @keyframes wobble {
+      0%,100% { transform: rotate(-4deg); }
+      50%     { transform: rotate(4deg);  }
+    }
+    @keyframes swing {
+      0%,100% { transform: rotate(-12deg); }
+      50%     { transform: rotate(12deg);  }
+    }
+    @keyframes pulse {
+      0%,100% { transform: scale(1);   }
+      50%     { transform: scale(1.1); }
+    }
+
+    /* Kamera: äußerer Ring dreht sich */
+    .kamera-ring {
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    .cursor.is-active[data-mode='kamera'] .kamera-ring {
+      animation: spin 5s linear infinite;
+    }
+
+    /* Sparkles */
+    .cursor.is-active[data-mode='sparkles'] .sp1 { animation: twinkle-a .9s ease-in-out infinite; }
+    .cursor.is-active[data-mode='sparkles'] .sp2 { animation: twinkle-b .9s ease-in-out .22s infinite; }
+    .cursor.is-active[data-mode='sparkles'] .sp3 { animation: twinkle-a .9s ease-in-out .45s infinite; }
+    .cursor.is-active[data-mode='sparkles'] .sp4 { animation: twinkle-b .9s ease-in-out .67s infinite; }
+
+    /* Sticker: wackelt */
+    .cursor.is-active[data-mode='sticker'] [data-art='sticker'] {
+      animation: wobble 1.6s ease-in-out infinite;
+    }
+
+    /* Lupe: pulsiert */
+    .cursor.is-active[data-mode='lupe'] [data-art='lupe'] {
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    /* Pinsel: schwingt am Griffende */
+    .cursor.is-active[data-mode='pinsel'] [data-art='pinsel'] {
+      animation: swing 1.1s ease-in-out infinite;
+      transform-box: fill-box;
+      transform-origin: top center;
+    }
+
+    /* Pfeil-Kreis: dreht sich */
+    .kreis-arc {
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    .cursor.is-active[data-mode='kreis'] .kreis-arc {
+      animation: spin 2.5s linear infinite;
+    }
+
+    /* ── Sparkles-Varianten ── */
+    .cursor[data-mode='sp-a'] [data-art='sp-a'],
+    .cursor[data-mode='sp-b'] [data-art='sp-b'],
+    .cursor[data-mode='sp-c'] [data-art='sp-c'] { display: block; }
+
+    /* gemeinsame Sparkle-Basis */
+    .sp-art {
+      position: relative;
+      width: 72px;
+      height: 60px;
+    }
+    .sp {
+      position: absolute;
+      color: var(--forest);
+      line-height: 1;
+      display: inline-block;
+    }
+    .sp-s1 { font-size: 22px; left: 42%; top: 0; }
+    .sp-s2 { font-size: 14px; left: 73%; top: 36%; }
+    .sp-s3 { font-size: 18px; left: 50%; top: 60%; }
+    .sp-s4 { font-size: 11px; left: 4%;  top: 44%; }
+
+    /* A – weißer Blob-Hintergrund */
+    [data-art='sp-a'] .sp-art {
+      background: #fff;
+      border-radius: 44%;
+      padding: 6px 8px;
+    }
+
+    /* B – weißer Glow auf den Sternen */
+    [data-art='sp-b'] .sp {
+      text-shadow:
+        0 0 6px #fff,
+        0 0 14px rgba(255,255,255,.9),
+        0 0 24px rgba(255,255,255,.5);
+    }
+
+    /* C – weiße Pille um Sterne + Text */
+    .cursor[data-mode='sp-c'] .cursor__inner {
+      background: #fff;
+      border-radius: 999px;
+      padding: 10px 16px 8px;
+      box-shadow: 0 4px 18px rgba(47,55,48,.16);
+      gap: 0.1rem;
+    }
+    .cursor[data-mode='sp-c'] .cursor__text {
+      background: none;
+    }
+
+    /* D – SVG-Sterne mit weißem Miter-Outline (scharfe Spitzen) */
+    [data-art='sp-d'] .sp {
+      /* Größe kommt vom width/height-Attribut der SVGs */
+    }
+
+    /* E – weißer Marker-Strich hinter den Sternen (wie beim Text) */
+    [data-art='sp-e'] .sp-art {
+      padding: 6px 10px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M7 12.5C38 6.5 92 4.8 140 6.2c19 .6 38 1.6 53 3.4 3.2 4.6 4.4 12 2.6 18.6-1 4-3.3 6.4-6.6 7.1-34 2.4-92 3.6-149 2.4-12-.3-26-1.3-37-2.9C1.9 30.6 1 24 2.4 18.4c.9-3.4 2.4-5.2 4.6-5.9Z' fill='%23fff'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+    }
+
+    /* Animationen für alle Varianten */
+    .cursor.is-active[data-mode='sp-a'] .sp-s1,
+    .cursor.is-active[data-mode='sp-b'] .sp-s1,
+    .cursor.is-active[data-mode='sp-c'] .sp-s1,
+    .cursor.is-active[data-mode='sp-d'] .sp-s1,
+    .cursor.is-active[data-mode='sp-e'] .sp-s1 { animation: twinkle-a .9s ease-in-out infinite; }
+    .cursor.is-active[data-mode='sp-a'] .sp-s2,
+    .cursor.is-active[data-mode='sp-b'] .sp-s2,
+    .cursor.is-active[data-mode='sp-c'] .sp-s2,
+    .cursor.is-active[data-mode='sp-d'] .sp-s2,
+    .cursor.is-active[data-mode='sp-e'] .sp-s2 { animation: twinkle-b .9s ease-in-out .22s infinite; }
+    .cursor.is-active[data-mode='sp-a'] .sp-s3,
+    .cursor.is-active[data-mode='sp-b'] .sp-s3,
+    .cursor.is-active[data-mode='sp-c'] .sp-s3,
+    .cursor.is-active[data-mode='sp-d'] .sp-s3,
+    .cursor.is-active[data-mode='sp-e'] .sp-s3 { animation: twinkle-a .9s ease-in-out .45s infinite; }
+    .cursor.is-active[data-mode='sp-a'] .sp-s4,
+    .cursor.is-active[data-mode='sp-b'] .sp-s4,
+    .cursor.is-active[data-mode='sp-c'] .sp-s4,
+    .cursor.is-active[data-mode='sp-d'] .sp-s4,
+    .cursor.is-active[data-mode='sp-e'] .sp-s4 { animation: twinkle-b .9s ease-in-out .67s infinite; }
+
+    /* Abschnitt-Überschrift */
+    .section-label {
+      max-width: 1100px;
+      margin: 3rem auto 1.25rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    /* ── Weitere Optionen ── */
+    .cursor[data-mode='gross-stern']  [data-art='gross-stern'],
+    .cursor[data-mode='herz']         [data-art='herz'],
+    .cursor[data-mode='bokeh']        [data-art='bokeh'],
+    .cursor[data-mode='sonne']        [data-art='sonne'],
+    .cursor[data-mode='punkte']       [data-art='punkte'],
+    .cursor[data-mode='text-only']    [data-art='text-only'] { display: block; }
+
+    /* Kein Text-Label bei text-only (das ist selbst der Text) */
+    .cursor[data-mode='text-only'] .cursor__text { display: none; }
+
+    /* 1. Großes einzelnes Sternchen */
+    [data-art='gross-stern'] {
+      font-size: 36px;
+      color: var(--forest);
+      line-height: 1;
+      padding: 0.1em 0.35em;
+      background: var(--marker) center / 100% 100% no-repeat;
+    }
+    @keyframes gs-spin {
+      0%,100% { transform: scale(1)   rotate(-8deg); }
+      50%     { transform: scale(1.25) rotate(8deg); }
+    }
+    .cursor.is-active[data-mode='gross-stern'] [data-art='gross-stern'] {
+      animation: gs-spin 1.4s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    /* 2. Herz */
+    [data-art='herz'] svg { display: block; }
+    @keyframes heartbeat {
+      0%,100% { transform: scale(1); }
+      14%     { transform: scale(1.2); }
+      28%     { transform: scale(1); }
+      42%     { transform: scale(1.15); }
+    }
+    .cursor.is-active[data-mode='herz'] [data-art='herz'] svg {
+      animation: heartbeat 1.1s ease-in-out infinite;
+    }
+
+    /* 3. Bokeh */
+    .bokeh-wrap {
+      position: relative;
+      width: 72px;
+      height: 60px;
+    }
+    .bk {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--sage);
+      opacity: .55;
+    }
+    .bk-1 { width: 28px; height: 28px; left: 30%; top: 10%; filter: blur(3px); }
+    .bk-2 { width: 18px; height: 18px; left: 62%; top: 40%; filter: blur(2px); background: var(--forest); }
+    .bk-3 { width: 22px; height: 22px; left: 8%;  top: 45%; filter: blur(3px); }
+    .bk-4 { width: 12px; height: 12px; left: 54%; top: 65%; filter: blur(1.5px); background: #c8d5c8; }
+    @keyframes bk-float {
+      0%,100% { transform: translateY(0); opacity: .55; }
+      50%     { transform: translateY(-4px); opacity: .8; }
+    }
+    .cursor.is-active[data-mode='bokeh'] .bk-1 { animation: bk-float 1.4s ease-in-out infinite; }
+    .cursor.is-active[data-mode='bokeh'] .bk-2 { animation: bk-float 1.4s ease-in-out .25s infinite; }
+    .cursor.is-active[data-mode='bokeh'] .bk-3 { animation: bk-float 1.4s ease-in-out .5s infinite; }
+    .cursor.is-active[data-mode='bokeh'] .bk-4 { animation: bk-float 1.4s ease-in-out .75s infinite; }
+
+    /* 4. Sonne */
+    .sonne-g {
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    .cursor.is-active[data-mode='sonne'] .sonne-g {
+      animation: spin 8s linear infinite;
+    }
+
+    /* 5. Hüpfende Punkte */
+    .dot-wrap {
+      display: flex;
+      gap: 6px;
+      align-items: flex-end;
+      height: 28px;
+      padding: 2px 10px 4px;
+      background: var(--marker) center / 100% 100% no-repeat;
+    }
+    .dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--forest);
+      flex-shrink: 0;
+    }
+    @keyframes dot-bounce {
+      0%,60%,100% { transform: translateY(0); }
+      30%         { transform: translateY(-10px); }
+    }
+    .cursor.is-active[data-mode='punkte'] .dot-1 { animation: dot-bounce .9s ease-in-out infinite; }
+    .cursor.is-active[data-mode='punkte'] .dot-2 { animation: dot-bounce .9s ease-in-out .15s infinite; }
+    .cursor.is-active[data-mode='punkte'] .dot-3 { animation: dot-bounce .9s ease-in-out .3s infinite; }
+
+    /* 6. Text-only */
+    [data-art='text-only'] {
+      font-family: 'Reenie Beanie', cursive;
+      font-size: 2rem;
+      line-height: 1;
+      color: var(--forest);
+      white-space: nowrap;
+      padding: 0.12em 0.45em 0.08em;
+      background: var(--marker) center / 100% 100% no-repeat;
+      transform: rotate(-4deg);
+      display: inline-block;
+    }
+    @keyframes text-wiggle {
+      0%,100% { transform: rotate(-4deg) scale(1); }
+      50%     { transform: rotate(-2deg) scale(1.04); }
+    }
+    .cursor.is-active[data-mode='text-only'] [data-art='text-only'] {
+      animation: text-wiggle 1.5s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-header">
+    <h1>Cursor-Optionen für die Projektkarten</h1>
+    <p>Hover über eine Karte, um den jeweiligen Cursor zu sehen ↓</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- 1. Kamera -->
+    <div class="card" data-cursor="kamera" data-cursor-label="Projekt ansehen!">
+      <div class="card__top" style="background:#dde6dd">
+        <svg viewBox="0 0 70 70" fill="none" width="58" height="58" style="opacity:.45">
+          <circle cx="35" cy="35" r="26" stroke="var(--forest)" stroke-width="2" stroke-dasharray="5 3"/>
+          <circle cx="35" cy="35" r="16" stroke="var(--forest)" stroke-width="2.5"/>
+          <circle cx="35" cy="35" r="5"  fill="var(--forest)"/>
+          <line x1="35" y1="6"  x2="35" y2="14" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="35" y1="56" x2="35" y2="64" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="6"  y1="35" x2="14" y2="35" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="56" y1="35" x2="64" y2="35" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="card__bottom">
+        <div class="card__name">Kamera / Fokusring</div>
+        <div class="card__desc">Äußerer Ring dreht sich langsam · passt gut zu Fotografie-Projekten</div>
+      </div>
+    </div>
+
+    <!-- 2. Sparkles -->
+    <div class="card" data-cursor="sparkles" data-cursor-label="Projekt ansehen!">
+      <div class="card__top" style="background:#ede8d8">
+        <div style="position:relative;width:60px;height:58px;opacity:.45">
+          <span style="position:absolute;left:42%;top:0;font-size:22px;color:var(--forest)">✦</span>
+          <span style="position:absolute;left:72%;top:36%;font-size:14px;color:var(--forest)">✦</span>
+          <span style="position:absolute;left:50%;top:64%;font-size:18px;color:var(--forest)">✦</span>
+          <span style="position:absolute;left:4%;top:44%;font-size:11px;color:var(--forest)">✦</span>
+        </div>
+      </div>
+      <div class="card__bottom">
+        <div class="card__name">Sternchen / Sparkles</div>
+        <div class="card__desc">Sterne funkeln beim Hover · verspielt und modern, liegt gerade im Trend</div>
+      </div>
+    </div>
+
+    <!-- 3. Sticker -->
+    <div class="card" data-cursor="sticker" data-cursor-label="">
+      <div class="card__top" style="background:#ede0d8">
+        <div style="width:62px;height:62px;border-radius:50%;border:2.5px dashed var(--forest);display:flex;align-items:center;justify-content:center;opacity:.45">
+          <span style="font-family:'Reenie Beanie',cursive;font-size:1.3rem;color:var(--forest);line-height:1">rein!</span>
+        </div>
+      </div>
+      <div class="card__bottom">
+        <div class="card__name">Sticker / Badge</div>
+        <div class="card__desc">Runder Aufkleber mit Text, wackelt sanft · passt zur Handschrift im Portfolio</div>
+      </div>
+    </div>
+
+    <!-- 4. Lupe -->
+    <div class="card" data-cursor="lupe" data-cursor-label="Projekt ansehen!">
+      <div class="card__top" style="background:#d8e0ed">
+        <svg viewBox="0 0 64 64" fill="none" width="54" height="54" style="opacity:.45">
+          <circle cx="26" cy="26" r="18" stroke="var(--forest)" stroke-width="3"/>
+          <line x1="39" y1="39" x2="57" y2="57" stroke="var(--forest)" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="card__bottom">
+        <div class="card__name">Lupe</div>
+        <div class="card__desc">Pulsiert sanft beim Hover · symbolisiert "genauer hinschauen"</div>
+      </div>
+    </div>
+
+    <!-- 5. Pinsel -->
+    <div class="card" data-cursor="pinsel" data-cursor-label="Projekt ansehen!">
+      <div class="card__top" style="background:#d8e4d8">
+        <svg viewBox="0 0 34 70" fill="none" width="36" height="70" style="opacity:.45">
+          <rect x="13" y="2"  width="8" height="40" rx="2"  fill="var(--forest)"/>
+          <rect x="11" y="40" width="12" height="7"  rx="1"  fill="var(--sage)"/>
+          <path d="M11 47 Q17 66 23 47 Z" fill="var(--forest)"/>
+        </svg>
+      </div>
+      <div class="card__bottom">
+        <div class="card__name">Pinsel</div>
+        <div class="card__desc">Schwingt hin und her · zeigt gestalterische Arbeit, passt zu Design-Projekten</div>
+      </div>
+    </div>
+
+    <!-- 6. Pfeil-Kreis -->
+    <div class="card" data-cursor="kreis" data-cursor-label="Projekt ansehen!">
+      <div class="card__top" style="background:#e4e0d8">
+        <svg viewBox="0 0 70 70" fill="none" width="58" height="58" style="opacity:.45">
+          <path d="M35 8 A27 27 0 1 1 62 35" stroke="var(--forest)" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M57 23 L62 35 L50 33"    stroke="var(--forest)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="card__bottom">
+        <div class="card__name">Pfeil-Kreis</div>
+        <div class="card__desc">Dreht sich beim Hover · minimalistisch und zeitlos</div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="section-label">Sparkles – Hintergrund-Varianten</p>
+  <div class="grid" style="grid-template-columns: repeat(3,1fr)">
+
+    <!-- A: Blob -->
+    <div class="card" data-cursor="sp-a" data-cursor-label="Projekt ansehen!">
+      <div class="card__top" style="background:#ede8d8">
+        <div style="background:#fff;border-radius:44%;padding:8px 10px;opacity:.5">
+          <div style="position:relative;width:60px;height:50px">
+            <span style="position:absolute;left:42%;top:0;font-size:20px;color:var(--forest)">✦</span>
+            <span style="position:absolute;left:72%;top:36%;font-size:13px;color:var(--forest)">✦</span>
+            <span style="position:absolute;left:50%;top:62%;font-size:16px;color:var(--forest)">✦</span>
+            <span style="position:absolute;left:4%;top:44%;font-size:10px;color:var(--forest)">✦</span>
+          </div>
+        </div>
+      </div>
+      <div class="card__bottom">
+        <div class="card__name">A – Weißer Blob</div>
+        <div class="card__desc">Weißer Hintergrund hinter den Sternen · passt zum Marker-Stil des Textes</div>
+      </div>
+    </div>
+
+    <!-- B: Glow -->
+    <div class="card" data-cursor="sp-b" data-cursor-label="Projekt ansehen!">
+      <div class="card__top" style="background:#2f3730">
+        <div style="position:relative;width:60px;height:50px;opacity:.7">
+          <span style="position:absolute;left:42%;top:0;font-size:20px;color:#fff;text-shadow:0 0 8px #fff,0 0 20px rgba(255,255,255,.6)">✦</span>
+          <span style="position:absolute;left:72%;top:36%;font-size:13px;color:#fff;text-shadow:0 0 8px #fff,0 0 20px rgba(255,255,255,.6)">✦</span>
+          <span style="position:absolute;left:50%;top:62%;font-size:16px;color:#fff;text-shadow:0 0 8px #fff,0 0 20px rgba(255,255,255,.6)">✦</span>
+          <span style="position:absolute;left:4%;top:44%;font-size:10px;color:#fff;text-shadow:0 0 8px #fff,0 0 20px rgba(255,255,255,.6)">✦</span>
+        </div>
+      </div>
+      <div class="card__bottom">
+        <div class="card__name">B – Weißer Glow</div>
+        <div class="card__desc">Leuchten um die Sterne · kein Hintergrund, funktioniert auf hell &amp; dunkel</div>
+      </div>
+    </div>
+
+    <!-- E: Highlighter -->
+    <div class="card" data-cursor="sp-e" data-cursor-label="Projekt ansehen!">
+      <div class="card__top" style="background:#ede8d8">
+        <div style="padding:7px 10px;background:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 200 40%27 preserveAspectRatio=%27none%27%3E%3Cpath d=%27M7 12.5C38 6.5 92 4.8 140 6.2c19 .6 38 1.6 53 3.4 3.2 4.6 4.4 12 2.6 18.6-1 4-3.3 6.4-6.6 7.1-34 2.4-92 3.6-149 2.4-12-.3-26-1.3-37-2.9C1.9 30.6 1 24 2.4 18.4c.9-3.4 2.4-5.2 4.6-5.9Z%27 fill=%27%23fff%27/%3E%3C/svg%3E') center / 100% 100% no-repeat;opacity:.7">
+          <div style="position:relative;width:60px;height:50px">
+            <span style="position:absolute;left:42%;top:0;font-size:20px;color:#2f3730">✦</span>
+            <span style="position:absolute;left:72%;top:36%;font-size:13px;color:#2f3730">✦</span>
+            <span style="position:absolute;left:50%;top:62%;font-size:16px;color:#2f3730">✦</span>
+            <span style="position:absolute;left:4%;top:44%;font-size:10px;color:#2f3730">✦</span>
+          </div>
+        </div>
+      </div>
+      <div class="card__bottom">
+        <div class="card__name">E – Highlighter-Strich</div>
+        <div class="card__desc">Gelber Marker-Strich hinter den Sternen · wie Text mit Textmarker unterstrichen</div>
+      </div>
+    </div>
+
+    <!-- D: Weiße Outline -->
+    <div class="card" data-cursor="sp-d" data-cursor-label="Projekt ansehen!">
+      <div class="card__top" style="background:#2f3730">
+        <div style="position:relative;width:60px;height:50px;opacity:.85">
+          <svg style="position:absolute;left:42%;top:0"   viewBox="0 0 24 24" width="15" height="15"><path d="M12,1 L14.5,9.5 L23,12 L14.5,14.5 L12,23 L9.5,14.5 L1,12 L9.5,9.5 Z" fill="#2f3730" stroke="#fff" stroke-width="2.5" stroke-linejoin="miter" stroke-miterlimit="20" paint-order="stroke fill"/></svg>
+          <svg style="position:absolute;left:72%;top:36%" viewBox="0 0 24 24" width="10" height="10"><path d="M12,1 L14.5,9.5 L23,12 L14.5,14.5 L12,23 L9.5,14.5 L1,12 L9.5,9.5 Z" fill="#2f3730" stroke="#fff" stroke-width="3"   stroke-linejoin="miter" stroke-miterlimit="20" paint-order="stroke fill"/></svg>
+          <svg style="position:absolute;left:50%;top:62%" viewBox="0 0 24 24" width="13" height="13"><path d="M12,1 L14.5,9.5 L23,12 L14.5,14.5 L12,23 L9.5,14.5 L1,12 L9.5,9.5 Z" fill="#2f3730" stroke="#fff" stroke-width="2.5" stroke-linejoin="miter" stroke-miterlimit="20" paint-order="stroke fill"/></svg>
+          <svg style="position:absolute;left:4%; top:44%" viewBox="0 0 24 24" width="8"  height="8" ><path d="M12,1 L14.5,9.5 L23,12 L14.5,14.5 L12,23 L9.5,14.5 L1,12 L9.5,9.5 Z" fill="#2f3730" stroke="#fff" stroke-width="3.5" stroke-linejoin="miter" stroke-miterlimit="20" paint-order="stroke fill"/></svg>
+        </div>
+      </div>
+      <div class="card__bottom">
+        <div class="card__name">D – Weißer Outline</div>
+        <div class="card__desc">Jeder Stern hat eine weiße Kontur · kein Hintergrund nötig · funktioniert auf hell &amp; dunkel</div>
+      </div>
+    </div>
+
+    <!-- C: Pille -->
+    <div class="card" data-cursor="sp-c" data-cursor-label="Projekt ansehen!">
+      <div class="card__top" style="background:#ede8d8">
+        <div style="background:#fff;border-radius:999px;padding:10px 16px;box-shadow:0 4px 14px rgba(47,55,48,.15);opacity:.7">
+          <div style="position:relative;width:60px;height:50px">
+            <span style="position:absolute;left:42%;top:0;font-size:20px;color:var(--forest)">✦</span>
+            <span style="position:absolute;left:72%;top:36%;font-size:13px;color:var(--forest)">✦</span>
+            <span style="position:absolute;left:50%;top:62%;font-size:16px;color:var(--forest)">✦</span>
+            <span style="position:absolute;left:4%;top:44%;font-size:10px;color:var(--forest)">✦</span>
+          </div>
+          <span style="font-family:'Reenie Beanie',cursive;font-size:1.2rem;color:var(--forest);display:block;text-align:center;transform:rotate(-3deg)">Projekt ansehen!</span>
+        </div>
+      </div>
+      <div class="card__bottom">
+        <div class="card__name">C – Weiße Pille</div>
+        <div class="card__desc">Sterne + Text in einer weißen Kapsel · klassischer Custom-Cursor-Look</div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="section-label">Weitere Ideen</p>
+  <div class="grid">
+
+    <!-- 1. Großes Sternchen -->
+    <div class="card" data-cursor="gross-stern" data-cursor-label="Projekt ansehen!">
+      <div class="card__top" style="background:#ede8d8">
+        <span style="font-size:42px;color:var(--forest);opacity:.4;display:inline-block;transform:rotate(-5deg)">✦</span>
+      </div>
+      <div class="card__bottom">
+        <div class="card__name">Großes Sternchen</div>
+        <div class="card__desc">Ein einzelnes ✦ auf Marker-Hintergrund · dreht sich leicht · bold statt verspielt</div>
+      </div>
+    </div>
+
+    <!-- 2. Herz -->
+    <div class="card" data-cursor="herz" data-cursor-label="Projekt ansehen!">
+      <div class="card__top" style="background:#ede0d8">
+        <svg viewBox="0 0 60 54" fill="none" width="54" height="48" style="opacity:.4">
+          <path d="M30 48 C30 48 4 32 4 16 C4 8 10 3 17 3 C22 3 27 7 30 11 C33 7 38 3 43 3 C50 3 56 8 56 16 C56 32 30 48 30 48Z" fill="#2f3730"/>
+        </svg>
+      </div>
+      <div class="card__bottom">
+        <div class="card__name">Herz</div>
+        <div class="card__desc">Herzschlag-Animation · warm und persönlich</div>
+      </div>
+    </div>
+
+    <!-- 3. Bokeh -->
+    <div class="card" data-cursor="bokeh" data-cursor-label="Projekt ansehen!">
+      <div class="card__top" style="background:#dde6dd">
+        <div style="position:relative;width:64px;height:54px;opacity:.5">
+          <div style="position:absolute;width:28px;height:28px;border-radius:50%;background:#809582;left:28%;top:8%;filter:blur(3px)"></div>
+          <div style="position:absolute;width:18px;height:18px;border-radius:50%;background:#2f3730;left:60%;top:38%;filter:blur(2px)"></div>
+          <div style="position:absolute;width:22px;height:22px;border-radius:50%;background:#809582;left:6%;top:44%;filter:blur(3px)"></div>
+          <div style="position:absolute;width:12px;height:12px;border-radius:50%;background:#c8d5c8;left:52%;top:64%;filter:blur(1.5px)"></div>
+        </div>
+      </div>
+      <div class="card__bottom">
+        <div class="card__name">Bokeh</div>
+        <div class="card__desc">Unscharfe Kreise wie Kamera-Bokeh · schweben beim Hover · Foto-Bezug</div>
+      </div>
+    </div>
+
+    <!-- 4. Sonne -->
+    <div class="card" data-cursor="sonne" data-cursor-label="Projekt ansehen!">
+      <div class="card__top" style="background:#f5ead8">
+        <svg viewBox="0 0 70 70" fill="none" width="58" height="58" style="opacity:.4">
+          <circle cx="35" cy="35" r="12" fill="#2f3730"/>
+          <line x1="35" y1="6"  x2="35" y2="15" stroke="#2f3730" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="35" y1="55" x2="35" y2="64" stroke="#2f3730" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="6"  y1="35" x2="15" y2="35" stroke="#2f3730" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="55" y1="35" x2="64" y2="35" stroke="#2f3730" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="14" y1="14" x2="20" y2="20" stroke="#2f3730" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="50" y1="50" x2="56" y2="56" stroke="#2f3730" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="56" y1="14" x2="50" y2="20" stroke="#2f3730" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="20" y1="50" x2="14" y2="56" stroke="#2f3730" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="card__bottom">
+        <div class="card__name">Sonne</div>
+        <div class="card__desc">Dreht sich langsam · persönlich (Schwäche für Sonnenuntergänge!)</div>
+      </div>
+    </div>
+
+    <!-- 5. Hüpfende Punkte -->
+    <div class="card" data-cursor="punkte" data-cursor-label="Projekt ansehen!">
+      <div class="card__top" style="background:#dde6dd">
+        <div style="display:flex;gap:7px;align-items:flex-end;opacity:.45">
+          <div style="width:10px;height:10px;border-radius:50%;background:var(--forest)"></div>
+          <div style="width:10px;height:10px;border-radius:50%;background:var(--forest)"></div>
+          <div style="width:10px;height:10px;border-radius:50%;background:var(--forest)"></div>
+        </div>
+      </div>
+      <div class="card__bottom">
+        <div class="card__name">Hüpfende Punkte</div>
+        <div class="card__desc">3 Punkte hüpfen nacheinander · minimal und modern</div>
+      </div>
+    </div>
+
+    <!-- 6. Text-only -->
+    <div class="card" data-cursor="text-only" data-cursor-label="">
+      <div class="card__top" style="background:#f5f5f0">
+        <span style="font-family:'Reenie Beanie',cursive;font-size:1.6rem;color:var(--forest);opacity:.4;transform:rotate(-4deg);display:inline-block;padding:0.1em 0.4em;background:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 200 40%27 preserveAspectRatio=%27none%27%3E%3Cpath d=%27M7 12.5C38 6.5 92 4.8 140 6.2c19 .6 38 1.6 53 3.4 3.2 4.6 4.4 12 2.6 18.6-1 4-3.3 6.4-6.6 7.1-34 2.4-92 3.6-149 2.4-12-.3-26-1.3-37-2.9C1.9 30.6 1 24 2.4 18.4c.9-3.4 2.4-5.2 4.6-5.9Z%27 fill=%27%23fff%27/%3E%3C/svg%3E') center / 100% 100% no-repeat">ansehen! ↗</span>
+      </div>
+      <div class="card__bottom">
+        <div class="card__name">Nur Text</div>
+        <div class="card__desc">"ansehen! ↗" in Reenie Beanie auf Marker · wackelt leicht · kein Icon</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ────────── Custom Cursor ────────── -->
+  <div class="cursor" id="cursor">
+    <div class="cursor__inner">
+
+      <!-- Kamera -->
+      <svg data-art="kamera" viewBox="0 0 70 70" fill="none" width="74" height="74">
+        <circle cx="35" cy="35" r="16" stroke="var(--forest)" stroke-width="2.5"/>
+        <circle cx="35" cy="35" r="5"  fill="var(--forest)"/>
+        <line x1="35" y1="6"  x2="35" y2="14" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="35" y1="56" x2="35" y2="64" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="6"  y1="35" x2="14" y2="35" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="56" y1="35" x2="64" y2="35" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/>
+        <g class="kamera-ring">
+          <circle cx="35" cy="35" r="26" stroke="var(--forest)" stroke-width="2" stroke-dasharray="5 3"/>
+        </g>
+      </svg>
+
+      <!-- Sparkles -->
+      <div data-art="sparkles" style="position:relative;width:72px;height:62px">
+        <span class="sp1" style="position:absolute;left:42%;top:0;font-size:22px;color:var(--forest);display:inline-block">✦</span>
+        <span class="sp2" style="position:absolute;left:73%;top:34%;font-size:14px;color:var(--forest);display:inline-block">✦</span>
+        <span class="sp3" style="position:absolute;left:50%;top:62%;font-size:18px;color:var(--forest);display:inline-block">✦</span>
+        <span class="sp4" style="position:absolute;left:4%;top:44%;font-size:11px;color:var(--forest);display:inline-block">✦</span>
+      </div>
+
+      <!-- Sticker -->
+      <div data-art="sticker" style="width:70px;height:70px;border-radius:50%;border:2.5px dashed var(--forest);display:flex;align-items:center;justify-content:center;background:#fff">
+        <span style="font-family:'Reenie Beanie',cursive;font-size:1.45rem;color:var(--forest);line-height:1">rein!</span>
+      </div>
+
+      <!-- Lupe -->
+      <svg data-art="lupe" viewBox="0 0 64 64" fill="none" width="66" height="66">
+        <circle cx="26" cy="26" r="18" stroke="var(--forest)" stroke-width="3"/>
+        <line x1="39" y1="39" x2="57" y2="57" stroke="var(--forest)" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+
+      <!-- Pinsel -->
+      <svg data-art="pinsel" viewBox="0 0 34 70" fill="none" width="38" height="74">
+        <rect x="13" y="2"  width="8" height="40" rx="2" fill="var(--forest)"/>
+        <rect x="11" y="40" width="12" height="7"  rx="1" fill="var(--sage)"/>
+        <path d="M11 47 Q17 66 23 47 Z" fill="var(--forest)"/>
+      </svg>
+
+      <!-- Pfeil-Kreis -->
+      <svg data-art="kreis" viewBox="0 0 70 70" fill="none" width="72" height="72">
+        <g class="kreis-arc">
+          <path d="M35 8 A27 27 0 1 1 62 35" stroke="var(--forest)" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M57 23 L62 35 L50 33"    stroke="var(--forest)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </svg>
+
+      <!-- E: Highlighter-Strich -->
+      <div data-art="sp-e">
+        <div class="sp-art">
+          <span class="sp sp-s1">✦</span>
+          <span class="sp sp-s2">✦</span>
+          <span class="sp sp-s3">✦</span>
+          <span class="sp sp-s4">✦</span>
+        </div>
+      </div>
+
+      <!-- D: SVG-Sterne mit weißem Outline -->
+      <div data-art="sp-d">
+        <div class="sp-art">
+          <svg class="sp sp-s1" viewBox="0 0 24 24" width="15" height="15"><path d="M12,1 L14.5,9.5 L23,12 L14.5,14.5 L12,23 L9.5,14.5 L1,12 L9.5,9.5 Z" fill="var(--forest)" stroke="#fff" stroke-width="2.5" stroke-linejoin="miter" stroke-miterlimit="20" paint-order="stroke fill"/></svg>
+          <svg class="sp sp-s2" viewBox="0 0 24 24" width="10" height="10"><path d="M12,1 L14.5,9.5 L23,12 L14.5,14.5 L12,23 L9.5,14.5 L1,12 L9.5,9.5 Z" fill="var(--forest)" stroke="#fff" stroke-width="3" stroke-linejoin="miter" stroke-miterlimit="20" paint-order="stroke fill"/></svg>
+          <svg class="sp sp-s3" viewBox="0 0 24 24" width="13" height="13"><path d="M12,1 L14.5,9.5 L23,12 L14.5,14.5 L12,23 L9.5,14.5 L1,12 L9.5,9.5 Z" fill="var(--forest)" stroke="#fff" stroke-width="2.5" stroke-linejoin="miter" stroke-miterlimit="20" paint-order="stroke fill"/></svg>
+          <svg class="sp sp-s4" viewBox="0 0 24 24" width="8"  height="8" ><path d="M12,1 L14.5,9.5 L23,12 L14.5,14.5 L12,23 L9.5,14.5 L1,12 L9.5,9.5 Z" fill="var(--forest)" stroke="#fff" stroke-width="3.5" stroke-linejoin="miter" stroke-miterlimit="20" paint-order="stroke fill"/></svg>
+        </div>
+      </div>
+
+      <!-- A: Blob-Hintergrund -->
+      <div data-art="sp-a">
+        <div class="sp-art">
+          <span class="sp sp-s1">✦</span>
+          <span class="sp sp-s2">✦</span>
+          <span class="sp sp-s3">✦</span>
+          <span class="sp sp-s4">✦</span>
+        </div>
+      </div>
+
+      <!-- B: Glow -->
+      <div data-art="sp-b">
+        <div class="sp-art">
+          <span class="sp sp-s1">✦</span>
+          <span class="sp sp-s2">✦</span>
+          <span class="sp sp-s3">✦</span>
+          <span class="sp sp-s4">✦</span>
+        </div>
+      </div>
+
+      <!-- C: Pille -->
+      <div data-art="sp-c">
+        <div class="sp-art">
+          <span class="sp sp-s1">✦</span>
+          <span class="sp sp-s2">✦</span>
+          <span class="sp sp-s3">✦</span>
+          <span class="sp sp-s4">✦</span>
+        </div>
+      </div>
+
+      <!-- Großes Sternchen -->
+      <span data-art="gross-stern">✦</span>
+
+      <!-- Herz -->
+      <div data-art="herz">
+        <svg viewBox="0 0 60 54" fill="none" width="60" height="54">
+          <path d="M30 48 C30 48 4 32 4 16 C4 8 10 3 17 3 C22 3 27 7 30 11 C33 7 38 3 43 3 C50 3 56 8 56 16 C56 32 30 48 30 48Z" fill="var(--forest)"/>
+        </svg>
+      </div>
+
+      <!-- Bokeh -->
+      <div data-art="bokeh">
+        <div class="bokeh-wrap">
+          <div class="bk bk-1"></div>
+          <div class="bk bk-2"></div>
+          <div class="bk bk-3"></div>
+          <div class="bk bk-4"></div>
+        </div>
+      </div>
+
+      <!-- Sonne -->
+      <svg data-art="sonne" viewBox="0 0 70 70" fill="none" width="68" height="68">
+        <g class="sonne-g">
+          <circle cx="35" cy="35" r="12" fill="var(--forest)"/>
+          <line x1="35" y1="6"  x2="35" y2="15" stroke="var(--forest)" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="35" y1="55" x2="35" y2="64" stroke="var(--forest)" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="6"  y1="35" x2="15" y2="35" stroke="var(--forest)" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="55" y1="35" x2="64" y2="35" stroke="var(--forest)" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="14" y1="14" x2="20" y2="20" stroke="var(--forest)" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="50" y1="50" x2="56" y2="56" stroke="var(--forest)" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="56" y1="14" x2="50" y2="20" stroke="var(--forest)" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="20" y1="50" x2="14" y2="56" stroke="var(--forest)" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+      </svg>
+
+      <!-- Hüpfende Punkte -->
+      <div data-art="punkte">
+        <div class="dot-wrap">
+          <div class="dot dot-1"></div>
+          <div class="dot dot-2"></div>
+          <div class="dot dot-3"></div>
+        </div>
+      </div>
+
+      <!-- Text-only -->
+      <span data-art="text-only">ansehen! ↗</span>
+
+      <span class="cursor__text"></span>
+    </div>
+  </div>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    const text   = cursor.querySelector('.cursor__text');
+
+    let mx = -300, my = -300, x = mx, y = my, started = false;
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    window.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      mx = e.clientX; my = e.clientY;
+      if (!started) { x = mx; y = my; started = true; }
+    });
+
+    const activate = (target) => {
+      const el = target?.closest('[data-cursor]');
+      if (el) {
+        text.textContent    = el.dataset.cursorLabel || '';
+        cursor.dataset.mode = el.dataset.cursor;
+        cursor.classList.add('is-active');
+      } else {
+        cursor.classList.remove('is-active');
+      }
+    };
+
+    document.addEventListener('pointerover',  (e) => activate(e.target));
+    document.addEventListener('pointerleave', ()  => activate(null));
+
+    const tick = () => {
+      x = lerp(x, mx, 0.22);
+      y = lerp(y, my, 0.22);
+      cursor.style.transform = `translate3d(${x}px,${y}px,0)`;
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  </script>
+</body>
+</html>

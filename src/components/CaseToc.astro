@@ -14,17 +14,114 @@ const { items } = Astro.props;
   <div class="wrapper">
     <h2 class="section-heading" data-reveal>Übersicht</h2>
     <div class="case-toc__body">
-      <ul class="case-toc__list" data-reveal style="--reveal-delay: 80ms">
-        {items.map((item) => (
-          <li>
-            <TocChip number={item.number} label={item.label} href={item.href} />
-          </li>
-        ))}
-      </ul>
-      <div class="case-toc__hint" data-reveal style="--reveal-delay: 160ms" aria-hidden="true">
+      <div class="case-toc__track">
+        <ul class="case-toc__list" data-toc-list>
+          {items.map((item) => (
+            <li>
+              <TocChip number={item.number} label={item.label} href={item.href} />
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="case-toc__hint" aria-hidden="true">
         <span class="case-toc__hint-text">klickbar!</span>
         <span class="case-toc__hint-arrow" role="presentation"></span>
       </div>
     </div>
   </div>
 </section>
+
+<script is:inline>
+  (function () {
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var lists = Array.from(document.querySelectorAll('[data-toc-list]'));
+    if (!lists.length) return;
+
+    if (reduceMotion) {
+      lists.forEach(function (l) {
+        l.style.setProperty('--toc-line-scale', '1');
+        Array.from(l.querySelectorAll('li')).forEach(function (li) {
+          li.classList.add('is-past');
+        });
+        var body = l.closest('.case-toc__body');
+        var hint = body && body.querySelector('.case-toc__hint');
+        if (hint) hint.classList.add('is-visible');
+        var arrow = l.closest('.case-toc__track') && l.closest('.case-toc__track').querySelector('.case-toc__arrow');
+        if (arrow) arrow.classList.add('is-visible');
+      });
+      return;
+    }
+
+    var ticking = false;
+
+    function update() {
+      var vpH = window.innerHeight;
+      var threshold = vpH * 0.65;
+
+      lists.forEach(function (list) {
+        var lis = Array.from(list.querySelectorAll('li'));
+        if (!lis.length) return;
+
+        var N = lis.length;
+        var firstR = lis[0].getBoundingClientRect();
+        var lastR  = lis[N - 1].getBoundingClientRect();
+        var firstC = firstR.top + firstR.height / 2;
+        var lastC  = lastR.top  + lastR.height / 2;
+
+        var p;
+        if (firstC >= threshold)      { p = 0; }
+        else if (lastC <= threshold)  { p = 1; }
+        else { p = (threshold - firstC) / (lastC - firstC); }
+
+        // Letzter Punkt wird ungefüllt wenn ~80px über Threshold gescrollt
+        var lastPast = lastC < threshold - 80;
+        if (lastPast) list.dataset.tocLastPast = '1';
+        var effectiveLastPast = list.dataset.tocLastPast === '1';
+
+        // Ratchet: einmal erschienen, bleibt sichtbar (auch beim Hochscrollen)
+        var stored = parseFloat(list.dataset.tocMax || '0');
+        var effectiveP = Math.max(p, stored);
+        if (effectiveP > stored) list.dataset.tocMax = effectiveP.toFixed(3);
+
+        list.style.setProperty('--toc-line-scale', effectiveP.toFixed(3));
+
+        lis.forEach(function (li, i) {
+          var dotPos  = i / Math.max(N - 1, 1);
+          var nextPos = (i + 1) / Math.max(N - 1, 1);
+          var reached = effectiveP >= dotPos - 0.02;
+          var passed  = i < N - 1
+            ? effectiveP >= nextPos - 0.02
+            : effectiveLastPast;
+
+          if (!reached) {
+            li.classList.remove('is-active', 'is-past');
+          } else if (passed) {
+            li.classList.remove('is-active');
+            li.classList.add('is-past');
+          } else {
+            li.classList.remove('is-past');
+            li.classList.add('is-active');
+          }
+        });
+
+        var track = list.closest('.case-toc__track');
+        var arrow = track && track.querySelector('.case-toc__arrow');
+        if (arrow) arrow.classList.toggle('is-visible', effectiveP >= (N - 1) / N);
+
+        var body = list.closest('.case-toc__body');
+        var hint = body && body.querySelector('.case-toc__hint');
+        if (hint) hint.classList.toggle('is-visible', effectiveP >= 0.5);
+      });
+
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    }, { passive: true });
+    window.addEventListener('resize', function () {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    }, { passive: true });
+    update();
+  })();
+</script>
