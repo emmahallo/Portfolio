@@ -85,27 +85,6 @@ const trailImages = [
       </div>
     </section>
 
-    <section class="section about-more">
-      <div class="wrapper">
-        <h2 class="section-heading" data-split>Mehr zu mir</h2>
-      </div>
-      <div class="about-more__canvas" data-trail={trailImages.join('|')}>
-        <p class="about-more__hint" aria-hidden="true">
-          <span class="about-more__hint-text--mouse">psst&nbsp;… beweg mal die Maus hier!</span>
-          <span class="about-more__hint-text--touch">psst&nbsp;… tipp mal irgendwo hin!</span>
-        </p>
-      </div>
-      <div class="about-more__mobile" aria-hidden="true">
-        <img src="/images/bilder-animation-trail/IMG_0534.JPG" alt="" />
-        <img src="/images/bilder-animation-trail/IMG_1331.JPG" alt="" />
-        <img src="/images/bilder-animation-trail/IMG_2600.JPG" alt="" />
-        <img src="/images/bilder-animation-trail/IMG_8522.JPG" alt="" />
-        <img src="/images/bilder-animation-trail/6cc8f6f9-b809-4a48-8163-3acb4727db0a.JPG" alt="" />
-        <img src="/images/bilder-animation-trail/IMG_0559.JPG" alt="" />
-        <img src="/images/bilder-animation-trail/IMG_6705.jpg" alt="" />
-      </div>
-    </section>
-
     <section id="werdegang" class="section" style="padding-bottom: clamp(5rem, 12vw, 10rem);">
       <div class="wrapper">
         <h2 class="section-heading" data-reveal>Werdegang</h2>
@@ -142,6 +121,27 @@ const trailImages = [
           ))}
           <div class="timeline__line"></div>
         </div>
+      </div>
+    </section>
+
+    <section class="section about-more">
+      <div class="wrapper">
+        <h2 class="section-heading" data-split>Mehr zu mir</h2>
+      </div>
+      <div class="about-more__canvas" data-trail={trailImages.join('|')}>
+        <p class="about-more__hint" aria-hidden="true">
+          <span class="about-more__hint-text--mouse">psst&nbsp;… beweg mal die Maus hier!</span>
+          <span class="about-more__hint-text--touch">psst&nbsp;… tipp mal irgendwo hin!</span>
+        </p>
+      </div>
+      <div class="about-more__mobile" aria-hidden="true">
+        <img src="/images/bilder-animation-trail/IMG_0534.JPG" alt="" />
+        <img src="/images/bilder-animation-trail/IMG_1331.JPG" alt="" />
+        <img src="/images/bilder-animation-trail/IMG_2600.JPG" alt="" />
+        <img src="/images/bilder-animation-trail/IMG_8522.JPG" alt="" />
+        <img src="/images/bilder-animation-trail/6cc8f6f9-b809-4a48-8163-3acb4727db0a.JPG" alt="" />
+        <img src="/images/bilder-animation-trail/IMG_0559.JPG" alt="" />
+        <img src="/images/bilder-animation-trail/IMG_6705.jpg" alt="" />
       </div>
     </section>
 
@@ -445,7 +445,14 @@ const trailImages = [
         for (const m of mutations) {
           count += m.addedNodes.length;
           if (count >= 3) {
-            canvas!.classList.add('hint-done');
+            const hint = canvas!.querySelector<HTMLElement>('.about-more__hint');
+            if (hint) {
+              const cur = parseFloat(getComputedStyle(hint).opacity);
+              hint.style.opacity = String(cur);
+              hint.style.animation = 'none';
+              void hint.offsetHeight;
+              hint.style.opacity = '0';
+            }
             mo.disconnect();
             break;
           }
