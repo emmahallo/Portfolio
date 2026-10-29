@@ -1218,6 +1218,12 @@ body:has(.lightbox:not([hidden])) main {
   inset: 0;
   background: rgba(28, 28, 28, 0.4);
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.project-card:hover .project-card__image::after {
+  opacity: 1;
 }
 
 /*
