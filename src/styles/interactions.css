@@ -7,9 +7,11 @@
   display: inline-block;
   overflow: hidden;
   vertical-align: top;
-  /* etwas Luft, damit Unterlängen (g, p) nicht abgeschnitten werden */
   padding-bottom: 0.08em;
   margin-bottom: -0.08em;
+  /* Luft nach oben für Umlautpunkte (ü, ö, ä) bei großen Titeln */
+  padding-top: 0.2em;
+  margin-top: -0.2em;
 }
 
 .split__word {
@@ -19,7 +21,7 @@
 
 .split__piece {
   display: inline-block;
-  transform: translateY(110%);
+  transform: translateY(150%);
   transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: calc(var(--i, 0) * var(--split-stagger, 45ms) + var(--split-delay, 0ms));
 }

@@ -79,7 +79,10 @@ const trailImages = [
               />
             </figure>
           </div>
-          <h1 class="case-hero__title" data-reveal>Schön, dass<br />du hier bist!</h1>
+          <h1 class="case-hero__title">
+            <span data-split="chars" style="--split-delay: 120ms">Schön, dass</span><br />
+            <span data-split="chars" style="--split-delay: 420ms">du hier bist!</span>
+          </h1>
           <div class="about-bio" data-reveal style="--reveal-delay: 80ms" set:html={bioHtml} />
         </div>
       </div>

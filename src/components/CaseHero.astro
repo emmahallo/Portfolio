@@ -22,8 +22,8 @@ const { title, meta, image, imageAlt, imagePosition, eyebrow = 'UI/UX – Design
         <span class="eyebrow__dot" aria-hidden="true"></span>
         {eyebrow}
       </span>
-      <h1 class="case-hero__title" data-reveal set:html={title}></h1>
-      <ul class="case-meta" data-reveal style="--reveal-delay: 80ms">
+      <h1 class="case-hero__title" data-split="chars" style="--split-delay: 120ms" set:html={title}></h1>
+      <ul class="case-meta" data-reveal style="--reveal-delay: 600ms">
         {meta.map((item) => (
           <li class="case-meta__chip">
             <span class="case-meta__chip-label">{item}</span>
