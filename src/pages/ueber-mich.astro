@@ -325,7 +325,7 @@ const trailImages = [
   }
 
   main :global(.process) {
-    padding-bottom: clamp(5rem, 12vw, 10rem);
+    padding-bottom: clamp(2rem, 5vw, 4rem);
   }
 
   /* "Mehr zu mir" – Weißraum als interaktive Spielfläche */
@@ -424,20 +424,19 @@ const trailImages = [
 </style>
 
 <script>
-  const canvas = document.querySelector<HTMLElement>('.about-more__canvas');
-  if (canvas) {
-    const layer = canvas.querySelector<HTMLElement>('.trail-layer')
-      ?? (() => {
-          // trail-layer wird von interactions.js erst kurz nach DOMContentLoaded erzeugt
-          const observer = new MutationObserver(() => {
-            const l = canvas.querySelector<HTMLElement>('.trail-layer');
-            if (l) { observer.disconnect(); watchLayer(l); }
-          });
-          observer.observe(canvas, { childList: true });
-          return null;
-        })();
+  function initHintFade() {
+    const canvas = document.querySelector<HTMLElement>('.about-more__canvas');
+    if (!canvas) return;
 
-    if (layer) watchLayer(layer);
+    function fadeHint() {
+      const hint = canvas!.querySelector<HTMLElement>('.about-more__hint');
+      if (!hint) return;
+      const cur = parseFloat(getComputedStyle(hint).opacity);
+      hint.style.opacity = String(cur);
+      hint.style.animation = 'none';
+      void hint.offsetHeight;
+      hint.style.opacity = '0';
+    }
 
     function watchLayer(l: HTMLElement) {
       let count = 0;
@@ -445,14 +444,7 @@ const trailImages = [
         for (const m of mutations) {
           count += m.addedNodes.length;
           if (count >= 3) {
-            const hint = canvas!.querySelector<HTMLElement>('.about-more__hint');
-            if (hint) {
-              const cur = parseFloat(getComputedStyle(hint).opacity);
-              hint.style.opacity = String(cur);
-              hint.style.animation = 'none';
-              void hint.offsetHeight;
-              hint.style.opacity = '0';
-            }
+            fadeHint();
             mo.disconnect();
             break;
           }
@@ -460,5 +452,18 @@ const trailImages = [
       });
       mo.observe(l, { childList: true });
     }
+
+    const existing = canvas.querySelector<HTMLElement>('.trail-layer');
+    if (existing) {
+      watchLayer(existing);
+    } else {
+      const observer = new MutationObserver(() => {
+        const l = canvas!.querySelector<HTMLElement>('.trail-layer');
+        if (l) { observer.disconnect(); watchLayer(l); }
+      });
+      observer.observe(canvas, { childList: true });
+    }
   }
+
+  document.addEventListener('astro:page-load', initHintFade);
 </script>
