@@ -1443,6 +1443,7 @@ body:has(.lightbox:not([hidden])) main {
   bottom: -6px;
   background: var(--color-sage-tint);
   z-index: 0;
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .timeline__chip-inner {
@@ -1455,6 +1456,18 @@ body:has(.lightbox:not([hidden])) main {
   text-align: center;
   padding: 0.6rem 0.85rem;
   font-size: 0.95rem;
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transform-origin: center center;
+}
+
+@media (hover: hover) {
+  .timeline__chip:hover .timeline__chip-inner {
+    transform: rotate(-2deg) translateY(-2px);
+  }
+
+  .timeline__chip:hover::before {
+    transform: translate(-4px, 4px);
+  }
 }
 
 .timeline__chip--dark .timeline__chip-inner {

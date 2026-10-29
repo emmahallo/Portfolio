@@ -94,9 +94,9 @@ const trailImages = [
             <div class="timeline__station">
               <div class="timeline__top" style={`grid-column: ${i + 1}`}>
                 {i % 2 === 0 ? (
-                  <span class="timeline__date" data-magnetic="-0.25">{station.date}</span>
+                  <span class="timeline__date">{station.date}</span>
                 ) : (
-                  <span class:list={["timeline__chip", station.variant === 'dark' && "timeline__chip--dark"]} data-magnetic="-0.25">
+                  <span class:list={["timeline__chip", station.variant === 'dark' && "timeline__chip--dark"]}>
                     <span class="timeline__chip-inner">
                       <span class="timeline__chip-title">{station.title}</span>
                       <span class="timeline__chip-subtitle">{station.subtitle}</span>
@@ -107,14 +107,14 @@ const trailImages = [
               <span class:list={["timeline__dot", station.variant === 'dark' && "timeline__dot--dark"]} style={`grid-column: ${i + 1}`}></span>
               <div class="timeline__bottom" style={`grid-column: ${i + 1}`}>
                 {i % 2 === 0 ? (
-                  <span class:list={["timeline__chip", station.variant === 'dark' && "timeline__chip--dark"]} data-magnetic="-0.25">
+                  <span class:list={["timeline__chip", station.variant === 'dark' && "timeline__chip--dark"]}>
                     <span class="timeline__chip-inner">
                       <span class="timeline__chip-title">{station.title}</span>
                       <span class="timeline__chip-subtitle">{station.subtitle}</span>
                     </span>
                   </span>
                 ) : (
-                  <span class="timeline__date" data-magnetic="-0.25">{station.date}</span>
+                  <span class="timeline__date">{station.date}</span>
                 )}
               </div>
             </div>
