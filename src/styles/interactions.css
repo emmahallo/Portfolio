@@ -191,14 +191,14 @@
 .ee-cursor[data-mode='drag'] .ee-cursor__art {
   display: grid;
   place-items: center;
-  width: 143px;
-  height: 44px;
+  width: 110px;
+  height: 34px;
   background: var(--marker) center / 100% 100% no-repeat;
 }
 
 .ee-swipe__arrow {
   display: none;
-  width: 110px;
+  width: 82px;
   aspect-ratio: 360 / 63;
   background: var(--color-forest);
   -webkit-mask: url('/images/swipe-arrow.png') center / contain no-repeat;

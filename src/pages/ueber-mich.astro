@@ -19,6 +19,18 @@ const werdegang = [
   { date: 'seit 10/2026', title: 'UX-Design Tutorin', subtitle: 'an der RWU in Weingarten', variant: 'dark' },
 ];
 
+const bgImages = [
+  // Obere Reihe — gleichmäßig verteilt
+  { src: '/images/bilder-animation-trail/IMG_0534.JPG',         top: '6%',  left: '2%',  rot: '-7deg', size: 'clamp(95px, 11vw, 145px)' },
+  { src: '/images/bilder-animation-trail/IMG_4082.JPG',         top: '3%',  left: '25%', rot: '4deg',  size: 'clamp(90px, 10vw, 135px)' },
+  { src: '/images/bilder-animation-trail/IMG_1331.JPG',         top: '5%',  left: '62%', rot: '-4deg', size: 'clamp(90px, 10vw, 135px)' },
+  { src: '/images/bilder-animation-trail/20250829_194046.JPG',  top: '7%',  left: '83%', rot: '6deg',  size: 'clamp(95px, 11vw, 145px)' },
+  // Untere Reihe — gleichmäßig verteilt
+  { src: '/images/bilder-animation-trail/FullSizeRender_2.jpg', top: '64%', left: '2%',  rot: '5deg',  size: 'clamp(95px, 11vw, 145px)' },
+  { src: '/images/bilder-animation-trail/IMG_8522.JPG',         top: '67%', left: '41%', rot: '-3deg', size: 'clamp(90px, 10vw, 135px)' },
+  { src: '/images/bilder-animation-trail/IMG_7994.JPG',         top: '63%', left: '81%', rot: '-6deg', size: 'clamp(95px, 11vw, 145px)' },
+];
+
 const trailImages = [
   '/images/bilder-animation-trail/0B1029F6-3106-40C8-8197-39A3CCAC978F.JPG',
   '/images/bilder-animation-trail/20250829_194046.JPG',
@@ -132,6 +144,17 @@ const trailImages = [
         <h2 class="section-heading" data-split>Mehr zu mir</h2>
       </div>
       <div class="about-more__canvas" data-trail={trailImages.join('|')}>
+        <div class="about-more__bg" aria-hidden="true">
+          {bgImages.map((img) => (
+            <img
+              src={img.src}
+              alt=""
+              class="about-more__bg-img"
+              style={`top:${img.top};left:${img.left};transform:rotate(${img.rot});width:${img.size};`}
+              loading="lazy"
+            />
+          ))}
+        </div>
         <p class="about-more__hint" aria-hidden="true">
           <span class="about-more__hint-text--mouse">psst&nbsp;… beweg mal die Maus hier!</span>
           <span class="about-more__hint-text--touch">psst&nbsp;… tipp mal irgendwo hin!</span>
@@ -145,6 +168,8 @@ const trailImages = [
         <img src="/images/bilder-animation-trail/6cc8f6f9-b809-4a48-8163-3acb4727db0a.JPG" alt="" />
         <img src="/images/bilder-animation-trail/IMG_0559.JPG" alt="" />
         <img src="/images/bilder-animation-trail/IMG_6705.jpg" alt="" />
+        <img src="/images/bilder-animation-trail/IMG_4082.JPG" alt="" />
+        <img src="/images/bilder-animation-trail/FullSizeRender_2.jpg" alt="" />
       </div>
     </section>
 
@@ -336,6 +361,30 @@ const trailImages = [
     padding-bottom: 0;
   }
 
+  .about-more__bg {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: var(--max-width);
+    padding-inline: var(--gutter);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .about-more__bg-img {
+    position: absolute;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center;
+    border: 7px solid #fff;
+    border-bottom: 32px solid #fff;
+    box-shadow: 0 6px 20px rgba(28, 28, 28, 0.15);
+    opacity: 0.22;
+  }
+
   .about-more__canvas {
     height: clamp(20rem, 60vh, 50rem);
     width: 100%;
@@ -355,22 +404,38 @@ const trailImages = [
     }
 
     .about-more__mobile {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 0.75rem;
       padding: 1.5rem var(--gutter) 2.5rem;
     }
 
     .about-more__mobile img {
-      width: calc(33% - 0.5rem);
-      max-width: 130px;
+      width: 100%;
       aspect-ratio: 4 / 5;
       object-fit: cover;
       border: 5px solid #fff;
       border-bottom: 22px solid #fff;
       box-shadow: 0 4px 14px rgba(28, 28, 28, 0.18);
+      opacity: 0;
+      transform: translateY(16px) scale(0.96);
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
+
+    .about-more__mobile.is-visible img {
+      opacity: 1;
+      transform: none;
+    }
+
+    .about-more__mobile.is-visible img:nth-child(1) { transition-delay: 0ms; }
+    .about-more__mobile.is-visible img:nth-child(2) { transition-delay: 60ms; }
+    .about-more__mobile.is-visible img:nth-child(3) { transition-delay: 120ms; }
+    .about-more__mobile.is-visible img:nth-child(4) { transition-delay: 180ms; }
+    .about-more__mobile.is-visible img:nth-child(5) { transition-delay: 240ms; }
+    .about-more__mobile.is-visible img:nth-child(6) { transition-delay: 300ms; }
+    .about-more__mobile.is-visible img:nth-child(7) { transition-delay: 360ms; }
+    .about-more__mobile.is-visible img:nth-child(8) { transition-delay: 420ms; }
+    .about-more__mobile.is-visible img:nth-child(9) { transition-delay: 480ms; }
   }
 
   /* Polaroid-Stil: einheitliche Größe, quadratischer Bildausschnitt */
@@ -431,6 +496,15 @@ const trailImages = [
     const canvas = document.querySelector<HTMLElement>('.about-more__canvas');
     if (!canvas) return;
 
+    const allImages = (canvas.dataset.trail ?? '').split('|').filter(Boolean);
+    const bgImgs = Array.from(canvas.querySelectorAll<HTMLImageElement>('.about-more__bg-img'));
+
+    function shuffleBgImages() {
+      if (!bgImgs.length || !allImages.length) return;
+      const pool = [...allImages].sort(() => Math.random() - 0.5);
+      bgImgs.forEach((img, i) => { img.src = pool[i % pool.length]; });
+    }
+
     function fadeHint() {
       const hint = canvas!.querySelector<HTMLElement>('.about-more__hint');
       if (!hint) return;
@@ -441,31 +515,105 @@ const trailImages = [
       hint.style.opacity = '0';
     }
 
+    function resetHint() {
+      const hint = canvas!.querySelector<HTMLElement>('.about-more__hint');
+      if (!hint) return;
+      hint.style.opacity = '';
+      hint.style.animation = '';
+    }
+
+    let activeMo: MutationObserver | null = null;
+
     function watchLayer(l: HTMLElement) {
+      activeMo?.disconnect();
       let count = 0;
       const mo = new MutationObserver((mutations) => {
         for (const m of mutations) {
           count += m.addedNodes.length;
-          if (count >= 3) {
-            fadeHint();
-            mo.disconnect();
-            break;
-          }
+          if (count >= 3) { fadeHint(); mo.disconnect(); activeMo = null; break; }
         }
       });
       mo.observe(l, { childList: true });
+      activeMo = mo;
     }
 
-    const existing = canvas.querySelector<HTMLElement>('.trail-layer');
-    if (existing) {
-      watchLayer(existing);
-    } else {
-      const observer = new MutationObserver(() => {
-        const l = canvas!.querySelector<HTMLElement>('.trail-layer');
-        if (l) { observer.disconnect(); watchLayer(l); }
-      });
-      observer.observe(canvas, { childList: true });
+    function setupWatcher() {
+      const existing = canvas!.querySelector<HTMLElement>('.trail-layer');
+      if (existing) {
+        watchLayer(existing);
+      } else {
+        const obs = new MutationObserver(() => {
+          const l = canvas!.querySelector<HTMLElement>('.trail-layer');
+          if (l) { obs.disconnect(); watchLayer(l); }
+        });
+        obs.observe(canvas!, { childList: true });
+      }
     }
+
+    // Mobile: zufällige Bilder + Einblend-Animation
+    const mobile = canvas.closest('section')?.querySelector<HTMLElement>('.about-more__mobile');
+    const mobileImgs = mobile ? Array.from(mobile.querySelectorAll<HTMLImageElement>('img')) : [];
+
+    function shuffleMobileImages() {
+      if (!mobileImgs.length || !allImages.length) return;
+      const pool = [...allImages].sort(() => Math.random() - 0.5);
+      mobileImgs.forEach((img, i) => { img.src = pool[i % pool.length]; });
+    }
+
+    if (mobile) {
+      const mio = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            mobile.classList.add('is-visible');
+          } else {
+            mobile.classList.remove('is-visible');
+            shuffleMobileImages();
+          }
+        });
+      }, { threshold: 0.1 });
+      mio.observe(mobile);
+      shuffleMobileImages();
+
+      // Flip-Effekt bei Tap/Click (alle Geräte ohne Maus)
+      if (window.matchMedia('(hover: none)').matches) {
+        mobileImgs.forEach((img) => {
+          img.style.cursor = 'pointer';
+          img.addEventListener('click', () => {
+            if (img.dataset.flipping) return;
+            img.dataset.flipping = '1';
+
+            img.style.transition = 'transform 0.2s ease-in';
+            img.style.transform = 'rotateY(90deg)';
+
+            img.addEventListener('transitionend', () => {
+              const visibleSrcs = mobileImgs.map(el => el.getAttribute('src') ?? '');
+              const pool = allImages.filter(s => !visibleSrcs.some(v => v === s || v.endsWith(s)));
+              img.src = (pool.length ? pool : allImages)[Math.floor(Math.random() * (pool.length || allImages.length))];
+              img.style.transition = 'transform 0.2s ease-out';
+              img.style.transform = 'rotateY(0deg)';
+              img.addEventListener('transitionend', () => {
+                delete img.dataset.flipping;
+              }, { once: true });
+            }, { once: true });
+          });
+        });
+      }
+    }
+
+    // Reset hint + neue Bilder wenn Section den Viewport verlässt
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          resetHint();
+          shuffleBgImages();
+          setupWatcher();
+        }
+      });
+    }, { threshold: 0 });
+
+    io.observe(canvas);
+    shuffleBgImages();
+    setupWatcher();
   }
 
   document.addEventListener('astro:page-load', initHintFade);
