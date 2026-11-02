@@ -123,6 +123,7 @@ const dotCount = projects.length;
       const c = el.cloneNode(true) as HTMLElement;
       c.setAttribute('aria-hidden', 'true');
       c.setAttribute('tabindex', '-1');
+      c.style.pointerEvents = 'none';
       c.querySelectorAll('a, button').forEach((x) => x.setAttribute('tabindex', '-1'));
       return c;
     };
