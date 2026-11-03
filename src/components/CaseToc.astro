@@ -31,18 +31,17 @@ const { items } = Astro.props;
   </div>
 </section>
 
-<script is:inline>
-  (function () {
-    var lists = Array.from(document.querySelectorAll('[data-toc-list]'));
+<script>
+  function initCaseToc() {
+    const lists = Array.from(document.querySelectorAll<HTMLElement>('[data-toc-list]'));
     if (!lists.length) return;
-    lists.forEach(function (l) {
+    lists.forEach((l) => {
       l.style.setProperty('--toc-line-scale', '1');
-      Array.from(l.querySelectorAll('li')).forEach(function (li) {
-        li.classList.add('is-past');
-      });
-      var body = l.closest('.case-toc__body');
-      var hint = body && body.querySelector('.case-toc__hint');
+      l.querySelectorAll('li').forEach((li) => li.classList.add('is-past'));
+      const hint = l.closest('.case-toc__body')?.querySelector('.case-toc__hint');
       if (hint) hint.classList.add('is-visible');
     });
-  })();
+  }
+
+  document.addEventListener('astro:page-load', initCaseToc);
 </script>
