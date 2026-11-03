@@ -28,23 +28,6 @@ const allProjects = [
     cursorSpark: 'light',
   },
   {
-    title: 'Website für ein imaginäres Surfcamp',
-    meta: 'Webentwicklung 1 | 2026',
-    image: '/images/Vorschau%20Bilder/Website-Vorschau03.jpg',
-    imagePosition: 'center 70%',
-    href: '/projekte/surfcamp',
-    cursorSpark: 'light',
-  },
-  {
-    title: 'Activity Tracker',
-    meta: 'UI-Design | 2024',
-    image: '/images/Vorschau%20Bilder/Activity-Tracker.jpg',
-    imagePosition: 'center 55%',
-    href: '/projekte/activity-tracker',
-    cursorSpark: 'dark',
-    darkOverlay: true,
-  },
-  {
     title: 'Projekte für das Kutter Gartencenter',
     meta: 'Kommunikationsdesign | seit 2021',
     image: '/images/Vorschau%20Bilder/Work_Voschau.jpg',
@@ -346,6 +329,7 @@ const dotCount = projects.length;
     --per-view: 3;
     --gap: 1rem;
     position: relative;
+    isolation: isolate;
   }
 
   .projects__viewport {
