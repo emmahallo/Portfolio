@@ -522,32 +522,31 @@ const trailImages = [
       hint.style.animation = '';
     }
 
-    let activeMo: MutationObserver | null = null;
-
-    function watchLayer(l: HTMLElement) {
-      activeMo?.disconnect();
-      let count = 0;
-      const mo = new MutationObserver((mutations) => {
-        for (const m of mutations) {
-          count += m.addedNodes.length;
-          if (count >= 3) { fadeHint(); mo.disconnect(); activeMo = null; break; }
-        }
-      });
-      mo.observe(l, { childList: true });
-      activeMo = mo;
-    }
+    let canvasMoveHandler: ((e: PointerEvent) => void) | null = null;
 
     function setupWatcher() {
-      const existing = canvas!.querySelector<HTMLElement>('.trail-layer');
-      if (existing) {
-        watchLayer(existing);
-      } else {
-        const obs = new MutationObserver(() => {
-          const l = canvas!.querySelector<HTMLElement>('.trail-layer');
-          if (l) { obs.disconnect(); watchLayer(l); }
-        });
-        obs.observe(canvas!, { childList: true });
+      if (canvasMoveHandler) {
+        canvas!.removeEventListener('pointermove', canvasMoveHandler);
       }
+      let last: { x: number; y: number } | null = null;
+      let count = 0;
+      const minDist = Math.min(Math.max(window.innerWidth * 0.07, 70), 120);
+      canvasMoveHandler = (e: PointerEvent) => {
+        if (e.pointerType !== 'mouse') return;
+        const r = canvas!.getBoundingClientRect();
+        const x = e.clientX - r.left;
+        const y = e.clientY - r.top;
+        if (!last) { last = { x, y }; return; }
+        if (Math.hypot(x - last.x, y - last.y) < minDist) return;
+        last = { x, y };
+        count++;
+        if (count >= 2) {
+          canvas!.removeEventListener('pointermove', canvasMoveHandler!);
+          canvasMoveHandler = null;
+          fadeHint();
+        }
+      };
+      canvas!.addEventListener('pointermove', canvasMoveHandler);
     }
 
     // Mobile: zufällige Bilder + Einblend-Animation
