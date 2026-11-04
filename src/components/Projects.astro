@@ -88,6 +88,8 @@ const dotCount = projects.length;
 <script>
   // Endlos-Karussell: rastet immer bündig auf ganzen Karten ein.
   // Bedienung: Trackpad-Swipe / Shift+Mausrad, Ziehen (Maus & Touch), Pfeile, Punkte.
+  let rafCleanup: (() => void) | null = null;
+
   const initProjectCarousel = (section: HTMLElement) => {
     const carousel = section.querySelector<HTMLElement>('.projects__carousel');
     const viewport = section.querySelector<HTMLElement>('.projects__viewport');
@@ -155,13 +157,19 @@ const dotCount = projects.length;
       if (Math.abs(target - current) < 0.05) current = target;
       render();
       updateDots();
-      requestAnimationFrame(tick);
+      rafId = requestAnimationFrame(tick);
     };
 
     measure();
     render();
-    requestAnimationFrame(tick);
-    window.addEventListener('resize', () => { measure(); render(); });
+    let rafId = 0;
+    rafId = requestAnimationFrame(tick);
+    const onResize = () => { measure(); render(); };
+    window.addEventListener('resize', onResize);
+    rafCleanup = () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('resize', onResize);
+    };
 
     // ---- Pfeile & Punkte ----
     section.querySelectorAll<HTMLButtonElement>('.projects__arrow').forEach((btn) => {
@@ -321,7 +329,10 @@ const dotCount = projects.length;
     });
   };
 
-  document.querySelectorAll<HTMLElement>('[data-projects]').forEach(initProjectCarousel);
+  document.addEventListener('astro:before-swap', () => { rafCleanup?.(); rafCleanup = null; });
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLElement>('[data-projects]').forEach(initProjectCarousel);
+  });
 </script>
 
 <style>
