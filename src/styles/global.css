@@ -650,63 +650,9 @@ body:has(.lightbox:not([hidden])) main {
   flex-wrap: wrap;
 }
 
-.case-toc__hint {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0;
-  color: var(--color-ink);
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.case-toc__hint.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-.case-toc__hint-text {
-  font-family: 'Reenie Beanie', cursive;
-  font-size: 2rem;
-  line-height: 1;
-  color: var(--color-ink);
-  white-space: nowrap;
-  margin-left: 18px;
-}
-
-.case-toc__hint-arrow {
-  display: block;
-  width: 55px;
-  height: 55px;
-  margin-top: -0.15rem;
-  background-color: var(--color-ink);
-  -webkit-mask: url('/images/pfeil.png') no-repeat center / contain;
-  mask: url('/images/pfeil.png') no-repeat center / contain;
-}
-
-@media (max-width: 760px) {
-  .case-toc__hint {
-    margin-left: 1.75rem;
-  }
-
-  .case-toc__hint-text {
-    font-size: 1.6rem;
-    margin-left: 14px;
-  }
-
-  .case-toc__hint-arrow {
-    width: 44px;
-  }
-}
-
 @media (max-width: 560px) {
   .case-toc__body {
     gap: 1rem;
-  }
-
-  .case-toc__hint {
-    display: none;
   }
 }
 

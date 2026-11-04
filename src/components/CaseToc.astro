@@ -23,10 +23,6 @@ const { items } = Astro.props;
           ))}
         </ul>
       </div>
-      <div class="case-toc__hint" aria-hidden="true">
-        <span class="case-toc__hint-text">klickbar!</span>
-        <span class="case-toc__hint-arrow" role="presentation"></span>
-      </div>
     </div>
   </div>
 </section>
@@ -38,8 +34,6 @@ const { items } = Astro.props;
     lists.forEach((l) => {
       l.style.setProperty('--toc-line-scale', '1');
       l.querySelectorAll('li').forEach((li) => li.classList.add('is-past'));
-      const hint = l.closest('.case-toc__body')?.querySelector('.case-toc__hint');
-      if (hint) hint.classList.add('is-visible');
     });
   }
 
