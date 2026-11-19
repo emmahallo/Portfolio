@@ -83,13 +83,15 @@ const trailImages = [
         <div class="case-hero__content">
           <div class="case-hero__media about-media" data-reveal style="--reveal-delay: 120ms">
             <figure class="polaroid">
-              <img
-                src="/images/emma.JPG"
-                alt="Porträtfoto von Emma"
-                width="538"
-                height="921"
-                loading="eager"
-              />
+              <div class="polaroid__img-wrap">
+                <img
+                  src="/breitesbild.png"
+                  alt="Porträtfoto von Emma"
+                  width="538"
+                  height="921"
+                  loading="eager"
+                />
+              </div>
             </figure>
           </div>
           <h1 class="case-hero__title">
@@ -217,6 +219,12 @@ const trailImages = [
     transition: transform 0.4s ease, box-shadow 0.4s ease;
   }
 
+  main :global(.polaroid__img-wrap) {
+    overflow: hidden;
+    position: relative;
+  }
+
+
   main :global(.polaroid:hover) {
     transform: rotate(-1deg) translateY(-6px) scale(1.02);
     box-shadow: 0 22px 44px rgba(28, 28, 28, 0.28);
@@ -229,6 +237,7 @@ const trailImages = [
     aspect-ratio: 4 / 5;
     object-fit: cover;
     object-position: center;
+    transform: scale(1.05) translateX(-3%);
   }
 
   @media (max-width: 640px) {

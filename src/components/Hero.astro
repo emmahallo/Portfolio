@@ -3,20 +3,20 @@
 const trailImages = Array.from({ length: 17 }, (_, i) => `/images/trail/trail-${String(i + 1).padStart(2, '0')}.jpg`);
 ---
 
-<section class="hero" style="overflow-x: clip;">
+<section class="hero" style="overflow-x: clip; min-height: 88vh;">
   <div class="wrapper hero__inner">
     <div class="hero__content">
-<h1 class="hero__title">
-        <span data-split="chars" style="--split-delay: 120ms">Hey, ich bin</span><br />
-        <span class="hero__name">
-          <span data-split="chars" style="--split-delay: 420ms">Emma Eichin!</span>
-        </span>
-      </h1>
+<div class="hero__text-group">
+        <h1 class="hero__title">
+          <span data-split="chars" style="--split-delay: 120ms">willkommen in</span><br />
+          <span data-split="chars" style="--split-delay: 420ms">meinem Portfolio.</span>
+        </h1>
 
-      <p class="hero__text" data-reveal style="--reveal-delay: 700ms">
-        Mit Fokus auf UI/UX gestalte ich Designs, die wirklich funktionieren –
-        für Menschen, die es benutzen.
-      </p>
+<p class="hero__text" data-reveal style="--reveal-delay: 700ms">
+          Mit Fokus auf UI/UX gestalte ich Designs, die wirklich funktionieren –
+          für Menschen, die es benutzen.
+        </p>
+      </div>
 
       <div class="hero__actions" data-reveal style="--reveal-delay: 850ms">
         <div class="btn-shadow-wrap">
@@ -34,7 +34,7 @@ const trailImages = Array.from({ length: 17 }, (_, i) => `/images/trail/trail-${
         <div class="hero__shape" aria-hidden="true"></div>
         <img
           class="hero__photo"
-          src="/images/Portrait/emma.png"
+          src="/schwarzbildneu.png"
           width="900"
           height="1000"
           alt="Porträtfoto von Emma Eichin"
@@ -47,16 +47,17 @@ const trailImages = Array.from({ length: 17 }, (_, i) => `/images/trail/trail-${
 <style>
   .hero__inner {
     display: grid;
+    margin-top: 3rem;
     grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
     gap: clamp(2rem, 5vw, 4rem);
     align-items: center;
-    padding-block: clamp(2rem, 6vw, 4rem) var(--section-spacing);
+    padding-block: 3rem 2rem;
   }
 
   .hero__content {
     position: relative;
     z-index: 3;
-    padding-top: clamp(4rem, 9vw, 7rem);
+    padding-top: 2rem;
     pointer-events: none;
   }
 
@@ -156,6 +157,13 @@ const trailImages = Array.from({ length: 17 }, (_, i) => `/images/trail/trail-${
     margin-bottom: 1.75rem;
   }
 
+  .hero__text-group {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: fit-content;
+  }
+
   .hero__title {
     font-family: var(--font-display);
     font-weight: 400;
@@ -165,7 +173,8 @@ const trailImages = Array.from({ length: 17 }, (_, i) => `/images/trail/trail-${
     line-height: 1.05;
   }
 
-  .hero__text {
+
+.hero__text {
     font-weight: 300;
     font-size: 1.25rem;
     color: var(--color-text);
@@ -236,8 +245,8 @@ const trailImages = Array.from({ length: 17 }, (_, i) => `/images/trail/trail-${
 
   .hero__shape {
     position: absolute;
-    top: 21%;
-    bottom: 5%;
+    top: 26%;
+    bottom: 10%;
     left: -14%;
     right: calc(-1 * (var(--gutter) + max(0px, (100vw - var(--max-width)) / 2)));
     background-color: #c9d3ca;
@@ -245,19 +254,71 @@ const trailImages = Array.from({ length: 17 }, (_, i) => `/images/trail/trail-${
     z-index: 0;
   }
 
+  .hero__polaroid {
+    margin: 0;
+    padding: 1.1rem 1.1rem 5.5rem;
+    background: #ffffff;
+    box-shadow: 0 8px 32px rgba(28, 28, 28, 0.22);
+    transform: rotate(1.5deg);
+    max-width: 500px;
+    width: 100%;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .hero__polaroid:hover {
+    transform: rotate(-1deg) translateY(-6px) scale(1.02);
+    box-shadow: 0 22px 44px rgba(28, 28, 28, 0.28);
+  }
+
+  .hero__polaroid-wrap {
+    overflow: hidden;
+    position: relative;
+  }
+
   .hero__photo {
     position: absolute;
     z-index: 1;
-    bottom: 5%;
-    left: calc(50% + 2%);
+    bottom: 10%;
+    left: calc(50% + 10%);
     transform: translateX(-50%);
-    height: 98%;
+    height: 109%;
     width: auto;
     max-width: none;
     object-fit: contain;
     object-position: bottom center;
     pointer-events: none;
   }
+
+  :global(.polaroid) {
+    margin: 4rem 0 0 5rem;
+    padding: 1.1rem 1.1rem 3.5rem;
+    background: #ffffff;
+    box-shadow: 0 8px 32px rgba(28, 28, 28, 0.22);
+    transform: rotate(1.5deg);
+    max-width: none;
+    width: 80%;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  :global(.polaroid__img-wrap) {
+    overflow: hidden;
+    position: relative;
+  }
+
+  :global(.polaroid:hover) {
+    transform: rotate(-1deg) translateY(-6px) scale(1.02);
+    box-shadow: 0 22px 44px rgba(28, 28, 28, 0.28);
+  }
+
+  :global(.polaroid img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 9 / 16;
+    object-fit: cover;
+    object-position: center;
+  }
+
 
   @media (max-width: 900px) {
     .hero__inner {
@@ -322,20 +383,34 @@ const trailImages = Array.from({ length: 17 }, (_, i) => `/images/trail/trail-${
       width: 9px;
       height: 9px;
     }
+
+  }
+
+  @media (min-width: 901px) and (max-width: 1200px) {
+    .hero__photo {
+      left: calc(50% + 2%);
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 900px) {
+    .hero__shape {
+      left: 10%;
+    }
   }
 
   @media (min-width: 1201px) {
     .hero__content {
-      padding-top: 6rem;
+      padding-top: 3rem;
     }
 
     .hero__shape {
-      top: 28%;
-      left: -26%;
+      top: 26%;
+      bottom: 10%;
+      left: -14%;
     }
 
     .hero__photo {
-      left: calc(50% - 9%);
+      left: calc(50% + 10%);
     }
 
     @media (max-height: 676px) {
