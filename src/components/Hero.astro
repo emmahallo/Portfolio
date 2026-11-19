@@ -278,14 +278,15 @@ const trailImages = Array.from({ length: 17 }, (_, i) => `/images/trail/trail-${
   .hero__photo {
     position: absolute;
     z-index: 1;
-    bottom: 10%;
+    bottom: -14%;
     left: calc(50% + 10%);
     transform: translateX(-50%);
-    height: 109%;
+    height: 135%;
     width: auto;
     max-width: none;
     object-fit: contain;
     object-position: bottom center;
+    clip-path: inset(0 0 18% 0);
     pointer-events: none;
   }
 
