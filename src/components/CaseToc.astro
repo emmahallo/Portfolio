@@ -38,4 +38,5 @@ const { items } = Astro.props;
   }
 
   document.addEventListener('astro:page-load', initCaseToc);
+  initCaseToc(); // direkt aufrufen falls astro:page-load schon gefeuert hat
 </script>
