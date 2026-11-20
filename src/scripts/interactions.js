@@ -103,10 +103,12 @@ function initTrail(zone) {
   const sources = (zone.dataset.trail || '').split('|').map((s) => s.trim()).filter(Boolean);
   if (!sources.length || reduceMotion) return;
 
-  // Bilder vorladen, damit nichts aufblitzt
+  // Bilder vorladen und Referenzen behalten, um Ladestatus zu prüfen
+  const preloaded = new Map();
   sources.forEach((src) => {
     const img = new Image();
     img.src = src;
+    preloaded.set(src, img);
   });
 
   const layer = document.createElement('div');
@@ -121,45 +123,59 @@ function initTrail(zone) {
   const threshold = () => clamp(window.innerWidth * 0.07, 70, 120);
 
   const spawn = (x, y, dx = 0, dy = 0) => {
-    const img = document.createElement('img');
-    img.className = 'trail-img';
-    img.src = sources[index++ % sources.length];
-    img.alt = '';
-    img.decoding = 'async';
-    img.style.left = `${x}px`;
-    img.style.top = `${y}px`;
-    img.style.zIndex = String(z++);
-    layer.appendChild(img);
-
-    while (layer.children.length > MAX) layer.firstElementChild.remove();
-
+    const src = sources[index++ % sources.length];
+    const myZ = z++;
     const rot = (Math.random() - 0.5) * 16;
     const driftX = clamp(dx * 0.6, -60, 60);
     const driftY = clamp(dy * 0.6, -60, 60);
 
-    const appear = img.animate(
-      [
-        { opacity: 0, transform: `translate(-50%, -50%) scale(0.55) rotate(${rot * 2}deg)` },
-        { opacity: 1, transform: `translate(-50%, -50%) scale(1) rotate(${rot}deg)` },
-      ],
-      { duration: 380, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'forwards' }
-    );
+    const addToLayer = () => {
+      const img = document.createElement('img');
+      img.className = 'trail-img';
+      img.src = src;
+      img.alt = '';
+      img.style.left = `${x}px`;
+      img.style.top = `${y}px`;
+      img.style.zIndex = String(myZ);
+      layer.appendChild(img);
 
-    appear.finished
-      .then(() =>
-        img.animate(
-          [
-            { opacity: 1, transform: `translate(-50%, -50%) scale(1) rotate(${rot}deg)` },
-            {
-              opacity: 0,
-              transform: `translate(calc(-50% + ${driftX}px), calc(-50% + ${driftY + 30}px)) scale(0.8) rotate(${rot}deg)`,
-            },
-          ],
-          { duration: 700, delay: 650, easing: 'cubic-bezier(0.55, 0, 0.45, 1)', fill: 'forwards' }
-        ).finished
-      )
-      .then(() => img.remove())
-      .catch(() => img.remove());
+      while (layer.children.length > MAX) layer.firstElementChild.remove();
+
+      const appear = img.animate(
+        [
+          { opacity: 0, transform: `translate(-50%, -50%) scale(0.55) rotate(${rot * 2}deg)` },
+          { opacity: 1, transform: `translate(-50%, -50%) scale(1) rotate(${rot}deg)` },
+        ],
+        { duration: 380, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'forwards' }
+      );
+
+      appear.finished
+        .then(() =>
+          img.animate(
+            [
+              { opacity: 1, transform: `translate(-50%, -50%) scale(1) rotate(${rot}deg)` },
+              {
+                opacity: 0,
+                transform: `translate(calc(-50% + ${driftX}px), calc(-50% + ${driftY + 30}px)) scale(0.8) rotate(${rot}deg)`,
+              },
+            ],
+            { duration: 700, delay: 650, easing: 'cubic-bezier(0.55, 0, 0.45, 1)', fill: 'forwards' }
+          ).finished
+        )
+        .then(() => img.remove())
+        .catch(() => img.remove());
+    };
+
+    // Erst ins DOM wenn Bild geladen — verhindert leeren Rahmen
+    const probe = preloaded.get(src);
+    if (probe?.complete) {
+      addToLayer();
+    } else if (probe) {
+      probe.addEventListener('load', addToLayer, { once: true });
+      probe.addEventListener('error', addToLayer, { once: true });
+    } else {
+      addToLayer();
+    }
   };
 
   zone.addEventListener('pointermove', (e) => {
